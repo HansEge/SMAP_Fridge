@@ -1,0 +1,23 @@
+As a costumer, I can add myself and others as a user/users so that I and others can access fridge-i-nator. 
+
+As a user, I can delete another user, so that user no longer can access the fridge-i-nator. 
+
+As a user, I can create a list of items which the fridges contain, so I always knows what my fridge contains.
+
+As a user, I can create a shopping list of items I need, if the items already is registered in the fridge-i-nator it will be taken into acount.  
+
+As a user, I can set a shopping list as done, so the items on the shopping list will added to the fridge-i-nator's inventory and the shopping list will be deleted, other useres will be notified about a shoppinglist being set as done. 
+
+As a user, I can add items to an already existing shopping list, if the shopping list hasn’t been set as done.
+
+As a user, I can claim responsibility of a shopping list, other useres will be notified about who has taken reposebility of a given shopping list to avoid double shopping.
+
+As a user, I can create a list of essential items with a minimum quantity of each item, so when the quantity of at specific item comes below the minimum quantity fridge-i-nator automatically adds the item to the shopping list.
+
+
+
+
+
+
+ 
+
