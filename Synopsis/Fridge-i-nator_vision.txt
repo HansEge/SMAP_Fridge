@@ -1,0 +1,8 @@
+Fridge-i-nator vision
+
+Fridge-i-nator is an app that works together with you and your fridge. It will make it easier for you to make a shopping
+list and keep track of the items in your fridge especially if your share fridge with others. You can create an essential
+item list, which is items you never want to run out of. That way if the item comes under a minimum quantity Fridge-i-nator
+will automatically add that item to your shopping list. 
+Fridge-i-nator will minimize the risk of you forgetting to buy items you need, and make sure you never have to check your
+ fridge before going to the supermarket.
