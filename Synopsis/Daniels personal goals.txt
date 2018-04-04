@@ -1,0 +1,4 @@
+Daniels personal goals.
+Through designing and implementing the fridge-i-nator in this app-project, I want to improve my app design skill. I also want to get familiar
+with firebase, which we intend to use in this project, and even more familiar with
+Android studio and the opportunities that comes with this tool. All in all, I want to be a better app developer.
