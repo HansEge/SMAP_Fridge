@@ -1,23 +1,32 @@
-As a costumer, I can add myself and others as a user/users so that I and others can access fridge-i-nator. 
+CONNECTION
+As a user, I can connect to a create a new fridge, so that i can acces connect to it.
 
-As a user, I can delete another user, so that user no longer can access the fridge-i-nator. 
+As a user, I can connect to a fridge, so that I can access information about it.
 
-As a user, I can create a list of items which the fridges contain, so I always knows what my fridge contains.
+As a user, I can add other people to a fridge I am connected to, so that they can access information about it.
 
-As a user, I can create a shopping list of items I need, if the items already is registered in the fridge-i-nator it will be taken into acount.  
-
-As a user, I can set a shopping list as done, so the items on the shopping list will added to the fridge-i-nator's inventory and the shopping list will be deleted, other useres will be notified about a shoppinglist being set as done. 
-
-As a user, I can add items to an already existing shopping list, if the shopping list hasn’t been set as done.
-
-As a user, I can claim responsibility of a shopping list, other useres will be notified about who has taken reposebility of a given shopping list to avoid double shopping.
-
-As a user, I can create a list of essential items with a minimum quantity of each item, so when the quantity of at specific item comes below the minimum quantity fridge-i-nator automatically adds the item to the shopping list.
+As a user, I can leave a fridge, so that I cannot acces information about it anymore.
 
 
+INVENTORY
+As a user, I can acces an inventory list of items which the fridges contain, so all users connected to the fridge can keep track of what is in the fridge.
 
+As a user, I can add items to the inventory list, so that all connected users may know that the item is in the fridge.
 
+SHOPPING LIST
+As a user, I can acces a shopping list of items, so all users connected to the fridge can keep track of what needs to be bought for the fridge.
 
+As a user, I can add items to the shopping list, so that all connected users may know that the item needs to be bought.
 
- 
+ESSENTIALS LIST
+As a user, I can acces a list of essential items with a minimum quantity of each item, so when the quantity of at specific item comes below the minimum quantity fridge-i-nator automatically adds the item to the shopping list.
 
+As a user, I can add items to the lsit of essential items, so that all the system automatically will add the item to the shopping list, if the quantity of the item falls below a specifiec quantity.
+
+INGREDIENT LIST
+As a user, I can add an ingredient list of items, so that the system will add missing items to the shopping list.
+
+USING THE SHOPPIN/INVENTORY LIST
+As a user, I can claim responsibility of an item on the shopping list, so that other useres will be notified about who has taken responsibility of the given item to avoid double shopping.
+
+As a user, I can move an item from the shopping list to the inventory list, so that all users connected to the fridge will know that the item has been bought.
