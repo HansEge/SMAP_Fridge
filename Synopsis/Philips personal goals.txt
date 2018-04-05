@@ -1,0 +1,2 @@
+In contrary to no former Android Development and Java experience , i'm striving to become a more experienced developer within the Android scene.
+This includes a goal of being able to create a great UI experience to the users, managing API calls, maintenance and implementation of databases amongst a lot of other possibilities with the Android Studio tool.
