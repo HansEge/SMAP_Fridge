@@ -64,4 +64,63 @@
         app:layout_constraintStart_toEndOf="@+id/debug_btn_addShoppingList"
         app:layout_constraintTop_toTopOf="@+id/debug_btn_addShoppingList" />
 
+    <Button
+        android:id="@+id/debug_btn_addEssentialsList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Add EssentialList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/debug_btn_addShoppingList" />
+
+    <Button
+        android:id="@+id/debug_btn_addIngredientList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="add Ingredient list"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/debug_btn_addEssentialsList" />
+
+    <EditText
+        android:id="@+id/debug_ET_ingredientListName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Ingredient List Name"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/debug_btn_addIngredientList"
+        app:layout_constraintStart_toEndOf="@+id/debug_btn_addIngredientList"
+        app:layout_constraintTop_toTopOf="@+id/debug_btn_addIngredientList" />
+
+    <Button
+        android:id="@+id/debug_btn_loadIngredientList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="load IngredientList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/debug_btn_addIngredientList" />
+
+    <Button
+        android:id="@+id/debug_btn_loadShoppingList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="load shopping list"
+        app:layout_constraintBottom_toBottomOf="@+id/debug_btn_loadIngredientList"
+        app:layout_constraintStart_toEndOf="@+id/debug_btn_loadIngredientList"
+        app:layout_constraintTop_toTopOf="@+id/debug_btn_loadIngredientList" />
+
 </android.support.constraint.ConstraintLayout>

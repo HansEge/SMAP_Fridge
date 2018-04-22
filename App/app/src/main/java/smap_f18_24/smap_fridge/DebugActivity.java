@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import smap_f18_24.smap_fridge.DAL.fireStoreCommunicator;
+import smap_f18_24.smap_fridge.ModelClasses.EssentialsList;
+import smap_f18_24.smap_fridge.ModelClasses.IngredientList;
 import smap_f18_24.smap_fridge.ModelClasses.InventoryList;
 import smap_f18_24.smap_fridge.ModelClasses.Item;
 import smap_f18_24.smap_fridge.ModelClasses.ItemStatus;
@@ -33,8 +35,8 @@ public class DebugActivity extends AppCompatActivity {
     fireStoreCommunicator dbComm;
     private static final String TAG = "DebugActivity";
     
-    Button btn_write2db, btn_testItem2db, btn_addList, btn_addShoppingList;
-    EditText et_ShoppingListName;
+    Button btn_write2db, btn_testItem2db, btn_addList, btn_addShoppingList, btn_addEssentialsList, btn_addIngredientList, btn_loadIngredientList, btn_loadShoppingList;
+    EditText et_ShoppingListName, et_IngredientListName;
 
     //database reference
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -87,7 +89,7 @@ public class DebugActivity extends AppCompatActivity {
                 CollectionReference itemPath = db.collection("Items");
 
                 //create test item.
-                Item testItem = new Item("Malk","Liters",1,"null", ItemStatus.NEEDED);
+                Item testItem = new Item("Malk","Liters",1,"null", "Needed");
 
                 //Add item to db.
                 dbComm.addItem(itemPath,testItem);
@@ -98,14 +100,14 @@ public class DebugActivity extends AppCompatActivity {
         btn_addList = findViewById(R.id.debug_btn_addList);
         btn_addList.setOnClickListener(new View.OnClickListener() {
 
-            CollectionReference itemPath = db.collection("Inventory");
+            CollectionReference itemPath = db.collection("TestFridge");
 
             @Override
             public void onClick(View v) {
 
-                Item i1 = new Item("Malk", "Liters", 0.4f,"", ItemStatus.BOUGHT);
-                Item i2 = new Item("Potatoes", "Grams", 500,"", ItemStatus.BOUGHT);
-                Item i3 = new Item("Diapers", "Pcs", 3,"", ItemStatus.BOUGHT);
+                Item i1 = new Item("Malk", "Liters", 0.4f,"", "Bought");
+                Item i2 = new Item("Potatoes", "Grams", 500,"", "Bought");
+                Item i3 = new Item("Diapers", "Pcs", 3,"", "Bought");
 
                 InventoryList inventoryList = new InventoryList();
                 inventoryList.AddItem(i1);
@@ -125,19 +127,77 @@ public class DebugActivity extends AppCompatActivity {
 
                 String shoppingListName = et_ShoppingListName.getText().toString();
 
-                CollectionReference itemPath = db.collection("ShoppingList");
+                CollectionReference itemPath = db.collection("TestFridge");
 
-                Item i1 = new Item("Malk", "Liters", 0.4f,"", ItemStatus.BOUGHT);
-                Item i2 = new Item("Potatoes", "Grams", 500,"", ItemStatus.BOUGHT);
-                Item i3 = new Item("Diapers", "Pcs", 3,"", ItemStatus.BOUGHT);
+                Item i1 = new Item("Malk", "Liters", 0.4f,"", "Bought");
+                Item i2 = new Item("Potatoes", "Grams", 500,"", "Bought");
+                Item i3 = new Item("Diapers", "Pcs", 3,"", "Bought");
 
                 ShoppingList shoppingList = new ShoppingList();
                 shoppingList.AddItem(i1);
                 shoppingList.AddItem(i2);
                 shoppingList.AddItem(i3);
-                dbComm.addShoppingList(itemPath,shoppingList, shoppingListName);
+                dbComm.addShoppingList(itemPath,shoppingList, shoppingListName,"TestFridge_SL1");
             }
         });
 
+        btn_addEssentialsList = findViewById(R.id.debug_btn_addEssentialsList);
+        btn_addEssentialsList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CollectionReference itemPath = db.collection("TestFridge");
+
+                Item i1 = new Item("Malk", "Liters", 0.4f,"", "Bought");
+                Item i2 = new Item("Potatoes", "Grams", 500,"", "Bought");
+                Item i3 = new Item("Diapers", "Pcs", 3,"", "Bought");
+
+                EssentialsList essentialsList = new EssentialsList();
+                essentialsList.AddItem(i1);
+                essentialsList.AddItem(i2);
+                essentialsList.AddItem(i3);
+                dbComm.addEssentialsList(itemPath,essentialsList);
+            }
+        });
+
+        et_IngredientListName = findViewById(R.id.debug_ET_ingredientListName);
+
+        btn_addIngredientList = findViewById(R.id.debug_btn_addIngredientList);
+        btn_addIngredientList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CollectionReference itemPath = db.collection("TestFridge");
+
+                String listName = et_IngredientListName.getText().toString();
+
+                Item i1 = new Item("Malk", "Liters", 0.4f,"", "Bought");
+                Item i2 = new Item("Potatoes", "Grams", 500,"", "Bought");
+                Item i3 = new Item("Diapers", "Pcs", 3,"", "Bought");
+
+                IngredientList ingredientList = new IngredientList("Cool thing list", "testFridge_IL1");
+                ingredientList.AddItem(i1);
+                ingredientList.AddItem(i2);
+                ingredientList.AddItem(i3);
+                dbComm.addIngredientList(itemPath,ingredientList,listName,"TestFridge_IL1");
+            }
+        });
+
+        btn_loadIngredientList=findViewById(R.id.debug_btn_loadIngredientList);
+        btn_loadIngredientList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CollectionReference fridgePath = db.collection("TestFridge");
+                dbComm.getInventoryList(fridgePath);
+            }
+        });
+
+    btn_loadShoppingList = findViewById(R.id.debug_btn_loadShoppingList);
+    btn_loadShoppingList.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            CollectionReference fridgePath = db.collection("TestFridge");
+            dbComm.getShoppingList(fridgePath,"TestFridge_SL1");
+        }
+    });
     }
 }

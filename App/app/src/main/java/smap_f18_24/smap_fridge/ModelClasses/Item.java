@@ -7,17 +7,18 @@ public class Item {
     String Unit;
     float Quantity;
     String ResponsibleUserEmail;
-    ItemStatus itemStatus;
-
+    //ItemStatus itemStatus;
+    String itemStatus;
 
 
     //Constructors
     public Item()
     {
+        Unit="THIS_IS_NOT_AN_ITEM";
         //Empty constructor for use with firebase (i think..)
     }
 
-    public Item(String name, String unit, float quantity, String responsibleUserEmail, ItemStatus itemStatus) {
+    public Item(String name, String unit, float quantity, String responsibleUserEmail, String itemStatus) {
         Name = name;
         Unit = unit;
         Quantity = quantity;
@@ -58,11 +59,11 @@ public class Item {
         ResponsibleUserEmail = responsibleUserEmail;
     }
 
-    public ItemStatus getItemStatus() {
+    public String getItemStatus() {
         return itemStatus;
     }
 
-    public void setItemStatus(ItemStatus itemStatus) {
+    public void setItemStatus(String itemStatus) {
         this.itemStatus = itemStatus;
     }
 
