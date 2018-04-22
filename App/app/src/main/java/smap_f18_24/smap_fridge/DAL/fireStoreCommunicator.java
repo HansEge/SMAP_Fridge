@@ -92,7 +92,7 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
     public void addShoppingList(CollectionReference fridge, final ShoppingList listToAdd, String listName, String listID)
     {
         Map<String, Object>  ShoppingList = new HashMap<>();
-        CollectionReference listRef = fridge.document("ShoppingLists").collection(listName);
+        CollectionReference listRef = fridge.document("ShoppingLists").collection(listID);
         addListInfo(listRef,listName,listID);
         for (Item i:listToAdd.getItems()
                 ) {
@@ -123,26 +123,26 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
 
     public void getInventoryList(CollectionReference fridge)
     {
-        Log.d(TAG, "getInventoryList: entered function");
-
+        //Fridge reference.
         final CollectionReference inventoryReference = fridge.document("Inventory").collection("Items");
 
+        //Query for Items.
        inventoryReference
                 .get()
         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot documentSnapshots) {
+                //Check if list is empty.
                 if (documentSnapshots.isEmpty()) {
                     Log.d(TAG, "onSuccess: LIST EMPTY");
                     return;
                 } else {
-                    // Convert the whole Query Snapshot to a list
-                    // of objects directly! No need to fetch each
-                    // document.
+                    //Convert documentShapshots to list of items.
                     List<Item> itemList = documentSnapshots.toObjects(Item.class);
 
                     for (Item i: itemList
                          ) {
+                        //Do something with items.
                         Log.d(TAG, "onSuccess: Item: " + i.getName());
 
                     }
@@ -154,6 +154,146 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                     Log.d(TAG, "onFailure: Failed to get InventoryList");
                 }
             });
+    }
+
+
+
+    public void getEssentialsList(CollectionReference fridge)
+    {
+        //Fridge reference.
+        final CollectionReference inventoryReference = fridge.document("Essentials").collection("Items");
+
+        //Query for Items.
+        inventoryReference
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                        //Check if list is empty.
+                        if (documentSnapshots.isEmpty()) {
+                            Log.d(TAG, "onSuccess: LIST EMPTY");
+                            return;
+                        } else {
+
+                            //Convert documentShapshots to list of items.
+                            List<Item> itemList = documentSnapshots.toObjects(Item.class);
+
+                            for (Item i: itemList
+                                    ) {
+                                //Do something with items.
+                                Log.d(TAG, "onSuccess: Item: " + i.getName());
+
+                            }
+
+                        }
+                    }}).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: Failed to get EssentialsList");
+            }
+        });
+    }
+
+    public void getShoppingList(CollectionReference fridge, String ID)
+    {
+
+        //reference to fridge
+        final CollectionReference shoppingListReference = fridge.document("ShoppingLists").collection(ID);
+
+        //make a query for all documents in collection
+        shoppingListReference
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                        //check if there are any documents
+                        if (documentSnapshots.isEmpty()) {
+                            Log.d(TAG, "onSuccess: LIST EMPTY");
+                            return;
+                        } else {
+                            try
+                            {
+                                //Make list of Items out of the documents
+                                List<Item> itemList = documentSnapshots.toObjects(Item.class);
+                                for (Item i: itemList
+                                        ) {
+
+                                    //hack to find the "INFO"-document, that we don't want to make into an Item-object.
+                                    if(i.getUnit().equals("THIS_IS_NOT_AN_ITEM"))
+                                    {
+                                        Log.d(TAG, "getShoppingList: Item " + i.getName() + " is not an item.");
+                                    }
+                                    else
+                                    {
+                                        //Do something with Item.
+                                        Log.d(TAG, "onSuccess: Item: " + i.getName());
+                                    }
+
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Log.d(TAG, "getShoppingList: could not convert datasnapshot" + documentSnapshots.toString()+ " into Item");
+                            }
+
+                        }
+                    }}).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: Failed to get EssentialsList");
+            }
+        });
+    }
+
+    public void getIngredientList(CollectionReference fridge, String ID)
+    {
+
+        //reference to fridge
+        final CollectionReference shoppingListReference = fridge.document("IngredientLists").collection(ID);
+
+        //make a query for all documents in collection
+        shoppingListReference
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot documentSnapshots) {
+                        //check if there are any documents
+                        if (documentSnapshots.isEmpty()) {
+                            Log.d(TAG, "onSuccess: LIST EMPTY");
+                            return;
+                        } else {
+                            try
+                            {
+                                //Make list of Items out of the documents
+                                List<Item> itemList = documentSnapshots.toObjects(Item.class);
+                                for (Item i: itemList
+                                        ) {
+
+                                    //hack to find the "INFO"-document, that we don't want to make into an Item-object.
+                                    if(i.getUnit().equals("THIS_IS_NOT_AN_ITEM"))
+                                    {
+                                        Log.d(TAG, "getIngredientList: Item " + i.getName() + " is not an item.");
+                                    }
+                                    else
+                                    {
+                                        //Do something with Item.
+                                        Log.d(TAG, "onSuccess: Item: " + i.getName());
+                                    }
+
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Log.d(TAG, "getIngredientList: could not convert datasnapshot" + documentSnapshots.toString()+ " into Item");
+                            }
+
+                        }
+                    }}).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: Failed to get EssentialsList");
+            }
+        });
     }
 
 }

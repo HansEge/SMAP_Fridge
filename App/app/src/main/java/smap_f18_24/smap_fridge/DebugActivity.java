@@ -35,7 +35,7 @@ public class DebugActivity extends AppCompatActivity {
     fireStoreCommunicator dbComm;
     private static final String TAG = "DebugActivity";
     
-    Button btn_write2db, btn_testItem2db, btn_addList, btn_addShoppingList, btn_addEssentialsList, btn_addIngredientList, btn_loadIngredientList;
+    Button btn_write2db, btn_testItem2db, btn_addList, btn_addShoppingList, btn_addEssentialsList, btn_addIngredientList, btn_loadIngredientList, btn_loadShoppingList;
     EditText et_ShoppingListName, et_IngredientListName;
 
     //database reference
@@ -190,5 +190,14 @@ public class DebugActivity extends AppCompatActivity {
             }
         });
 
+    btn_loadShoppingList = findViewById(R.id.debug_btn_loadShoppingList);
+    btn_loadShoppingList.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            CollectionReference fridgePath = db.collection("TestFridge");
+            dbComm.getShoppingList(fridgePath,"TestFridge_SL1");
+        }
+    });
     }
 }

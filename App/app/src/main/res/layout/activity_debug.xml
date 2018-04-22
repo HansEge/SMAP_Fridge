@@ -111,4 +111,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/debug_btn_addIngredientList" />
 
+    <Button
+        android:id="@+id/debug_btn_loadShoppingList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="load shopping list"
+        app:layout_constraintBottom_toBottomOf="@+id/debug_btn_loadIngredientList"
+        app:layout_constraintStart_toEndOf="@+id/debug_btn_loadIngredientList"
+        app:layout_constraintTop_toTopOf="@+id/debug_btn_loadIngredientList" />
+
 </android.support.constraint.ConstraintLayout>

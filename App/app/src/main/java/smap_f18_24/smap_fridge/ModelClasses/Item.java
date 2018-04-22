@@ -14,6 +14,7 @@ public class Item {
     //Constructors
     public Item()
     {
+        Unit="THIS_IS_NOT_AN_ITEM";
         //Empty constructor for use with firebase (i think..)
     }
 
