@@ -32,7 +32,7 @@ public class ShoppingList extends ItemList {
 
     public void SetResponsibilityForItem(String UserEmail, String itemName) {
         getItem(itemName).setResponsibleUserEmail(UserEmail);
-        getItem(itemName).setItemStatus(ItemStatus.RESPONSIBILITY_CLAIMED);
+        getItem(itemName).setItemStatus("Responsibilty Claimed");
 
     }
 
