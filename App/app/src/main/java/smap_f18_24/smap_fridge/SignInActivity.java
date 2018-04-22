@@ -24,7 +24,7 @@ import java.util.List;
 
 public class SignInActivity extends AppCompatActivity {
 
-    Button btn_logout;
+    Button btn_logout, btn_debug;
 
     private static final int RC_SIGN_IN = 123;
 
@@ -57,8 +57,16 @@ public class SignInActivity extends AppCompatActivity {
                         .build(),
                 RC_SIGN_IN);
 
-    }
+        btn_debug=findViewById(R.id.signin_btn_debug);
+        btn_debug.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(SignInActivity.this,DebugActivity.class);
+                startActivity(i);
+            }
+        });
 
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

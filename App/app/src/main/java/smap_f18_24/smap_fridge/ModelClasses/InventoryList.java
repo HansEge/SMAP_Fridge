@@ -16,7 +16,7 @@ public class InventoryList extends ItemList {
         //      If not: Add difference in quantity to shopping list.
     }
 
-    public void AddItemToShoppingList(Item toAdd, float Quantity)
+    public void AddItemToInventoryList(Item toAdd, float Quantity)
     {
         //TODO
         //Get shopping list(dependency injection?).

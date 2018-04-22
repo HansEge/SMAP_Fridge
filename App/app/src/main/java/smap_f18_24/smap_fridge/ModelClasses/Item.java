@@ -73,9 +73,3 @@ public class Item {
 }
 
 
-enum ItemStatus
-{
-    NEEDED,
-    RESPONSIBILITY_CLAIMED,
-    BOUGHT;
-}
