@@ -243,6 +243,26 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                 Log.d(TAG, "onFailure: Failed to get EssentialsList");
             }
         });
+
+        shoppingListReference.document("Info")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Log.d(TAG, "getShoppingList - got Info object.");
+
+                        String name = documentSnapshot.get("Name").toString();
+                        String ID = documentSnapshot.get("ID").toString();
+
+                        Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
+                    }
+                })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "getShoppingList - failed to get Info Object");
+            }
+        });
     }
 
     public void getIngredientList(CollectionReference fridge, String ID)
@@ -294,6 +314,26 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                 Log.d(TAG, "onFailure: Failed to get EssentialsList");
             }
         });
+
+        shoppingListReference.document("Info")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Log.d(TAG, "getIngredientList - got Info object.");
+
+                        String name = documentSnapshot.get("Name").toString();
+                        String ID = documentSnapshot.get("ID").toString();
+
+                        Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "getIngredientList - failed to get Info Object");
+                    }
+                });
     }
 
 }
