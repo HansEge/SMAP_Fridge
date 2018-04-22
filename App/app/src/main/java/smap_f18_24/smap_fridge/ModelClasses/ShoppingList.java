@@ -41,4 +41,12 @@ public class ShoppingList extends ItemList {
         //Add toMove to InventoryList
         //Remove toMove from shopping list
     }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 }

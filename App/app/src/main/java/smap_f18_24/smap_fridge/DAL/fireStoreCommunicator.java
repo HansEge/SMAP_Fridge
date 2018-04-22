@@ -197,6 +197,8 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
     public void getShoppingList(CollectionReference fridge, String ID)
     {
 
+        final ShoppingList shoppingList = new ShoppingList("NO_NAME_YET",ID);
+
         //reference to fridge
         final CollectionReference shoppingListReference = fridge.document("ShoppingLists").collection(ID);
 
@@ -227,8 +229,17 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                                     {
                                         //Do something with Item.
                                         Log.d(TAG, "onSuccess: Item: " + i.getName());
+                                        shoppingList.AddItem(i);
                                     }
-
+                                }
+                                if(shoppingList.getName().equals("NO_NAME_YET"))
+                                {
+                                    Log.d(TAG, "onSuccess: List name has not been set yet, and thus list is not returned yet.");
+                                }
+                                else
+                                {
+                                    //TODO: Return list through callback interface.
+                                    Log.d(TAG, "onSuccess: Returning list: " + shoppingList.getName()+","+shoppingList.getID()+ " with " + shoppingList.getItems().size() + " items.");
                                 }
                             }
                             catch (Exception e)
@@ -255,6 +266,20 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                         String ID = documentSnapshot.get("ID").toString();
 
                         Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
+
+                        shoppingList.setName(name);
+                        shoppingList.setID(ID);
+
+                        if(shoppingList.getItems().size()==0)
+                        {
+                            Log.d(TAG, "onSuccess: List items have not been added yet, and thus list is not returned yet.");
+                        }
+                        else
+                        {
+                            //TODO: Return list through callback interface.
+                            Log.d(TAG, "onSuccess: Returning list: " + shoppingList.getName()+","+shoppingList.getID()+ " with " + shoppingList.getItems().size() + " items.");
+                        }
+
                     }
                 })
         .addOnFailureListener(new OnFailureListener() {
@@ -268,11 +293,13 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
     public void getIngredientList(CollectionReference fridge, String ID)
     {
 
+        final IngredientList ingredientList = new IngredientList("NO_NAME_YET",ID);
+
         //reference to fridge
-        final CollectionReference shoppingListReference = fridge.document("IngredientLists").collection(ID);
+        final CollectionReference ingredientListReference = fridge.document("Ingredientists").collection(ID);
 
         //make a query for all documents in collection
-        shoppingListReference
+        ingredientListReference
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -298,8 +325,17 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                                     {
                                         //Do something with Item.
                                         Log.d(TAG, "onSuccess: Item: " + i.getName());
+                                        ingredientList.AddItem(i);
                                     }
-
+                                }
+                                if(ingredientList.getName().equals("NO_NAME_YET"))
+                                {
+                                    Log.d(TAG, "onSuccess: List name has not been set yet, and thus list is not returned yet.");
+                                }
+                                else
+                                {
+                                    //TODO: Return list through callback interface.
+                                    Log.d(TAG, "onSuccess: Returning list: " + ingredientList.getName()+","+ingredientList.getID()+ " with " + ingredientList.getItems().size() + " items.");
                                 }
                             }
                             catch (Exception e)
@@ -311,11 +347,11 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                     }}).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "onFailure: Failed to get EssentialsList");
+                Log.d(TAG, "onFailure: Failed to get IngredientList");
             }
         });
 
-        shoppingListReference.document("Info")
+        ingredientListReference.document("Info")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -326,6 +362,20 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                         String ID = documentSnapshot.get("ID").toString();
 
                         Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
+
+                        ingredientList.setName(name);
+                        ingredientList.setID(ID);
+
+                        if(ingredientList.getItems().size()==0)
+                        {
+                            Log.d(TAG, "onSuccess: List items have not been added yet, and thus list is not returned yet.");
+                        }
+                        else
+                        {
+                            //TODO: Return list through callback interface.
+                            Log.d(TAG, "onSuccess: Returning list: " + ingredientList.getName()+","+ingredientList.getID()+ " with " + ingredientList.getItems().size() + " items.");
+                        }
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
