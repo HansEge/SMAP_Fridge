@@ -48,6 +48,22 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
     item.put("ResponsibleUserEmail",itemToAdd.getResponsibleUserEmail());
     item.put("itemStatus",itemToAdd.getResponsibleUserEmail());
 
+    destination.whereEqualTo("Name",itemToAdd.getName()).get()
+            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    if(queryDocumentSnapshots.isEmpty())
+                    {
+                        Log.d(TAG, "onSuccess: Item with name: " + itemToAdd.getName() + " not found on list yet. Adding it.");
+                    }
+                    else
+                    {
+                        Log.d(TAG, "onSuccess: Item with name: " + itemToAdd.getName() + " already found on list. Editing it.");
+                    }
+
+                }
+            });
+/*
     destination
             .add(item)
             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -63,6 +79,7 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                     Log.w(TAG, "Error adding document", e);
                 }
             });
+            */
     }
 
     private void addListInfo(CollectionReference destination, String name, String ID)
