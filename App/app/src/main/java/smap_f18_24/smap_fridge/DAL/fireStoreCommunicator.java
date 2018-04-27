@@ -39,47 +39,55 @@ public class fireStoreCommunicator {
     Context context;
     private static final String TAG = "fireStoreCommunicator";
 
-public void addItem(CollectionReference destination, final Item itemToAdd)
+public void addItem(final CollectionReference destination, final Item itemToAdd)
 {
-    Map<String, Object>  item = new HashMap<>();
-    item.put("Name",itemToAdd.getName());
-    item.put("Unit",itemToAdd.getUnit());
-    item.put("Quantity", itemToAdd.getQuantity());
-    item.put("ResponsibleUserEmail",itemToAdd.getResponsibleUserEmail());
-    item.put("itemStatus",itemToAdd.getResponsibleUserEmail());
 
+
+    //Check whether item exists on list already or not.
     destination.whereEqualTo("Name",itemToAdd.getName()).get()
             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                    if(queryDocumentSnapshots.isEmpty())
+
+                    //If old data exists, remove it.
+                    if(!queryDocumentSnapshots.isEmpty())
                     {
-                        Log.d(TAG, "onSuccess: Item with name: " + itemToAdd.getName() + " not found on list yet. Adding it.");
-                    }
-                    else
-                    {
-                        Log.d(TAG, "onSuccess: Item with name: " + itemToAdd.getName() + " already found on list. Editing it.");
+                        Log.d(TAG, "onSuccess: Removing old data for item with name: " + itemToAdd.getName());
+                        //removing old data.
+                        String snapshotID = queryDocumentSnapshots.getDocuments().get(0).getId();
+                        Log.d(TAG, "SNapshotID: " + snapshotID);
+                        destination.document(snapshotID).delete();
                     }
 
-                }
-            });
-/*
-    destination
-            .add(item)
-            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "onSuccess: Adding new data for item with name: " + itemToAdd.getName());
+                    //Add new data to list.
+                    Map<String, Object>  item = new HashMap<>();
+                    item.put("Name",itemToAdd.getName());
+                    item.put("Unit",itemToAdd.getUnit());
+                    item.put("Quantity", itemToAdd.getQuantity());
+                    item.put("ResponsibleUserEmail",itemToAdd.getResponsibleUserEmail());
+                    item.put("itemStatus",itemToAdd.getResponsibleUserEmail());
 
-                    Log.w(TAG, "Error adding document", e);
+                    destination
+                            .add(item)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                    Log.w(TAG, "Error adding document", e);
+                                }
+                            });
                 }
             });
-            */
+
+
+
     }
 
     private void addListInfo(CollectionReference destination, String name, String ID)
@@ -196,16 +204,18 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
             public void onSuccess(QuerySnapshot documentSnapshots) {
                 //Check if list is empty.
                 if (documentSnapshots.isEmpty()) {
-                    Log.d(TAG, "onSuccess: LIST EMPTY");
+                    Log.d(TAG, "onSuccess: INVENTORY LIST EMPTY");
                     return;
                 } else {
                     //Convert documentShapshots to list of items.
                     List<Item> itemList = documentSnapshots.toObjects(Item.class);
 
+                    Log.d(TAG, "Broadcasting Inventory list");
                     for (Item i: itemList
                          ) {
+                        //TODO: broadcast new list?
                         //Do something with items.
-                        Log.d(TAG, "onSuccess: Item: " + i.getName());
+                        Log.d(TAG, "Item in inventory list: " + i.getName());
 
                     }
 
@@ -233,18 +243,19 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                     public void onSuccess(QuerySnapshot documentSnapshots) {
                         //Check if list is empty.
                         if (documentSnapshots.isEmpty()) {
-                            Log.d(TAG, "onSuccess: LIST EMPTY");
+                            Log.d(TAG, "onSuccess: ESSENTIALS LIST EMPTY");
                             return;
                         } else {
 
                             //Convert documentShapshots to list of items.
                             List<Item> itemList = documentSnapshots.toObjects(Item.class);
 
+
+                            Log.d(TAG, "Broadcasting Essentials list");
                             for (Item i: itemList
                                     ) {
                                 //Do something with items.
-                                Log.d(TAG, "onSuccess: Item: " + i.getName());
-
+                                Log.d(TAG, "Item on Essentials list: " + i.getName());
                             }
 
                         }
@@ -272,7 +283,7 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                     public void onSuccess(QuerySnapshot documentSnapshots) {
                         //check if there are any documents
                         if (documentSnapshots.isEmpty()) {
-                            Log.d(TAG, "onSuccess: LIST EMPTY");
+                            Log.d(TAG, "onSuccess: SHOPPING LIST EMPTY");
                             return;
                         } else {
                             try
@@ -300,8 +311,12 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                                 }
                                 else
                                 {
-                                    //TODO: Return list through callback interface.
-                                    Log.d(TAG, "onSuccess: Returning list: " + shoppingList.getName()+","+shoppingList.getID()+ " with " + shoppingList.getItems().size() + " items.");
+                                    //TODO: Return list through callback interface/broadcast new list.
+                                    Log.d(TAG, "Broadcasting Shopping list: " + shoppingList.getName());
+                                    for (Item i: shoppingList.getItems()
+                                         ) {
+                                        Log.d(TAG, "Item on Shopping list: " + i.getName());
+                                    }
                                 }
                             }
                             catch (Exception e)
@@ -338,8 +353,12 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                         }
                         else
                         {
-                            //TODO: Return list through callback interface.
-                            Log.d(TAG, "onSuccess: Returning list: " + shoppingList.getName()+","+shoppingList.getID()+ " with " + shoppingList.getItems().size() + " items.");
+                            //TODO: Return list through callback interface/broadcast new list.
+                            Log.d(TAG, "Broadcasting Shopping list: " + shoppingList.getName());
+                            for (Item i: shoppingList.getItems()
+                                    ) {
+                                Log.d(TAG, "Item on Shopping list: " + i.getName());
+                            }
                         }
 
                     }
@@ -358,7 +377,7 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
         final IngredientList ingredientList = new IngredientList("NO_NAME_YET",ID);
 
         //reference to fridge
-        final CollectionReference ingredientListReference = fridge.document("Ingredientists").collection(ID);
+        final CollectionReference ingredientListReference = fridge.document("IngredientLists").collection(ID);
 
         //make a query for all documents in collection
         ingredientListReference
@@ -368,7 +387,7 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                     public void onSuccess(QuerySnapshot documentSnapshots) {
                         //check if there are any documents
                         if (documentSnapshots.isEmpty()) {
-                            Log.d(TAG, "onSuccess: LIST EMPTY");
+                            Log.d(TAG, "onSuccess: INGREDIENT LIST EMPTY");
                             return;
                         } else {
                             try
@@ -396,8 +415,12 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                                 }
                                 else
                                 {
-                                    //TODO: Return list through callback interface.
-                                    Log.d(TAG, "onSuccess: Returning list: " + ingredientList.getName()+","+ingredientList.getID()+ " with " + ingredientList.getItems().size() + " items.");
+                                    //TODO: Return list through callback interface/broadcast new list.
+                                    Log.d(TAG, "Broadcasting Ingredient list: " + ingredientList.getName());
+                                    for (Item i: ingredientList.getItems()
+                                            ) {
+                                        Log.d(TAG, "Item on Ingredient list: " + i.getName());
+                                    }
                                 }
                             }
                             catch (Exception e)
@@ -434,8 +457,12 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                         }
                         else
                         {
-                            //TODO: Return list through callback interface.
-                            Log.d(TAG, "onSuccess: Returning list: " + ingredientList.getName()+","+ingredientList.getID()+ " with " + ingredientList.getItems().size() + " items.");
+                            //TODO: Return list through callback interface/broadcast new list.
+                            Log.d(TAG, "Broadcasting Shopping list: " + ingredientList.getName());
+                            for (Item i: ingredientList.getItems()
+                                    ) {
+                                Log.d(TAG, "Item on Shopping list: " + i.getName());
+                            }
                         }
 
                     }
@@ -473,6 +500,9 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                 Toast.makeText(context, "Inventory of Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "SubscribeToFridge - Inventory of Fridge: " + fridge.getId() + " updated.");
+
+                //get new data and broadcast changes
+                getInventoryList(fridge);
             }
         });
     }
@@ -485,6 +515,9 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                 Toast.makeText(context, "Essentials of Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "SubscribeToFridge - Essentials of Fridge: " + fridge.getId() + " updated.");
+
+                //get new data and broadcast changes
+                getEssentialsList(fridge);
             }
         });
     }
@@ -506,7 +539,7 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                             ArrayList<List_ID> IDs = (ArrayList<List_ID>) queryDocumentSnapshots.toObjects(List_ID.class);
 
                             //Subscribe to each shopping list.
-                            for (List_ID id: IDs
+                            for (final List_ID id: IDs
                                     ) {
                                 Log.d(TAG, "getShoppingListIDs: Subscribing to shopping list: " + id.getID());
 
@@ -514,8 +547,11 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                                 fridge.document("ShoppingLists").collection(id.getID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
                                     @Override
                                     public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-                                        Toast.makeText(context, "Shopping list of Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
-                                        Log.d(TAG, "SubscribeToFridge - Shopping List of Fridge: " + fridge.getId() + " updated.");
+                                        Toast.makeText(context, "Shopping list " +id.getID() + " of Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
+                                        Log.d(TAG, "SubscribeToFridge - Shopping List " + id.getID() + " of Fridge: " + fridge.getId() + " updated.");
+
+                                        //get new data and broadcast changes
+                                        getShoppingList(fridge,id.getID());
                                     }
                                 });
 
@@ -542,7 +578,7 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                             ArrayList<List_ID> IDs = (ArrayList<List_ID>) queryDocumentSnapshots.toObjects(List_ID.class);
 
                             //Subscribe to each shopping list.
-                            for (List_ID id: IDs
+                            for (final List_ID id: IDs
                                     ) {
                                 Log.d(TAG, "getShoppingListIDs: Subscribing to Ingredient list: " + id.getID());
 
@@ -552,6 +588,9 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                                     public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                                         Toast.makeText(context, "Ingredient list of Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
                                         Log.d(TAG, "SubscribeToFridge - Ingredient List of Fridge: " + fridge.getId() + " updated.");
+
+                                        //get new data and broadcast changes
+                                        getIngredientList(fridge,id.getID());
                                     }
                                 });
 
