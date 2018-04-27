@@ -12,6 +12,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -24,16 +26,21 @@ import smap_f18_24.smap_fridge.ModelClasses.EssentialsList;
 import smap_f18_24.smap_fridge.ModelClasses.IngredientList;
 import smap_f18_24.smap_fridge.ModelClasses.InventoryList;
 import smap_f18_24.smap_fridge.ModelClasses.Item;
+import smap_f18_24.smap_fridge.ModelClasses.List_ID;
 import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
 
 public class fireStoreCommunicator {
 
+    public fireStoreCommunicator(Context context)
+    {
+        this.context=context;
+    }
+
+    Context context;
     private static final String TAG = "fireStoreCommunicator";
 
 public void addItem(CollectionReference destination, final Item itemToAdd)
 {
-
-    // Create a new user with a first and last name
     Map<String, Object>  item = new HashMap<>();
     item.put("Name",itemToAdd.getName());
     item.put("Unit",itemToAdd.getUnit());
@@ -98,6 +105,25 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                 ) {
             addItem(listRef,i);
         }
+
+        //Add list ID to ShoppingList_IDs
+        CollectionReference ID_Ref = fridge.document("ShoppingList_IDs").collection("IDs");
+        Map<String, Object> info = new HashMap<>();
+        info.put("ID", listID);
+        ID_Ref.document(listID).set(info)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+
     }
 
     public void addIngredientList(CollectionReference fridge, final IngredientList listToAdd, String listName, String listID)
@@ -109,6 +135,25 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                 ) {
             addItem(listRef,i);
         }
+
+        //Add list ID to IngredientList_IDs
+        CollectionReference ID_Ref = fridge.document("IngredientList_IDs").collection("IDs");
+        Map<String, Object> info = new HashMap<>();
+        info.put("ID", listID);
+        ID_Ref.document(listID).set(info)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+
     }
 
     public void addEssentialsList(CollectionReference fridge, final EssentialsList listToAdd)
@@ -382,6 +427,119 @@ public void addItem(CollectionReference destination, final Item itemToAdd)
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.d(TAG, "getIngredientList - failed to get Info Object");
+                    }
+                });
+    }
+
+    public void SubscribeToFridge(final CollectionReference fridge)
+    {
+        fridge.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+                Toast.makeText(context, "Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "SubscribeToFridge - Fridge: " + fridge.getId() + " updated.");
+            }
+        });
+
+        SubscribeToInventory(fridge);
+        SubscribeToEssentials(fridge);
+        SubscribeToShoppingLists(fridge);
+        SubscribeToIngredientLists(fridge);
+    }
+
+
+    private void SubscribeToInventory(final CollectionReference fridge)
+    {
+        //Subscribe to receive notifications every time there's a change in the Inventory list.
+        fridge.document("Inventory").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+                Toast.makeText(context, "Inventory of Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "SubscribeToFridge - Inventory of Fridge: " + fridge.getId() + " updated.");
+            }
+        });
+    }
+
+    private void SubscribeToEssentials(final CollectionReference fridge)
+    {
+        //Subscribe to receive notifications every time there's a change in the Essentials list.
+        fridge.document("Essentials").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+                Toast.makeText(context, "Essentials of Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "SubscribeToFridge - Essentials of Fridge: " + fridge.getId() + " updated.");
+            }
+        });
+    }
+
+    private void SubscribeToShoppingLists(final CollectionReference fridge)
+    {
+        //get IDs for all shopping lists.
+        fridge.document("ShoppingList_IDs").collection("IDs").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.isEmpty())
+                        {
+                            Log.d(TAG, "onSuccess: No items on list of ShoppinList_IDs");
+                        }
+                        else
+                        {
+                            //Convert dataSnapshot to list of List_IDs(yes these only contain a string, but a model class is necessary for Firebase to create objects from datasnapshots).
+                            ArrayList<List_ID> IDs = (ArrayList<List_ID>) queryDocumentSnapshots.toObjects(List_ID.class);
+
+                            //Subscribe to each shopping list.
+                            for (List_ID id: IDs
+                                    ) {
+                                Log.d(TAG, "getShoppingListIDs: Subscribing to shopping list: " + id.getID());
+
+                                //Subscribe to receive notifications every time there's a change in the Shopping list.
+                                fridge.document("ShoppingLists").collection(id.getID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+                                        Toast.makeText(context, "Shopping list of Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
+                                        Log.d(TAG, "SubscribeToFridge - Shopping List of Fridge: " + fridge.getId() + " updated.");
+                                    }
+                                });
+
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void SubscribeToIngredientLists(final CollectionReference fridge)
+    {
+//get IDs for all ingredient lists.
+        fridge.document("IngredientList_IDs").collection("IDs").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.isEmpty())
+                        {
+                            Log.d(TAG, "onSuccess: No items on list of IngredientList_IDs");
+                        }
+                        else
+                        {
+                            //Convert dataSnapshot to list of List_IDs(yes these only contain a string, but a model class is necessary for Firebase to create objects from datasnapshots).
+                            ArrayList<List_ID> IDs = (ArrayList<List_ID>) queryDocumentSnapshots.toObjects(List_ID.class);
+
+                            //Subscribe to each shopping list.
+                            for (List_ID id: IDs
+                                    ) {
+                                Log.d(TAG, "getShoppingListIDs: Subscribing to Ingredient list: " + id.getID());
+
+                                //Subscribe to receive notifications every time there's a change in the Shopping list.
+                                fridge.document("IngredientLists").collection(id.getID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+                                        Toast.makeText(context, "Ingredient list of Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
+                                        Log.d(TAG, "SubscribeToFridge - Ingredient List of Fridge: " + fridge.getId() + " updated.");
+                                    }
+                                });
+
+                            }
+                        }
                     }
                 });
     }

@@ -46,7 +46,11 @@ public class DebugActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
 
-        dbComm = new fireStoreCommunicator();
+        dbComm = new fireStoreCommunicator(this);
+
+        CollectionReference fridgePath = db.collection("TestFridge");
+
+        dbComm.SubscribeToFridge(fridgePath);
 
         btn_write2db = findViewById(R.id.debug_btn_write2db);
 
@@ -137,7 +141,10 @@ public class DebugActivity extends AppCompatActivity {
                 shoppingList.AddItem(i1);
                 shoppingList.AddItem(i2);
                 shoppingList.AddItem(i3);
-                dbComm.addShoppingList(itemPath,shoppingList, shoppingListName,"TestFridge_SL1");
+
+                String ShoppingListID = et_ShoppingListName.getText().toString();
+
+                dbComm.addShoppingList(itemPath,shoppingList, shoppingListName,ShoppingListID);
             }
         });
 
@@ -173,11 +180,13 @@ public class DebugActivity extends AppCompatActivity {
                 Item i2 = new Item("Potatoes", "Grams", 500,"", "Bought");
                 Item i3 = new Item("Diapers", "Pcs", 3,"", "Bought");
 
-                IngredientList ingredientList = new IngredientList("Cool thing list", "testFridge_IL1");
+                String IngredientListID =et_IngredientListName.getText().toString();
+
+                IngredientList ingredientList = new IngredientList("Cool thing list", IngredientListID);
                 ingredientList.AddItem(i1);
                 ingredientList.AddItem(i2);
                 ingredientList.AddItem(i3);
-                dbComm.addIngredientList(itemPath,ingredientList,listName,"TestFridge_IL1");
+                dbComm.addIngredientList(itemPath,ingredientList,listName,ingredientList.getID());
             }
         });
 
