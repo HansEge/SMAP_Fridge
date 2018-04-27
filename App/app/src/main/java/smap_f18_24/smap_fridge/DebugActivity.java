@@ -48,7 +48,7 @@ public class DebugActivity extends AppCompatActivity {
 
         dbComm = new fireStoreCommunicator(this);
 
-        CollectionReference fridgePath = db.collection("TestFridge");
+        final CollectionReference fridgePath = db.collection("TestFridge");
 
         dbComm.SubscribeToFridge(fridgePath);
 
@@ -145,6 +145,7 @@ public class DebugActivity extends AppCompatActivity {
                 String ShoppingListID = et_ShoppingListName.getText().toString();
 
                 dbComm.addShoppingList(itemPath,shoppingList, shoppingListName,ShoppingListID);
+                dbComm.SubscribeToFridge(fridgePath);
             }
         });
 
@@ -187,6 +188,7 @@ public class DebugActivity extends AppCompatActivity {
                 ingredientList.AddItem(i2);
                 ingredientList.AddItem(i3);
                 dbComm.addIngredientList(itemPath,ingredientList,listName,ingredientList.getID());
+                dbComm.SubscribeToFridge(fridgePath);
             }
         });
 
