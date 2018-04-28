@@ -48,7 +48,7 @@ public class DebugActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
-        
+
         //dbComm = new fireStoreCommunicator(this);
 
         dbComm = new fireStoreCommunicator(this, callbackInterface);

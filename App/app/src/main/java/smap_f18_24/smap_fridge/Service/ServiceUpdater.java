@@ -17,6 +17,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -25,9 +26,6 @@ import smap_f18_24.smap_fridge.R;
 
 
 public class ServiceUpdater extends Service {
-
-    //used for getting current time (if it works)
-    private Calendar time = Calendar.getInstance();
 
     //Used for binding service to activity
     private final IBinder mBinder = new ServiceBinder();
@@ -46,15 +44,30 @@ public class ServiceUpdater extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        notificationBuilder();
-        Log.d("NOTI", "Notification from service");
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    notificationBuilder();
+
+                    try {
+                        Thread.sleep(2000); //Update stuff every xx ms
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
+
+
+
+        Log.d("NOTI_FROM_SERVICE", "Notification from service");
         //TODO Update stuff
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
-
-
-
 
 
 
@@ -64,9 +77,12 @@ public class ServiceUpdater extends Service {
     {
         //For API version < 26
         if (Build.VERSION.SDK_INT < 26) {
+            Log.d("API<26","bobby olsen");
             notificationBuilder_PRE26();
             return;
         }
+
+        LocalDateTime time2 = LocalDateTime.now();
 
         NotificationChannel channel_1 = new NotificationChannel("CHANNEL_1","Fridge Stuff", NotificationManager.IMPORTANCE_HIGH);
         channel_1.setDescription("Notification for alerting user of changes");
@@ -75,19 +91,29 @@ public class ServiceUpdater extends Service {
 
         mNotificationManager.createNotificationChannel(channel_1);
 
-        Notification updateNotification = new Notification.Builder(this,"CHANNEL_1")
+        Notification updateNotification =
+                new Notification.Builder(this,"CHANNEL_1")
                 .setContentTitle("Stuff was updated!")
-                .setContentText("Mathias Lugtede kl " + time.toString())
+                .setContentText("Mathias lugtede kl " + time2.format(DateTimeFormatter.ISO_LOCAL_TIME))
+                .setSmallIcon(R.drawable.stinus_face)
                 .build();
+        startForeground(123,updateNotification);
     }
+
 
 
     void notificationBuilder_PRE26()
     {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"default");
+        Calendar time = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
-        builder.setContentTitle("Stuff was Updated")
-                .setContentText("Mathias lugtede kl " + time.toString());
+        Notification updateNotification =
+                new NotificationCompat.Builder(this,"Channel_X")
+                .setContentTitle("Stuff was Updated")
+                .setContentText("Mathias lugtede kl " + sdf.format(time.getTime()))
+                .setSmallIcon(R.drawable.stinus_face)
+                .build();
+        startForeground(123,updateNotification);
     }
 
 
@@ -112,7 +138,7 @@ public class ServiceUpdater extends Service {
 
     //Used for binding service
     public class ServiceBinder extends Binder {
-        ServiceUpdater getService(){
+        public ServiceUpdater getService(){
             return ServiceUpdater.this;
         }
     }
