@@ -27,7 +27,7 @@ import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 
 public class SignInActivity extends AppCompatActivity {
 
-    Button btn_logout, btn_debug, btn_service;
+    Button btn_logout, btn_debug, btn_service, btn_toOverViewActivity;
 
     private static final int RC_SIGN_IN = 123;
 
@@ -43,7 +43,7 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         btn_service = findViewById(R.id.service_btn_service);
-
+        btn_toOverViewActivity = findViewById(R.id.signin_btn_toOverviewActivity);
 
 
         btn_logout = findViewById(R.id.signin_btn_logout);
@@ -80,6 +80,18 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(SignInActivity.this,ServiceTester.class);
+                startActivity(i);
+            }
+
+
+            
+
+        });
+
+        btn_toOverViewActivity.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent i = new Intent(SignInActivity.this,OverviewActivity.class);
                 startActivity(i);
             }
         });
