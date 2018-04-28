@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SMAP_Fridge</string>
+    <string name="overviewActivityListItem_tv_frigeName">Frige Name</string>
+    <string name="fridgeListAdaptor_tv_fridgeName">Fridge Name</string>
 </resources>
