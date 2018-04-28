@@ -1,5 +1,6 @@
 package smap_f18_24.smap_fridge;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import smap_f18_24.smap_fridge.ModelClasses.InventoryList;
 import smap_f18_24.smap_fridge.ModelClasses.Item;
 import smap_f18_24.smap_fridge.ModelClasses.ItemStatus;
 import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
+import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 
 
 public class DebugActivity extends AppCompatActivity {
@@ -45,6 +47,10 @@ public class DebugActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
+
+        //Start service
+        Intent serviceIntent = new Intent(DebugActivity.this, ServiceUpdater.class);
+        startService(serviceIntent);
 
         dbComm = new fireStoreCommunicator(this);
 
