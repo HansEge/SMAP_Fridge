@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import smap_f18_24.smap_fridge.DAL.FridgeCallbackInterface;
 import smap_f18_24.smap_fridge.DAL.fireStoreCommunicator;
 import smap_f18_24.smap_fridge.ModelClasses.EssentialsList;
 import smap_f18_24.smap_fridge.ModelClasses.IngredientList;
@@ -47,12 +48,11 @@ public class DebugActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
+        
+        //dbComm = new fireStoreCommunicator(this);
 
-        //Start service
-        Intent serviceIntent = new Intent(DebugActivity.this, ServiceUpdater.class);
-        startService(serviceIntent);
+        dbComm = new fireStoreCommunicator(this, callbackInterface);
 
-        dbComm = new fireStoreCommunicator(this);
 
         final CollectionReference fridgePath = db.collection("TestFridge");
 
@@ -217,4 +217,31 @@ public class DebugActivity extends AppCompatActivity {
         }
     });
     }
+    
+    FridgeCallbackInterface callbackInterface = new FridgeCallbackInterface() {
+        @Override
+        public void onInventoryChange() {
+            Log.d(TAG, "onInventoryChange: Callback function called");
+            Toast.makeText(DebugActivity.this, "onInventoryChange called", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onEssentialsChange() {
+            Log.d(TAG, "onEssentialsChange: Callback function called");
+            Toast.makeText(DebugActivity.this, "onEssentialsChange called", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onShoppingListsChange() {
+            Log.d(TAG, "onShoppingListsChange: Callback function called");
+            Toast.makeText(DebugActivity.this, "onShoppingListsChange called", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onIngredientListsChange() {
+            Log.d(TAG, "onIngredientListsChange: Callback function called");
+            Toast.makeText(DebugActivity.this, "onIngredientListsChange called", Toast.LENGTH_SHORT).show();
+
+        }
+    };
 }
