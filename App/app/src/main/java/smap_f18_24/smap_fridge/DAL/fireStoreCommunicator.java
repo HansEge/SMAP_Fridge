@@ -31,11 +31,13 @@ import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
 
 public class fireStoreCommunicator {
 
-    public fireStoreCommunicator(Context context)
+    public fireStoreCommunicator(Context context, FridgeCallbackInterface callbackInterface)
     {
         this.context=context;
+        this.callbackInterface=callbackInterface;
     }
 
+    FridgeCallbackInterface callbackInterface;
     Context context;
     private static final String TAG = "fireStoreCommunicator";
 
@@ -216,6 +218,8 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         //TODO: broadcast new list?
                         //Do something with items.
                         Log.d(TAG, "Item in inventory list: " + i.getName());
+
+                        callbackInterface.onInventoryChange();
 
                     }
 
