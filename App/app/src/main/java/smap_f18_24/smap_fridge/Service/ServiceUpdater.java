@@ -101,7 +101,7 @@ public class ServiceUpdater extends Service {
     }
 
 
-
+    //For API < 26
     void notificationBuilder_PRE26()
     {
         Calendar time = Calendar.getInstance();
@@ -117,6 +117,7 @@ public class ServiceUpdater extends Service {
     }
 
 
+    //Not used atm
     public void broadcastResult(String result)
     {
         Intent broadcastIntent = new Intent();
@@ -148,9 +149,6 @@ public class ServiceUpdater extends Service {
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
-
-
-
 
 }
 

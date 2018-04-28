@@ -56,6 +56,8 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         // Create and launch sign-in intent
+
+        // Crashed if this wasn't commented on API 25
         /*
         startActivityForResult(
                 AuthUI.getInstance()

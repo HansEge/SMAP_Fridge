@@ -9,7 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
-
+/*
+*************************************
+            TESTER!
+*************************************
+ */
 public class ServiceTester extends AppCompatActivity {
 
     private boolean mBound = false;
