@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.ui.idp.SingleSignInActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,11 +21,13 @@ import android.widget.Button;
 import java.util.Arrays;
 import java.util.List;
 
+import smap_f18_24.smap_fridge.Service.ServiceUpdater;
+
 //Sign in implemented with FirebaseUI
 
 public class SignInActivity extends AppCompatActivity {
 
-    Button btn_logout, btn_debug;
+    Button btn_logout, btn_debug, btn_service, btn_toOverViewActivity;
 
     private static final int RC_SIGN_IN = 123;
 
@@ -39,6 +42,10 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        btn_service = findViewById(R.id.service_btn_service);
+        btn_toOverViewActivity = findViewById(R.id.signin_btn_toOverviewActivity);
+
+
         btn_logout = findViewById(R.id.signin_btn_logout);
 
         btn_logout.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +56,9 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         // Create and launch sign-in intent
+
+        // Crashed if this wasn't commented on API 25
+        /*
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -56,12 +66,32 @@ public class SignInActivity extends AppCompatActivity {
                         .setLogo(R.drawable.stinus_face)      // Set logo drawable
                         .build(),
                 RC_SIGN_IN);
-
+*/
         btn_debug=findViewById(R.id.signin_btn_debug);
         btn_debug.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(SignInActivity.this,DebugActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btn_service.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(SignInActivity.this,ServiceTester.class);
+                startActivity(i);
+            }
+
+
+            
+
+        });
+
+        btn_toOverViewActivity.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent i = new Intent(SignInActivity.this,OverviewActivity.class);
                 startActivity(i);
             }
         });
