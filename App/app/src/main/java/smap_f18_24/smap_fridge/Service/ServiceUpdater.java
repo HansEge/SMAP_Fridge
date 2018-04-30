@@ -17,16 +17,35 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
+import smap_f18_24.smap_fridge.DAL.FridgeCallbackInterface;
+import smap_f18_24.smap_fridge.DAL.fireStoreCommunicator;
+import smap_f18_24.smap_fridge.ModelClasses.EssentialsList;
+import smap_f18_24.smap_fridge.ModelClasses.Fridge;
+import smap_f18_24.smap_fridge.ModelClasses.IngredientList;
+import smap_f18_24.smap_fridge.ModelClasses.InventoryList;
+import smap_f18_24.smap_fridge.ModelClasses.Item;
+import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
 import smap_f18_24.smap_fridge.R;
 
 
 public class ServiceUpdater extends Service {
 
+    //database reference
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private static final String TAG = "ServiceUpdater";
+    
     //Used for binding service to activity
     private final IBinder mBinder = new ServiceBinder();
 
@@ -36,13 +55,25 @@ public class ServiceUpdater extends Service {
     //context shit
     Context context;
 
+    fireStoreCommunicator dbComm;
+
+    ArrayList<Fridge> fridges;
+
+
     public void setContext(Context c)
     {
         context = c;
+        dbComm=new fireStoreCommunicator(context,callbackInterface);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        //Initialize list
+        fridges=new ArrayList<Fridge>();
+
+        //Get instance of database-communicator
+        dbComm= new fireStoreCommunicator(context,callbackInterface);
 
 
         new Thread(new Runnable() {
@@ -150,5 +181,146 @@ public class ServiceUpdater extends Service {
         return mBinder;
     }
 
+
+    //Used for communicating back results from database queries.
+    FridgeCallbackInterface callbackInterface = new FridgeCallbackInterface() {
+        @Override
+        public void onInventoryChange(String fridge_ID, InventoryList list) {
+            Log.d(TAG, "Inventory of fridge " + fridge_ID + " updated.");
+
+            //Update list for fridge with matching ID.
+            for (Fridge f: fridges
+                 ) {
+                if(f.getID().equals(fridge_ID))
+                f.setInventory(list);
+            }
+
+            //TODO: Broadcast that new data is available.
+        }
+
+        @Override
+        public void onEssentialsChange(String fridge_ID, EssentialsList list) {
+            Log.d(TAG, "Essentials of fridge " + fridge_ID + " updated.");
+
+            //Update list for fridge with matching ID.
+            for (Fridge f: fridges
+                    ) {
+                if(f.getID().equals(fridge_ID))
+                    f.setEssentials(list);
+            }
+
+            //TODO: Broadcast that new data is available.
+        }
+
+        @Override
+        public void onShoppingListsChange(String fridge_ID, ShoppingList list) {
+            Log.d(TAG, "Shopping list " + list.getID() + " of fridge " + fridge_ID + " updated.");
+
+            ArrayList<ShoppingList> shoppingLists;
+
+            //Update list for fridge with matching fridge ID and matching list ID.
+            for (Fridge f: fridges
+                    ) {
+                if(f.getID().equals(fridge_ID))
+                {
+                    shoppingLists = (ArrayList<ShoppingList>) f.getShoppingLists();
+                    for (ShoppingList s: shoppingLists
+                         ) {
+                        if(s.getID().equals(list.getID()))
+                        {
+                            s=list;
+                        }
+
+                    }
+                }
+            }
+
+            //TODO: Broadcast that new data is available.
+        }
+
+        @Override
+        public void onIngredientListsChange(String fridge_ID, IngredientList list) {
+            Log.d(TAG, "Ingredient list " + list.getID() + " of fridge " + fridge_ID + " updated.");
+
+            ArrayList<IngredientList> ingredientLists;
+
+            //Update list for fridge with matching fridge ID and matching list ID.
+            for (Fridge f: fridges
+                    ) {
+                if(f.getID().equals(fridge_ID))
+                {
+                    ingredientLists = (ArrayList<IngredientList>) f.getIngredientLists();
+                    for (IngredientList s: ingredientLists
+                            ) {
+                        if(s.getID().equals(list.getID()))
+                        {
+                            s=list;
+                        }
+
+                    }
+                }
+            }
+
+            //TODO: Broadcast that new data is available.
+        }
+    };
+
+    public void SubscribeToFridge(String ID)
+    {
+        CollectionReference fridgeRef = db.collection(ID);
+        dbComm.SubscribeToFridge(fridgeRef);
+    }
+
+    /*
+    public void addShoppingList(String fridge_ID, String list_ID, String list_name)
+    {
+        getFridge(fridge_ID).getShoppingLists().add(new ShoppingList(list_name,list_ID))
+    }
+    */
+
+    //Return fridge with ID matching parameter.
+    public Fridge getFridge(String ID)
+    {
+        //For each fridge, check if ID matches. If no match, null is returned.
+        for (Fridge f: fridges
+             ) {
+            if(f.getID().equals(ID))
+            {
+                return f;
+            }
+        }
+        return null;
+    }
+
+    //Add item to inventory
+    public void addItemToInventory(Item item, String fridge_ID)
+    {
+        CollectionReference InventoryRef=db.collection(fridge_ID).document("Inventory").collection("Items");
+        dbComm.addItem(InventoryRef, item);
+    }
+
+    //Add item to essentials-list
+    public void addItemToEssentials(Item item, String fridge_ID)
+    {
+        CollectionReference EssentialsRef=db.collection(fridge_ID).document("Essentials").collection("Items");
+        dbComm.addItem(EssentialsRef, item);
+    }
+
+    public void addItemToShoppingList(Item item, String fridge_ID, String list_ID)
+    {
+        CollectionReference listRef = db.collection(fridge_ID).document("ShoppingLists").collection(list_ID);
+        dbComm.addItem(listRef,item);
+    }
+
+    public void addItemToIngredientList(Item item, String fridge_ID, String list_ID)
+    {
+        CollectionReference listRef = db.collection(fridge_ID).document("IngredientLists").collection(list_ID);
+        dbComm.addItem(listRef,item);
+    }
+
+    public void addShoppingList(CollectionReference fridge, final ShoppingList listToAdd, String listName, String listID)
+    {
+        dbComm.addShoppingList(fridge, listToAdd, listName, listID);
+    }
 }
 

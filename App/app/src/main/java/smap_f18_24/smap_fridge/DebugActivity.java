@@ -1,6 +1,10 @@
 package smap_f18_24.smap_fridge;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,14 +39,18 @@ import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 
 public class DebugActivity extends AppCompatActivity {
 
-    fireStoreCommunicator dbComm;
+    //fireStoreCommunicator dbComm;
     private static final String TAG = "DebugActivity";
     
-    Button btn_write2db, btn_testItem2db, btn_addList, btn_addShoppingList, btn_addEssentialsList, btn_addIngredientList, btn_loadIngredientList, btn_loadShoppingList;
-    EditText et_ShoppingListName, et_IngredientListName;
+    Button btn_write2db, btn_testItem2db, btn_addList, btn_addShoppingList, btn_addEssentialsList, btn_addIngredientList, btn_loadIngredientList, btn_loadShoppingList, btn_add2sl;
+    EditText et_ShoppingListName, et_IngredientListName, et_add2sl;
 
     //database reference
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private boolean mBound = false;
+    ServiceUpdater mService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +59,13 @@ public class DebugActivity extends AppCompatActivity {
 
         //dbComm = new fireStoreCommunicator(this);
 
-        dbComm = new fireStoreCommunicator(this, callbackInterface);
-
+        //Start service
+        Intent ServiceIntent = new Intent(DebugActivity.this, ServiceUpdater.class);
+        startService(ServiceIntent);
 
         final CollectionReference fridgePath = db.collection("TestFridge");
 
-        dbComm.SubscribeToFridge(fridgePath);
+        //dbComm.SubscribeToFridge(fridgePath);
 
         btn_write2db = findViewById(R.id.debug_btn_write2db);
 
@@ -102,7 +111,7 @@ public class DebugActivity extends AppCompatActivity {
                 Item testItem = new Item("Malk","Liters",1,"null", "Needed");
 
                 //Add item to db.
-                dbComm.addItem(itemPath,testItem);
+                //dbComm.addItem(itemPath,testItem);
             }
         });
 
@@ -123,7 +132,7 @@ public class DebugActivity extends AppCompatActivity {
                 inventoryList.AddItem(i1);
                 inventoryList.AddItem(i2);
                 inventoryList.AddItem(i3);
-                dbComm.addInventoryList(itemPath,inventoryList);
+                //dbComm.addInventoryList(itemPath,inventoryList);
             }
         });
 
@@ -137,7 +146,7 @@ public class DebugActivity extends AppCompatActivity {
 
                 String shoppingListName = et_ShoppingListName.getText().toString();
 
-                CollectionReference itemPath = db.collection("TestFridge");
+                CollectionReference fridgePath = db.collection("TestFridge");
 
                 Item i1 = new Item("Malk", "Liters", 0.4f,"", "Bought");
                 Item i2 = new Item("Potatoes", "Grams", 500,"", "Bought");
@@ -150,8 +159,8 @@ public class DebugActivity extends AppCompatActivity {
 
                 String ShoppingListID = et_ShoppingListName.getText().toString();
 
-                dbComm.addShoppingList(itemPath,shoppingList, shoppingListName,ShoppingListID);
-                dbComm.SubscribeToFridge(fridgePath);
+                mService.addShoppingList(fridgePath,shoppingList, shoppingListName,ShoppingListID);
+                mService.SubscribeToFridge("TestFridge");
             }
         });
 
@@ -169,7 +178,7 @@ public class DebugActivity extends AppCompatActivity {
                 essentialsList.AddItem(i1);
                 essentialsList.AddItem(i2);
                 essentialsList.AddItem(i3);
-                dbComm.addEssentialsList(itemPath,essentialsList);
+                //dbComm.addEssentialsList(itemPath,essentialsList);
             }
         });
 
@@ -193,8 +202,8 @@ public class DebugActivity extends AppCompatActivity {
                 ingredientList.AddItem(i1);
                 ingredientList.AddItem(i2);
                 ingredientList.AddItem(i3);
-                dbComm.addIngredientList(itemPath,ingredientList,listName,ingredientList.getID());
-                dbComm.SubscribeToFridge(fridgePath);
+                //dbComm.addIngredientList(itemPath,ingredientList,listName,ingredientList.getID());
+                //dbComm.SubscribeToFridge(fridgePath);
             }
         });
 
@@ -203,7 +212,7 @@ public class DebugActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 CollectionReference fridgePath = db.collection("TestFridge");
-                dbComm.getInventoryList(fridgePath);
+                //dbComm.getInventoryList(fridgePath);
             }
         });
 
@@ -213,35 +222,49 @@ public class DebugActivity extends AppCompatActivity {
         public void onClick(View v) {
 
             CollectionReference fridgePath = db.collection("TestFridge");
-            dbComm.getShoppingList(fridgePath,"TestFridge_SL1");
+            //dbComm.getShoppingList(fridgePath,"TestFridge_SL1");
+        }
+    });
+
+    et_add2sl=findViewById(R.id.debug_et_add2sl);
+
+    btn_add2sl=findViewById(R.id.debug_btn_add2sl);
+    btn_add2sl.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String itemName=et_add2sl.getText().toString();
+            Item item = new Item(itemName,"asd",2,"","");
+
+            mService.addItemToShoppingList(item,"TestFridge","Cool Shopping List");
+            mService.SubscribeToFridge("TestFridge");
         }
     });
     }
-    
-    FridgeCallbackInterface callbackInterface = new FridgeCallbackInterface() {
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Intent intent = new Intent(this, ServiceUpdater.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+    };
+
+    private ServiceConnection mConnection = new ServiceConnection() {
         @Override
-        public void onInventoryChange() {
-            Log.d(TAG, "onInventoryChange: Callback function called");
-            Toast.makeText(DebugActivity.this, "onInventoryChange called", Toast.LENGTH_SHORT).show();
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            ServiceUpdater.ServiceBinder binder = (ServiceUpdater.ServiceBinder) iBinder;
+            mService = binder.getService();
+            mBound = true;
+
+            mService.setContext(getApplicationContext());
+            mService.SubscribeToFridge("TestFridge");
+
+
         }
 
         @Override
-        public void onEssentialsChange() {
-            Log.d(TAG, "onEssentialsChange: Callback function called");
-            Toast.makeText(DebugActivity.this, "onEssentialsChange called", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onShoppingListsChange() {
-            Log.d(TAG, "onShoppingListsChange: Callback function called");
-            Toast.makeText(DebugActivity.this, "onShoppingListsChange called", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onIngredientListsChange() {
-            Log.d(TAG, "onIngredientListsChange: Callback function called");
-            Toast.makeText(DebugActivity.this, "onIngredientListsChange called", Toast.LENGTH_SHORT).show();
-
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBound = false;
         }
     };
 }

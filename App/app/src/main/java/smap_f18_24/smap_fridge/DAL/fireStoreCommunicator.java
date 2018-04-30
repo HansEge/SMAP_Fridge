@@ -23,6 +23,7 @@ import java.util.Map;
 
 import smap_f18_24.smap_fridge.DebugActivity;
 import smap_f18_24.smap_fridge.ModelClasses.EssentialsList;
+import smap_f18_24.smap_fridge.ModelClasses.Fridge;
 import smap_f18_24.smap_fridge.ModelClasses.IngredientList;
 import smap_f18_24.smap_fridge.ModelClasses.InventoryList;
 import smap_f18_24.smap_fridge.ModelClasses.Item;
@@ -151,6 +152,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                     }
                 });
 
+
     }
 
     public void addIngredientList(CollectionReference fridge, final IngredientList listToAdd, String listName, String listID)
@@ -193,7 +195,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         }
     }
 
-    public void getInventoryList(CollectionReference fridge)
+    public void getInventoryList(final CollectionReference fridge)
     {
         //Fridge reference.
         final CollectionReference inventoryReference = fridge.document("Inventory").collection("Items");
@@ -211,15 +213,18 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 } else {
                     //Convert documentShapshots to list of items.
                     List<Item> itemList = documentSnapshots.toObjects(Item.class);
+                    InventoryList inventoryList = new InventoryList();
 
                     Log.d(TAG, "Broadcasting Inventory list");
                     for (Item i: itemList
                          ) {
                         //TODO: broadcast new list?
                         //Do something with items.
+                        inventoryList.AddItem(i);
                         Log.d(TAG, "Item in inventory list: " + i.getName());
                     }
-                    callbackInterface.onInventoryChange();
+
+                    callbackInterface.onInventoryChange(fridge.getId(),inventoryList);
 
                 }
             }}).addOnFailureListener(new OnFailureListener() {
@@ -232,7 +237,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
 
 
-    public void getEssentialsList(CollectionReference fridge)
+    public void getEssentialsList(final CollectionReference fridge)
     {
         //Fridge reference.
         final CollectionReference inventoryReference = fridge.document("Essentials").collection("Items");
@@ -251,14 +256,17 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
                             //Convert documentShapshots to list of items.
                             List<Item> itemList = documentSnapshots.toObjects(Item.class);
-
+                            EssentialsList essentialsList = new EssentialsList();
 
                             Log.d(TAG, "Broadcasting Essentials list");
                             for (Item i: itemList
                                     ) {
                                 //Do something with items.
+                                essentialsList.AddItem(i);
                                 Log.d(TAG, "Item on Essentials list: " + i.getName());
                             }
+
+                            callbackInterface.onEssentialsChange(fridge.getId(),essentialsList);
 
                         }
                     }}).addOnFailureListener(new OnFailureListener() {
@@ -269,7 +277,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
     }
 
-    public void getShoppingList(CollectionReference fridge, String ID)
+    public void getShoppingList(final CollectionReference fridge, String ID)
     {
 
         final ShoppingList shoppingList = new ShoppingList("NO_NAME_YET",ID);
@@ -299,6 +307,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                     if(i.getUnit().equals("THIS_IS_NOT_AN_ITEM"))
                                     {
                                         Log.d(TAG, "getShoppingList: Item " + i.getName() + " is not an item.");
+                                        shoppingList.setName(i.getName());
                                     }
                                     else
                                     {
@@ -316,9 +325,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                     //TODO: Return list through callback interface/broadcast new list.
                                     Log.d(TAG, "Broadcasting Shopping list: " + shoppingList.getName());
                                     for (Item i: shoppingList.getItems()
-                                         ) {
-                                        Log.d(TAG, "Item on Shopping list: " + i.getName());
-                                    }
+                                         )
+
+                                        callbackInterface.onShoppingListsChange(fridge.getId(),shoppingList);
                                 }
                             }
                             catch (Exception e)
@@ -360,6 +369,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                             for (Item i: shoppingList.getItems()
                                     ) {
                                 Log.d(TAG, "Item on Shopping list: " + i.getName());
+                                callbackInterface.onShoppingListsChange(fridge.getId(),shoppingList);
                             }
                         }
 
@@ -373,7 +383,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
     }
 
-    public void getIngredientList(CollectionReference fridge, String ID)
+    public void getIngredientList(final CollectionReference fridge, String ID)
     {
 
         final IngredientList ingredientList = new IngredientList("NO_NAME_YET",ID);
@@ -422,6 +432,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                     for (Item i: ingredientList.getItems()
                                             ) {
                                         Log.d(TAG, "Item on Ingredient list: " + i.getName());
+                                        callbackInterface.onIngredientListsChange(fridge.getId(),ingredientList);
                                     }
                                 }
                             }
@@ -601,5 +612,4 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                     }
                 });
     }
-
 }
