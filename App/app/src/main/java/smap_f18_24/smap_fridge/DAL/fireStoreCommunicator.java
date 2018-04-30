@@ -218,10 +218,8 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         //TODO: broadcast new list?
                         //Do something with items.
                         Log.d(TAG, "Item in inventory list: " + i.getName());
-
-                        callbackInterface.onInventoryChange();
-
                     }
+                    callbackInterface.onInventoryChange();
 
                 }
             }}).addOnFailureListener(new OnFailureListener() {
