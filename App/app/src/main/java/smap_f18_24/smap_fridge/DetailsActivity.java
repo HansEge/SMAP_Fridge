@@ -118,7 +118,7 @@ public class DetailsActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_details, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_details_tab1_inventory, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
@@ -144,8 +144,8 @@ public class DetailsActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 4 total pages.
+            return 4;
         }
     }
 }
