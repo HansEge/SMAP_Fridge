@@ -19,15 +19,27 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.firebase.ui.auth.data.model.Resource;
+
+import org.w3c.dom.Text;
+
 import smap_f18_24.smap_fridge.R;
+
+// TODO - Missing link to context in order to findView by R.id. for example
 
 public class details_fragment_tab4_ingredients extends Fragment {
 
     @Override
-    public View onCreate(LayoutInflater inflater, ViewGroup container,
-                         Bundle savedInstanceState){
-        View rootView = inflater.inflate(R.layout.fragment_details_tab4_ingredients, container, false);
-        return rootView;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
+        View v = inflater.inflate(R.layout.fragment_details_tab4_ingredients, container, false);
 
+        TextView test = (TextView) v.findViewById(R.id.section_label);
+
+        test.setText("This is the ingredients tab");
+
+        return v;
     }
+
+
 }

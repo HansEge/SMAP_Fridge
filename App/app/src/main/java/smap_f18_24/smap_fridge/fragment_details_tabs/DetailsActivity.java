@@ -104,15 +104,47 @@ public class DetailsActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            switch (position){
+                case 0:
+                    details_fragment_tab1_inventory tab1_inventory = new details_fragment_tab1_inventory();
+                    return tab1_inventory;
+                case 1:
+                    details_fragment_tab2_essentials tab2_essentials = new details_fragment_tab2_essentials();
+                    return tab2_essentials;
+                case 2:
+                    details_fragment_tab3_shoppinglists tab3_shoppinglists = new details_fragment_tab3_shoppinglists();
+                    return tab3_shoppinglists;
+                case 3:
+                    details_fragment_tab4_ingredients tab4_ingredients = new details_fragment_tab4_ingredients();
+                    return tab4_ingredients;
+
+                default:
+                    return null;
+
+            }
+
         }
 
         @Override
         public int getCount() {
             // Show 4 total pages.
             return 4;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position){
+            switch (position){
+                case 0:
+                    return "Inventory";
+                case 1:
+                    return "Essentials";
+                case 2:
+                    return "Shopping lists";
+                case 3:
+                    return "Ingredients";
+            }
+
+            return null;
         }
     }
 }
