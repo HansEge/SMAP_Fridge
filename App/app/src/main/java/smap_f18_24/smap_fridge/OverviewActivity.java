@@ -17,7 +17,7 @@ import smap_f18_24.smap_fridge.Adaptors.FridgeListAdaptor;
 
 public class OverviewActivity extends AppCompatActivity {
 
-    Button btn_addNewFridge, btn_addExistingFridge;
+    Button btn_addNewFridge, btn_addExistingFridge, btn_dirtyDetailsViewDetour;
     ListView lv_fridgesListView;
     TextView tv_welcomeUser;
 
@@ -32,6 +32,8 @@ public class OverviewActivity extends AppCompatActivity {
 
         btn_addNewFridge = findViewById(R.id.overview_btn_addNewFridge);
         btn_addExistingFridge = findViewById(R.id.overview_btn_addExistingFridge);
+        btn_dirtyDetailsViewDetour = findViewById(R.id.overview_btn_dirtyDetailsActivitydetour);
+
 
         lv_fridgesListView = findViewById(R.id.overview_lv_fridgesListView);
 
@@ -40,6 +42,15 @@ public class OverviewActivity extends AppCompatActivity {
         //lv_fridgesListView.setAdapter();
 
         // POST-INITIALIZATION
+
+        //A temporary solution to check detailsActivity - quick and dirty
+        btn_dirtyDetailsViewDetour.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent detailsActivityIntent = new Intent(OverviewActivity.this,DetailsActivity.class);
+                startActivity(detailsActivityIntent);
+            }
+        });
 
         //If the user wants to add a new fridge to the list
         btn_addNewFridge.setOnClickListener(new View.OnClickListener(){
