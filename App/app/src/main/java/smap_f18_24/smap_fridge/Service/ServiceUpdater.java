@@ -271,13 +271,6 @@ public class ServiceUpdater extends Service {
         dbComm.SubscribeToFridge(fridgeRef);
     }
 
-    /*
-    public void addShoppingList(String fridge_ID, String list_ID, String list_name)
-    {
-        getFridge(fridge_ID).getShoppingLists().add(new ShoppingList(list_name,list_ID))
-    }
-    */
-
     //Return fridge with ID matching parameter.
     public Fridge getFridge(String ID)
     {
@@ -306,12 +299,14 @@ public class ServiceUpdater extends Service {
         dbComm.addItem(EssentialsRef, item);
     }
 
+    //add Item to Shopping List. Shopping list must exist.
     public void addItemToShoppingList(Item item, String fridge_ID, String list_ID)
     {
         CollectionReference listRef = db.collection(fridge_ID).document("ShoppingLists").collection(list_ID);
         dbComm.addItem(listRef,item);
     }
 
+    //add Item to Ingredient List. Ingredient list must exist.
     public void addItemToIngredientList(Item item, String fridge_ID, String list_ID)
     {
         CollectionReference listRef = db.collection(fridge_ID).document("IngredientLists").collection(list_ID);
