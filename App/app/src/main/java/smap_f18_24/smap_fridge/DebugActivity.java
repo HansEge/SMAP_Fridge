@@ -42,8 +42,8 @@ public class DebugActivity extends AppCompatActivity {
     //fireStoreCommunicator dbComm;
     private static final String TAG = "DebugActivity";
     
-    Button btn_write2db, btn_testItem2db, btn_addList, btn_addShoppingList, btn_addEssentialsList, btn_addIngredientList, btn_loadIngredientList, btn_loadShoppingList, btn_add2sl;
-    EditText et_ShoppingListName, et_IngredientListName, et_add2sl;
+    Button btn_write2db, btn_testItem2db, btn_addList, btn_addShoppingList, btn_addEssentialsList, btn_addIngredientList, btn_loadIngredientList, btn_loadShoppingList, btn_add2sl, btn_add2inv;
+    EditText et_ShoppingListName, et_IngredientListName, et_add2sl, et_add2inv;
 
     //database reference
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -237,6 +237,18 @@ public class DebugActivity extends AppCompatActivity {
 
             mService.addItemToShoppingList(item,"TestFridge","Cool Shopping List");
             mService.SubscribeToFridge("TestFridge");
+        }
+    });
+
+    et_add2inv=findViewById(R.id.debug_et_add2inv);
+
+    btn_add2inv=findViewById(R.id.debug_btn_add2inv);
+    btn_add2inv.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String itemName = et_add2inv.getText().toString();
+            Item item = new Item(itemName,"g",1,"","");
+            mService.addItemToInventory(item,"TestFridge");
         }
     });
     }

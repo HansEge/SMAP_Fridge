@@ -102,11 +102,24 @@ public class Fridge {
         ConnectedUserEmails.add(userEmail);
     }
 
+    /*
     //INVENTORY-RELATED
     public void AddItemToInventory(Item toAdd)
     {
-        Inventory.AddItem(toAdd);
+        //Check current inventory to see if item already exists.
+        //If it does, add to quantity.
+        //If not, add item to list.
+        InventoryList inventory = getInventory();
+        for (Item i: inventory.getItems()
+             ) {
+            if(i.getName().equals(toAdd.getName()))
+            {
+                float oldQty = i.getQuantity();
+                i.setQuantity(oldQty+toAdd.getQuantity());
+            }
+        }
     }
+    */
 
     public void RemoveItemFromInventory(String itemName)
     {
