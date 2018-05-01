@@ -42,10 +42,9 @@ public class fireStoreCommunicator {
     Context context;
     private static final String TAG = "fireStoreCommunicator";
 
+    //Adds item to list. Overwrites old data, if an item with matching name exists.
 public void addItem(final CollectionReference destination, final Item itemToAdd)
 {
-
-
     //Check whether item exists on list already or not.
     destination.whereEqualTo("Name",itemToAdd.getName()).get()
             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

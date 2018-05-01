@@ -188,13 +188,24 @@ public class ServiceUpdater extends Service {
         public void onInventoryChange(String fridge_ID, InventoryList list) {
             Log.d(TAG, "Inventory of fridge " + fridge_ID + " updated.");
 
-            //Update list for fridge with matching ID.
-            for (Fridge f: fridges
-                 ) {
-                if(f.getID().equals(fridge_ID))
-                f.setInventory(list);
-            }
+            //Update list for fridge with matching fridge ID
 
+            //check for fridge with matching ID.
+            for (Fridge f: fridges
+                    ) {
+                if(f.getID().equals(fridge_ID))
+                {
+                    //if ID matches
+                    f.setInventory(list);
+                    break;
+                }
+            }
+            //If no matching fridge, create new fridge with list
+            Fridge placeholderFridge = new Fridge();
+            placeholderFridge.setInventory(list);
+            placeholderFridge.setID(fridge_ID);
+
+            fridges.add(placeholderFridge);
             //TODO: Broadcast that new data is available.
         }
 
@@ -202,40 +213,94 @@ public class ServiceUpdater extends Service {
         public void onEssentialsChange(String fridge_ID, EssentialsList list) {
             Log.d(TAG, "Essentials of fridge " + fridge_ID + " updated.");
 
-            //Update list for fridge with matching ID.
-            for (Fridge f: fridges
-                    ) {
-                if(f.getID().equals(fridge_ID))
-                    f.setEssentials(list);
+            //Update list for fridge with matching fridge ID
+
+            try
+            {
+                //check for fridge with matching ID.
+                for (Fridge f: fridges
+                        ) {
+                    if(f.getID().equals(fridge_ID))
+                    {
+                        //if ID matches
+                        f.setEssentials(list);
+                        //TODO: Broadcast that new data is available.
+                        return;
+                    }
+                }
+            }
+            catch (RuntimeException e)
+            {
+                //If no matching fridge, create new fridge with list
+                Fridge placeholderFridge = new Fridge();
+                placeholderFridge.setEssentials(list);
+                placeholderFridge.setID(fridge_ID);
+
+                fridges.add(placeholderFridge);
+                //TODO: Broadcast that new data is available.
             }
 
-            //TODO: Broadcast that new data is available.
+
         }
 
         @Override
         public void onShoppingListsChange(String fridge_ID, ShoppingList list) {
             Log.d(TAG, "Shopping list " + list.getID() + " of fridge " + fridge_ID + " updated.");
 
-            ArrayList<ShoppingList> shoppingLists;
+            ArrayList<ShoppingList> shoppingLists = null;
 
             //Update list for fridge with matching fridge ID and matching list ID.
-            for (Fridge f: fridges
-                    ) {
-                if(f.getID().equals(fridge_ID))
-                {
-                    shoppingLists = (ArrayList<ShoppingList>) f.getShoppingLists();
-                    for (ShoppingList s: shoppingLists
-                         ) {
-                        if(s.getID().equals(list.getID()))
+
+            //check for fridge with matching ID.
+            try
+            {
+                for (Fridge f: fridges
+                        ) {
+                    if(f.getID().equals(fridge_ID))
+                    {
+                        //get current list of ShoppingLists
+                        shoppingLists = (ArrayList<ShoppingList>) f.getShoppingLists();
+
+                        //Check if list is initiliazed yet.
+                        if(shoppingLists!=null)
                         {
-                            s=list;
+                            //If initialized, check for shopping list with matching ID.
+                            for (ShoppingList s: shoppingLists
+                                    ) {
+                                //If it exists, overwrite with updated list.
+                                if(s.getID().equals(list.getID()))
+                                {
+                                    s=list; // Does this replace the list in the list, or just a local copy?
+                                }
+                                //TODO: Broadcast that new data is available.
+                                break;
+                            }
+                            //If Shopping list is not on list of ShoppingLists yet, add it.
+                            shoppingLists.add(list);
                         }
 
+                        //If list of shopping lists is not initialized yet, do so.
+                        else
+                        {
+                            shoppingLists.add(list);
+                            f.setShoppingLists(shoppingLists);
+                        }
                     }
                 }
             }
+            catch(RuntimeException e)
+            {
 
-            //TODO: Broadcast that new data is available.
+                //If no matching fridge, create new fridge with list
+                Fridge placeholderFridge = new Fridge();
+                shoppingLists = new ArrayList<ShoppingList>();
+                shoppingLists.add(list);
+                placeholderFridge.setShoppingLists(shoppingLists);
+                placeholderFridge.setID(fridge_ID);
+
+                //TODO: Broadcast that new data is available.
+            }
+
         }
 
         @Override
@@ -289,7 +354,23 @@ public class ServiceUpdater extends Service {
     public void addItemToInventory(Item item, String fridge_ID)
     {
         CollectionReference InventoryRef=db.collection(fridge_ID).document("Inventory").collection("Items");
+        //Check current inventory to see if item already exists.
+        //If it does, add to quantity.
+        InventoryList inventory=getFridge(fridge_ID).getInventory();
+        for (Item i: inventory.getItems()
+                ) {
+            if(i.getName().equals(item.getName()))
+            {
+                float oldQty = i.getQuantity();
+                i.setQuantity(oldQty+item.getQuantity());
+                dbComm.addItem(InventoryRef, i);
+                Log.d(TAG, "addItemToInventory: Item already in inventory - Incresing qty " + oldQty+"->"+i.getQuantity());
+                return;
+            }
+        }
+        //If item was not in inventory yet.
         dbComm.addItem(InventoryRef, item);
+        Log.d(TAG, "addItemToInventory: Item was not in inventory yet, and has thus been added.");
     }
 
     //Add item to essentials-list
@@ -317,5 +398,7 @@ public class ServiceUpdater extends Service {
     {
         dbComm.addShoppingList(fridge, listToAdd, listName, listID);
     }
+
+
 }
 
