@@ -24,7 +24,7 @@
         <activity android:name=".OverviewActivity" />
         <activity android:name=".AddNewFridgeActivity" />
         <activity
-            android:name=".DetailsActivity"
+            android:name=".fragment_details_tabs.DetailsActivity"
             android:label="@string/title_activity_details"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

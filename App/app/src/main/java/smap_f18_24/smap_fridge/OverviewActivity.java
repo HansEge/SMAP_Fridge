@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import smap_f18_24.smap_fridge.Adaptors.FridgeListAdaptor;
+import smap_f18_24.smap_fridge.fragment_details_tabs.DetailsActivity;
 
 public class OverviewActivity extends AppCompatActivity {
 

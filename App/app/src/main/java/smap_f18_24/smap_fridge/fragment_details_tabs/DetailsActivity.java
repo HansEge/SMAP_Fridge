@@ -1,4 +1,4 @@
-package smap_f18_24.smap_fridge;
+package smap_f18_24.smap_fridge.fragment_details_tabs;
 
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+
+import smap_f18_24.smap_fridge.R;
 
 public class DetailsActivity extends AppCompatActivity {
 
