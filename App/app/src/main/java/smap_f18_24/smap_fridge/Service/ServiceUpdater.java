@@ -377,11 +377,45 @@ public class ServiceUpdater extends Service {
         Log.d(TAG, "addItemToInventory: Item was not in inventory yet, and has thus been added.");
     }
 
+    public void removeItemFromInventory(String itemName, String fridge_ID)
+    {
+        CollectionReference InventoryRef=db.collection(fridge_ID).document("Inventory").collection("Items");
+
+        //Check current inventory to see if item already exists.
+        //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
+        InventoryList inventory=getFridge(fridge_ID).getInventory();
+        for (Item i: inventory.getItems()
+                ) {
+            if(i.getName().equals(itemName))
+            {
+                dbComm.removeItem(InventoryRef,itemName);
+                return;
+            }
+        }
+    }
+
     //Add item to essentials-list (overwrites old value)
     public void addItemToEssentials(Item item, String fridge_ID)
     {
-        CollectionReference EssentialsRef=db.collection(fridge_ID).document("Essentials").collection("Items");
-        dbComm.addItem(EssentialsRef, item);
+        CollectionReference InventoryRef=db.collection(fridge_ID).document("Essentials").collection("Items");
+
+        //Check current inventory to see if item already exists.
+        //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
+        EssentialsList essentials=getFridge(fridge_ID).getEssentials();
+        for (Item i: essentials.getItems()
+                ) {
+            if(i.getName().equals(item.getName()))
+            {
+                float oldQty = i.getQuantity();
+                i.setQuantity(oldQty+item.getQuantity());
+                dbComm.addItem(InventoryRef, i);
+                Log.d(TAG, "addItemToEssentials: Item already in essentials - Increasing qty " + oldQty+"->"+i.getQuantity());
+                return;
+            }
+        }
+        //If item was not in inventory yet, just add it to list.
+        dbComm.addItem(InventoryRef, item);
+        Log.d(TAG, "addItemToInventory: Item was not in inventory yet, and has thus been added.");
     }
 
     //add Item to Shopping List. Shopping list must exist.
@@ -404,7 +438,7 @@ public class ServiceUpdater extends Service {
                         float oldQty = i.getQuantity();
                         i.setQuantity(oldQty+item.getQuantity());
                         dbComm.addItem(listRef, i);
-                        Log.d(TAG, "addItemToInventory: Item already in inventory - Increasing qty " + oldQty+"->"+i.getQuantity());
+                        Log.d(TAG, "addItemToShoppingList: Item already on shopping list - Increasing qty " + oldQty+"->"+i.getQuantity());
                         return;
                     }
                 }
@@ -413,19 +447,36 @@ public class ServiceUpdater extends Service {
             }
         }
 
-
-
-
-
-
-
     }
 
     //add Item to Ingredient List. Ingredient list must exist.
     public void addItemToIngredientList(Item item, String fridge_ID, String list_ID)
     {
         CollectionReference listRef = db.collection(fridge_ID).document("IngredientLists").collection(list_ID);
-        dbComm.addItem(listRef,item);
+
+        //Find list with matching name
+        ArrayList<IngredientList> ingredientLists=(ArrayList<IngredientList>)getFridge(fridge_ID).getIngredientLists();
+        for (IngredientList s: ingredientLists
+                ) {
+            if(s.getID().equals(list_ID))
+            {
+                //Check current list to see if item already exists.
+                //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
+                for (Item i: s.getItems()
+                        ) {
+                    if(i.getName().equals(item.getName()))
+                    {
+                        float oldQty = i.getQuantity();
+                        i.setQuantity(oldQty+item.getQuantity());
+                        dbComm.addItem(listRef, i);
+                        Log.d(TAG, "addItemToIngredientList: Item already in ingredientList - Increasing qty " + oldQty+"->"+i.getQuantity());
+                        return;
+                    }
+                }
+                //If item was not in inventory yet, just add it to list.
+                dbComm.addItem(listRef,item);
+            }
+        }
     }
 
     public void addShoppingList(CollectionReference fridge, final ShoppingList listToAdd, String listName, String listID)

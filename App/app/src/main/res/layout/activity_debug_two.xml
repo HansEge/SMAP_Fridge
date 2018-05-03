@@ -33,4 +33,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/debug2_btn_incItemInSL"
         app:layout_constraintTop_toTopOf="@+id/debug2_btn_incItemInSL" />
+
+    <Button
+        android:id="@+id/debug_two_btn_rmvItFrmInv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="remove It frm Inv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/debug2_btn_incItemInSL" />
 </android.support.constraint.ConstraintLayout>
