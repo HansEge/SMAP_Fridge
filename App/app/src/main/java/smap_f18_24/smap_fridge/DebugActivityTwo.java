@@ -16,7 +16,7 @@ import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 
 public class DebugActivityTwo extends AppCompatActivity {
 
-    Button btn_incItemInSL, btn_rmvItFrmInv;
+    Button btn_incItemInSL, btn_rmvItFrmInv, btn_rmvItFrmSL;
     EditText et_incItemInSL;
 
     private boolean mBound = false;
@@ -51,6 +51,15 @@ public class DebugActivityTwo extends AppCompatActivity {
             public void onClick(View v) {
                 String itemName =et_incItemInSL.getText().toString();
                 mService.removeItemFromInventory(itemName,testFridgeID);
+            }
+        });
+
+        btn_rmvItFrmSL=findViewById(R.id.debug_two_btn_rmvItFrmSL);
+        btn_rmvItFrmSL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String itemName =et_incItemInSL.getText().toString();
+                mService.removeItemFromShoppingList(itemName,testFridgeID, "Cool Shopping List");
             }
         });
     }
