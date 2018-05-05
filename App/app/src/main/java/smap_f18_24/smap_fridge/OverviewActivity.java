@@ -1,7 +1,11 @@
 package smap_f18_24.smap_fridge;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,9 +14,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 import smap_f18_24.smap_fridge.fragment_details_tabs.DetailsActivity;
 
 public class OverviewActivity extends AppCompatActivity {
@@ -21,6 +28,8 @@ public class OverviewActivity extends AppCompatActivity {
     ListView lv_fridgesListView;
     TextView tv_welcomeUser;
 
+    ServiceUpdater mService;
+    private boolean mBound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +38,10 @@ public class OverviewActivity extends AppCompatActivity {
 
 
         // INITIALIZING
+
+        //Start service
+        Intent ServiceIntent = new Intent(OverviewActivity.this, ServiceUpdater.class);
+        startService(ServiceIntent);
 
         btn_addNewFridge = findViewById(R.id.overview_btn_addNewFridge);
         btn_addExistingFridge = findViewById(R.id.overview_btn_addExistingFridge);
@@ -56,8 +69,50 @@ public class OverviewActivity extends AppCompatActivity {
         btn_addNewFridge.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent i = new Intent(OverviewActivity.this,AddNewFridgeActivity.class);
-                startActivity(i);
+
+
+                AlertDialog.Builder addNewFridgeDialogBox = new AlertDialog.Builder(OverviewActivity.this);
+                addNewFridgeDialogBox.setTitle("Creating a new fridge");
+
+                LinearLayout layout = new LinearLayout(OverviewActivity.this);
+                layout.setOrientation(LinearLayout.VERTICAL);
+
+                final EditText et_newFridgeName = new EditText(OverviewActivity.this);
+                et_newFridgeName.setHint("Name:");
+                et_newFridgeName.setInputType(InputType.TYPE_CLASS_TEXT);
+                layout.addView(et_newFridgeName);
+
+                final EditText et_newFridgeID = new EditText(OverviewActivity.this);
+                et_newFridgeID.setInputType(InputType.TYPE_CLASS_TEXT);
+                et_newFridgeID.setHint("ID:");
+                layout.addView(et_newFridgeID);
+
+                addNewFridgeDialogBox.setView(layout);
+
+                addNewFridgeDialogBox.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        String tmp_name = et_newFridgeName.getText().toString();
+                        String tmp_id = et_newFridgeID.getText().toString();
+
+                        //User will get Toast message if the ID already exists.
+                        mService.createNewFridge(tmp_id,tmp_name);
+
+
+                    }
+                });
+
+                addNewFridgeDialogBox.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                });
+
+                addNewFridgeDialogBox.show();
+
+
+
+
             }
         });
 
@@ -124,9 +179,63 @@ public class OverviewActivity extends AppCompatActivity {
             }
         });
 
+        //Ask user if they want to delete item if long-pressed
+        lv_fridgesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                final AlertDialog.Builder addExistingFridgeDialogBox = new AlertDialog.Builder(OverviewActivity.this);
+                addExistingFridgeDialogBox.setTitle("Do you want to delete the fridge?");
+
+                addExistingFridgeDialogBox.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //TODO - unsubscribe the fridge from the users connected fridge list
+                    }
+                });
+
+                addExistingFridgeDialogBox.setPositiveButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                return false;
+            }
+        });
+
 
 
 
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Intent intent = new Intent(this, ServiceUpdater.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+    };
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            ServiceUpdater.ServiceBinder binder = (ServiceUpdater.ServiceBinder) iBinder;
+            mService = binder.getService();
+            mBound = true;
+
+            mService.setContext(getApplicationContext());
+            mService.SubscribeToFridge("TestFridge");
+
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBound = false;
+        }
+    };
+
 }
