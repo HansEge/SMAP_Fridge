@@ -236,7 +236,7 @@ public class DebugActivity extends AppCompatActivity {
             Item item = new Item(itemName,"asd",2,"","");
 
             mService.addItemToShoppingList(item,"TestFridge","Cool Shopping List");
-            mService.SubscribeToFridge("TestFridge");
+            mService.SubscribeToFridge("Name");
         }
     });
 

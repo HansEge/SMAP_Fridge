@@ -13,6 +13,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -31,11 +32,14 @@ import smap_f18_24.smap_fridge.ModelClasses.List_ID;
 import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
 
 public class fireStoreCommunicator {
+    //database reference
+    FirebaseFirestore db;
 
     public fireStoreCommunicator(Context context, FridgeCallbackInterface callbackInterface)
     {
         this.context=context;
         this.callbackInterface=callbackInterface;
+        db = FirebaseFirestore.getInstance();
     }
 
     FridgeCallbackInterface callbackInterface;
@@ -511,57 +515,64 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
-    public void SubscribeToFridge(final CollectionReference fridge)
+    public void SubscribeToFridge(final String fridgeID)
     {
-        fridge.addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+        DocumentReference fridgeRef = db.collection("Fridges").document(fridgeID);
+        Log.d(TAG, "SubscribeToFridge: Subscribing to fridge with ID " + fridgeID);
+        CollectionReference fridgeListRef=fridgeRef.collection("Content");
+        fridgeListRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-                Toast.makeText(context, "Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "SubscribeToFridge - Fridge: " + fridge.getId() + " updated.");
+                Toast.makeText(context, "Fridge with ID: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "SubscribeToFridge - Fridge: " + fridgeID + " updated.");
             }
         });
 
-        SubscribeToInventory(fridge);
-        SubscribeToEssentials(fridge);
-        SubscribeToShoppingLists(fridge);
-        SubscribeToIngredientLists(fridge);
+        SubscribeToInventory(fridgeRef, fridgeID);
+        SubscribeToEssentials(fridgeRef, fridgeID);
+        SubscribeToShoppingLists(fridgeRef, fridgeID);
+        SubscribeToIngredientLists(fridgeRef, fridgeID);
     }
 
 
-    private void SubscribeToInventory(final CollectionReference fridge)
+    private void SubscribeToInventory(final DocumentReference fridge, final String fridgeID)
     {
-        //Subscribe to receive notifications every time there's a change in the Inventory list.
-        fridge.document("Inventory").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-                Toast.makeText(context, "Inventory of Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "SubscribeToFridge - Inventory of Fridge: " + fridge.getId() + " updated.");
-
-                //get new data and broadcast changes
-                getInventoryList(fridge);
-            }
-        });
-    }
-
-    private void SubscribeToEssentials(final CollectionReference fridge)
-    {
+        final CollectionReference fridgeListRef=fridge.collection("Content");
         //Subscribe to receive notifications every time there's a change in the Essentials list.
-        fridge.document("Essentials").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        fridgeListRef.document("Essentials").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-                Toast.makeText(context, "Essentials of Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "SubscribeToFridge - Essentials of Fridge: " + fridge.getId() + " updated.");
+                Toast.makeText(context, "Essentials of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "SubscribeToFridge - Essentials of Fridge: " + fridgeID + " updated.");
 
                 //get new data and broadcast changes
-                getEssentialsList(fridge);
+                getEssentialsList(fridgeListRef);
             }
         });
     }
 
-    private void SubscribeToShoppingLists(final CollectionReference fridge)
+    private void SubscribeToEssentials(final DocumentReference fridge, final String fridgeID)
     {
+        final CollectionReference fridgeListRef=fridge.collection("Content");
+        //Subscribe to receive notifications every time there's a change in the Essentials list.
+        fridgeListRef.document("Essentials").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+                Toast.makeText(context, "Essentials of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "SubscribeToFridge - Essentials of Fridge: " + fridgeID + " updated.");
+
+                //get new data and broadcast changes
+                getEssentialsList(fridgeListRef);
+            }
+        });
+    }
+
+    private void SubscribeToShoppingLists(final DocumentReference fridge, final String fridgeID)
+    {
+        final CollectionReference fridgeListRef=fridge.collection("Content");
         //get IDs for all shopping lists.
-        fridge.document("ShoppingList_IDs").collection("IDs").get()
+        fridgeListRef.document("ShoppingList_IDs").collection("IDs").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -580,14 +591,14 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                 Log.d(TAG, "getShoppingListIDs: Subscribing to shopping list: " + id.getID());
 
                                 //Subscribe to receive notifications every time there's a change in the Shopping list.
-                                fridge.document("ShoppingLists").collection(id.getID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                fridgeListRef.document("ShoppingLists").collection(id.getID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
                                     @Override
                                     public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-                                        Toast.makeText(context, "Shopping list " +id.getID() + " of Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
-                                        Log.d(TAG, "SubscribeToFridge - Shopping List " + id.getID() + " of Fridge: " + fridge.getId() + " updated.");
+                                        Toast.makeText(context, "Shopping list " +id.getID() + " of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
+                                        Log.d(TAG, "SubscribeToFridge - Shopping List " + id.getID() + " of Fridge: " + fridgeID + " updated.");
 
                                         //get new data and broadcast changes
-                                        getShoppingList(fridge,id.getID());
+                                        getShoppingList(fridgeListRef,id.getID());
                                     }
                                 });
 
@@ -597,10 +608,11 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
-    private void SubscribeToIngredientLists(final CollectionReference fridge)
+    private void SubscribeToIngredientLists(final DocumentReference fridge, final String fridgeID)
     {
+        final CollectionReference fridgeListRef=fridge.collection("Content");
 //get IDs for all ingredient lists.
-        fridge.document("IngredientList_IDs").collection("IDs").get()
+        fridgeListRef.document("IngredientList_IDs").collection("IDs").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -619,14 +631,14 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                 Log.d(TAG, "getShoppingListIDs: Subscribing to Ingredient list: " + id.getID());
 
                                 //Subscribe to receive notifications every time there's a change in the Shopping list.
-                                fridge.document("IngredientLists").collection(id.getID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                fridgeListRef.document("IngredientLists").collection(id.getID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
                                     @Override
                                     public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-                                        Toast.makeText(context, "Ingredient list of Fridge: " + fridge.getId() + " updated.", Toast.LENGTH_SHORT).show();
-                                        Log.d(TAG, "SubscribeToFridge - Ingredient List of Fridge: " + fridge.getId() + " updated.");
+                                        Toast.makeText(context, "Ingredient list of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
+                                        Log.d(TAG, "SubscribeToFridge - Ingredient List of Fridge: " + fridgeID + " updated.");
 
                                         //get new data and broadcast changes
-                                        getIngredientList(fridge,id.getID());
+                                        getIngredientList(fridgeListRef,id.getID());
                                     }
                                 });
 
@@ -635,4 +647,44 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                     }
                 });
     }
+
+    public void createNewFridge(final String ID, final String Name) {
+        final DocumentReference fridgesRef = db.collection("Fridges").document(ID);
+        //Check whether fridge exists already or not.
+        fridgesRef.get()
+                //If it exists, notify user that he/she cannot create a fridge with that id.
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists())
+                        {
+                            Toast.makeText(context, "Fridge with ID " + ID + " already exists. Please choose another ID.", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "onSuccess: Fridge with ID " + ID + " already exists.");
+                        }
+                        else
+                        {
+                            Log.d(TAG, "onFailure: creating Fridge with ID " + ID);
+
+                            //Add ID and Name of fridge.
+                            Map<String, Object> info = new HashMap<>();
+                            info.put("ID", ID);
+                            info.put("Name",Name);
+                            fridgesRef.set(info)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d(TAG, "DocumentSnapshot successfully written!");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w(TAG, "Error writing document", e);
+                                        }
+                                    });
+                        }
+                    }
+                });
+    }
+
 }
