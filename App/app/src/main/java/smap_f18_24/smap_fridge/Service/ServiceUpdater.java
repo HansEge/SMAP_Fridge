@@ -97,7 +97,7 @@ public class ServiceUpdater extends Service {
         Log.d("NOTI_FROM_SERVICE", "Notification from service");
         //TODO Update stuff
 
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
 
