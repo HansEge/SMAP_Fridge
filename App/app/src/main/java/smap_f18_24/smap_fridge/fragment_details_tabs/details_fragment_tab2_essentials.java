@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.TextView;
 
 import smap_f18_24.smap_fridge.R;
@@ -31,9 +32,18 @@ public class details_fragment_tab2_essentials extends Fragment {
                              Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_details_tab2_essentials, container, false);
 
-        TextView test = (TextView) v.findViewById(R.id.section_label);
+        TextView test = (TextView) v.findViewById(R.id.details_tab2_essentials_tv_sectionLabel);
+        Button btn_goBackToOverview = (Button) v.findViewById(R.id.details_tab2_essentials_btn_backToOverView);
 
-        test.setText("This is the essentials tab");
+
+        btn_goBackToOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });
+
+
 
         return v;
     }
