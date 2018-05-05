@@ -196,7 +196,7 @@ public class ServiceUpdater extends Service {
                 {
                     //if ID matches
                     f.setInventory(list);
-                    break;
+                    return;
                 }
             }
             //If no matching fridge, create new fridge with list
