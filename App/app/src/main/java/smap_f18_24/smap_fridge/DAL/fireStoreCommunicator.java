@@ -92,6 +92,30 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
     }
 
+    public void removeItem(final CollectionReference destination, final String itemName)
+    {
+        //Check whether item exists on list already or not.
+        destination.whereEqualTo("Name",itemName).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        //If data exists, remove it.
+                        if(!queryDocumentSnapshots.isEmpty())
+                        {
+                            Log.d(TAG, "onSuccess: Removing data for item with name: " + itemName);
+                            String snapshotID = queryDocumentSnapshots.getDocuments().get(0).getId();
+                            //Log.d(TAG, "SNapshotID: " + snapshotID);
+                            destination.document(snapshotID).delete();
+                        }
+                        else
+                        {
+                            Log.d(TAG, "onSuccess: Item: " + itemName + " was not on list, and thus cannot be removed");
+                        }
+                    }
+                });
+    }
+
     private void addListInfo(CollectionReference destination, String name, String ID)
     {
         Map<String, Object> info = new HashMap<>();

@@ -41,7 +41,7 @@ public class FridgeListAdaptor extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        //return the item (fridge object) in our city array list at the given position
+        //return the item (fridge object) in our array list at the given position
         if(fridges != null){
             return fridges.get(position);
         } else{
