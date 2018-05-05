@@ -33,6 +33,15 @@ public class details_fragment_tab2_essentials extends Fragment {
         View v = inflater.inflate(R.layout.fragment_details_tab2_essentials, container, false);
 
         TextView test = (TextView) v.findViewById(R.id.details_tab2_essentials_tv_sectionLabel);
+        Button btn_goBackToOverview = (Button) v.findViewById(R.id.details_tab2_essentials_btn_backToOverView);
+
+
+        btn_goBackToOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });
 
 
 

@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.data.model.Resource;
@@ -35,6 +36,16 @@ public class details_fragment_tab4_ingredients extends Fragment {
         View v = inflater.inflate(R.layout.fragment_details_tab4_ingredients, container, false);
 
         TextView test = (TextView) v.findViewById(R.id.details_tab4_ingredients_tv_sectionLabel);
+        Button btn_goBackToOverview = (Button) v.findViewById(R.id.details_tap4_ingredients_btn_backToOverView);
+
+
+        btn_goBackToOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });
+
 
         return v;
     }
