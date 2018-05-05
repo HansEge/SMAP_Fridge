@@ -20,8 +20,6 @@ public class User {
         ConnectedFridges = connectedFridges;
     }
 
-
-
     //getters and setters
     public String getName() {
         return Name;

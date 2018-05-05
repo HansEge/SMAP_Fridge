@@ -73,6 +73,6 @@ public class EssentialsListAdaptor extends BaseAdapter {
             tv_EssentialListItemUnit.setText(String.valueOf(item.getUnit()));
         }
 
-        return null;
+        return convertView;
     }
 }
