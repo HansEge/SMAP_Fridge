@@ -384,6 +384,7 @@ public class ServiceUpdater extends Service {
 
         //Check current inventory to see if item already exists.
         //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
+        //BONANZA!!!
         InventoryList inventory=getFridge(fridge_ID).getInventory();
         for (Item i: inventory.getItems()
                 ) {
