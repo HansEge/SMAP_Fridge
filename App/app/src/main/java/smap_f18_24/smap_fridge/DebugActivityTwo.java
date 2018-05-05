@@ -40,8 +40,9 @@ public class DebugActivityTwo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String itemName = et_incItemInSL.getText().toString();
+
                 Item item = new Item(itemName,"g",1,"","");
-                mService.addItemToShoppingList(item,testFridgeID,"Cool Shopping List");
+                //mService.addItemToShoppingList(item,testFridgeID,,"Cool Shopping List");
             }
         });
 

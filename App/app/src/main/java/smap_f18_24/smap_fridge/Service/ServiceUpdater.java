@@ -438,7 +438,7 @@ public class ServiceUpdater extends Service {
     //removes item from essentials
     public void removeItemFromEssentials(String itemName, String fridge_ID)
     {
-        CollectionReference EssentialsRef=db.collection(fridge_ID).document("Essentials").collection("Items");
+        CollectionReference EssentialsRef=db.collection("Fridges").document(fridge_ID).collection("Content").document("Essentials").collection("Items");
 
         //Check current inventory to see if item already exists.
         //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
@@ -466,33 +466,44 @@ public class ServiceUpdater extends Service {
 
     //add Item to Shopping List. Increments quantity, if item with matching name exists.
     // Shopping list must exist.
-    public void addItemToShoppingList(Item item, String fridge_ID, String list_ID)
+    public void addItemToShoppingList(Item item, String fridge_ID, String list_name, String list_ID)
     {
-        CollectionReference listRef = db.collection(fridge_ID).document("ShoppingLists").collection(list_ID);
+        CollectionReference listRef = db.collection("Fridges").document(fridge_ID).collection("Content").document("ShoppingLists").collection(list_ID);
 
        //Find list with matching name
         ArrayList<ShoppingList> shoppingLists=(ArrayList<ShoppingList>)getFridge(fridge_ID).getShoppingLists();
-        for (ShoppingList s: shoppingLists
-             ) {
-            if(s.getID().equals(list_ID))
-            {
-                //Check current list to see if item already exists.
-                //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
-                for (Item i: s.getItems()
-                        ) {
-                    if(i.getName().equals(item.getName()))
-                    {
-                        float oldQty = i.getQuantity();
-                        i.setQuantity(oldQty+item.getQuantity());
-                        dbComm.addItem(listRef, i);
-                        Log.d(TAG, "addItemToShoppingList: Item already on shopping list - Increasing qty " + oldQty+"->"+i.getQuantity());
-                        return;
+        //If list exists, check for item with matching name.
+        if(shoppingLists!=null)
+        {
+            for (ShoppingList s: shoppingLists
+                    ) {
+                if(s.getID().equals(list_ID))
+                {
+                    //Check current list to see if item already exists.
+                    //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
+                    for (Item i: s.getItems()
+                            ) {
+                        if(i.getName().equals(item.getName()))
+                        {
+                            float oldQty = i.getQuantity();
+                            i.setQuantity(oldQty+item.getQuantity());
+                            dbComm.addItem(listRef, i);
+                            Log.d(TAG, "addItemToShoppingList: Item already on shopping list - Increasing qty " + oldQty+"->"+i.getQuantity());
+                            return;
+                        }
                     }
+                    //If item was not in inventory yet, just add it to list.
+                    dbComm.addItem(listRef,item);
                 }
-                //If item was not in inventory yet, just add it to list.
-                dbComm.addItem(listRef,item);
             }
         }
+        //If list doesn't exist yet, just add item (list will be generated).
+        ShoppingList newSL = new ShoppingList();
+        newSL.setName(list_name);
+        newSL.setID(list_ID);
+        newSL.AddItem(item);
+        CollectionReference fridgeRef=listRef.getParent().getParent();
+        dbComm.addShoppingList(fridgeRef,newSL,list_name,list_ID);
     }
 
     //adds item to shopping list and overwrites old data if any exists.
@@ -514,7 +525,7 @@ public class ServiceUpdater extends Service {
 
     public void removeItemFromShoppingList(String itemName, String fridge_ID, String list_ID)
     {
-        CollectionReference listRef = db.collection(fridge_ID).document("ShoppingLists").collection(list_ID);
+        CollectionReference listRef = db.collection("Fridges").document(fridge_ID).collection("Content").document("ShoppingLists").collection(list_ID);
 
         //Find list with matching name
         ArrayList<ShoppingList> shoppingLists=(ArrayList<ShoppingList>)getFridge(fridge_ID).getShoppingLists();
@@ -541,7 +552,7 @@ public class ServiceUpdater extends Service {
     //add Item to Ingredient List. Ingredient list must exist.
     public void addItemToIngredientList(Item item, String fridge_ID, String list_ID)
     {
-        CollectionReference listRef = db.collection(fridge_ID).document("IngredientLists").collection(list_ID);
+        CollectionReference listRef = db.collection("Fridges").document(fridge_ID).collection("Content").document("IngredientLists").collection(list_ID);
 
         //Find list with matching name
         ArrayList<IngredientList> ingredientLists=(ArrayList<IngredientList>)getFridge(fridge_ID).getIngredientLists();
