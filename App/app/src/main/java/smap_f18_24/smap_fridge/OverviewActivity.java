@@ -19,6 +19,17 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import smap_f18_24.smap_fridge.Adaptors.FridgeListAdaptor;
+import smap_f18_24.smap_fridge.Adaptors.ShoppingListAdaptor;
+import smap_f18_24.smap_fridge.ModelClasses.EssentialsList;
+import smap_f18_24.smap_fridge.ModelClasses.Fridge;
+import smap_f18_24.smap_fridge.ModelClasses.IngredientList;
+import smap_f18_24.smap_fridge.ModelClasses.InventoryList;
+import smap_f18_24.smap_fridge.ModelClasses.Item;
+import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 import smap_f18_24.smap_fridge.fragment_details_tabs.DetailsActivity;
 
@@ -30,6 +41,7 @@ public class OverviewActivity extends AppCompatActivity {
 
     ServiceUpdater mService;
     private boolean mBound = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +62,8 @@ public class OverviewActivity extends AppCompatActivity {
 
         lv_fridgesListView = findViewById(R.id.overview_lv_fridgesListView);
 
-        tv_welcomeUser = findViewById(R.id.overview_tv_welcomeUser);
 
-        //lv_fridgesListView.setAdapter();
+        tv_welcomeUser = findViewById(R.id.overview_tv_welcomeUser);
 
         // POST-INITIALIZATION
 
@@ -206,9 +217,6 @@ public class OverviewActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
 
     @Override
@@ -228,7 +236,6 @@ public class OverviewActivity extends AppCompatActivity {
 
             mService.setContext(getApplicationContext());
             mService.SubscribeToFridge("TestFridge");
-
 
         }
 

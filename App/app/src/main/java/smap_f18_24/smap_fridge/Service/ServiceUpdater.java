@@ -187,7 +187,6 @@ public class ServiceUpdater extends Service {
         @Override
         public void onInventoryChange(String fridge_ID, InventoryList list) {
             Log.d(TAG, "Inventory of fridge " + fridge_ID + " updated.");
-
             //Update list for fridge with matching fridge ID
 
             //check for fridge with matching ID.
@@ -335,6 +334,9 @@ public class ServiceUpdater extends Service {
 
     public void SubscribeToFridge(String ID)
     {
+        Fridge fridgeSubscribedTo = new Fridge();
+        fridgeSubscribedTo.setID(ID);
+        fridges.add(fridgeSubscribedTo);
         dbComm.SubscribeToFridge(ID);
     }
 
@@ -355,22 +357,32 @@ public class ServiceUpdater extends Service {
     //Add item to inventory - increments quantity, if item with matching name exists.
     public void addItemToInventory(Item item, String fridge_ID)
     {
-        CollectionReference InventoryRef=db.collection(fridge_ID).document("Inventory").collection("Items");
+
+        //CollectionReference InventoryRef=db.collection(fridge_ID).document("Inventory").collection("Items");
+        CollectionReference InventoryRef=db.collection("Fridges").document(fridge_ID).collection("Content").document("Inventory").collection("Items");
+
+
+
+        InventoryList inventory=getFridge(fridge_ID).getInventory();
 
         //Check current inventory to see if item already exists.
         //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
-        InventoryList inventory=getFridge(fridge_ID).getInventory();
-        for (Item i: inventory.getItems()
-                ) {
-            if(i.getName().equals(item.getName()))
-            {
-                float oldQty = i.getQuantity();
-                i.setQuantity(oldQty+item.getQuantity());
-                dbComm.addItem(InventoryRef, i);
-                Log.d(TAG, "addItemToInventory: Item already in inventory - Increasing qty " + oldQty+"->"+i.getQuantity());
-                return;
+        if(inventory!=null)
+        {
+            for (Item i: inventory.getItems()
+                    ) {
+                if(i.getName().equals(item.getName()))
+                {
+                    float oldQty = i.getQuantity();
+                    i.setQuantity(oldQty+item.getQuantity());
+                    dbComm.addItem(InventoryRef, i);
+                    Log.d(TAG, "addItemToInventory: Item already in inventory - Increasing qty " + oldQty+"->"+i.getQuantity());
+                    return;
+                }
             }
         }
+
+
         //If item was not in inventory yet, just add it to list.
         dbComm.addItem(InventoryRef, item);
         Log.d(TAG, "addItemToInventory: Item was not in inventory yet, and has thus been added.");
