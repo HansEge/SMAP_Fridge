@@ -135,9 +135,10 @@ public class DebugActivity extends AppCompatActivity {
                 String itemName=etItemName.getText().toString();
                 String listName = etListName.getText().toString();
                 String fridgeName=etFridgeName.getText().toString();
+                String listID = listName+"ID";
                 String fridgeID = etFridgeID.getText().toString();
                 Item i = new Item(itemName,"grams",5,"","");
-                mService.removeItemFromShoppingList(itemName,fridgeID,listName);
+                mService.removeItemFromShoppingList(itemName,fridgeID,listID);
             }
         });
 
