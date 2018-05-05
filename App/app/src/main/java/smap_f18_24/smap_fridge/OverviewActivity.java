@@ -1,8 +1,11 @@
 package smap_f18_24.smap_fridge;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +19,7 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 import smap_f18_24.smap_fridge.fragment_details_tabs.DetailsActivity;
 
 public class OverviewActivity extends AppCompatActivity {
@@ -24,6 +28,8 @@ public class OverviewActivity extends AppCompatActivity {
     ListView lv_fridgesListView;
     TextView tv_welcomeUser;
 
+    ServiceUpdater mService;
+    private boolean mBound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,10 @@ public class OverviewActivity extends AppCompatActivity {
 
 
         // INITIALIZING
+
+        //Start service
+        Intent ServiceIntent = new Intent(OverviewActivity.this, ServiceUpdater.class);
+        startService(ServiceIntent);
 
         btn_addNewFridge = findViewById(R.id.overview_btn_addNewFridge);
         btn_addExistingFridge = findViewById(R.id.overview_btn_addExistingFridge);
@@ -81,6 +91,13 @@ public class OverviewActivity extends AppCompatActivity {
 
                 addNewFridgeDialogBox.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
+
+                        String tmp_name = et_newFridgeName.getText().toString();
+                        String tmp_id = et_newFridgeID.getText().toString();
+
+                        //User will get Toast message if the ID already exists.
+                        mService.createNewFridge(tmp_id,tmp_name);
+
 
                     }
                 });
@@ -167,4 +184,32 @@ public class OverviewActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Intent intent = new Intent(this, ServiceUpdater.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+    };
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            ServiceUpdater.ServiceBinder binder = (ServiceUpdater.ServiceBinder) iBinder;
+            mService = binder.getService();
+            mBound = true;
+
+            mService.setContext(getApplicationContext());
+            mService.SubscribeToFridge("TestFridge");
+
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBound = false;
+        }
+    };
+
 }
