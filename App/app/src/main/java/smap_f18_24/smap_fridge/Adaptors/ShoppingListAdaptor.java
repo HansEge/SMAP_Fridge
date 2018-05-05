@@ -23,7 +23,7 @@ public class ShoppingListAdaptor extends BaseAdapter {
     private Item item;
 
 
-    ShoppingListAdaptor(Context c, ArrayList<Item> shoppingListItems){
+    public ShoppingListAdaptor(Context c, ArrayList<Item> shoppingListItems){
         this.context = c;
         this.items = shoppingListItems;
     }
@@ -68,8 +68,11 @@ public class ShoppingListAdaptor extends BaseAdapter {
 
             TextView tv_ShoppingListItemQuantity = (TextView) convertView.findViewById(R.id.shoppingListAdaptor_tv_itemQuantity);
             tv_ShoppingListItemQuantity.setText(String.valueOf(item.getQuantity()));
+
+            TextView tv_ShoppingListItemUnit = (TextView) convertView.findViewById(R.id.shoppingListAdaptor_tv_itemUnit);
+            tv_ShoppingListItemUnit.setText(String.valueOf(item.getUnit()));
         }
 
-        return null;
+        return convertView;
     }
 }

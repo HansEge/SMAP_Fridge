@@ -27,7 +27,11 @@
             android:name=".fragment_details_tabs.DetailsActivity"
             android:label="@string/title_activity_details"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DebugActivityTwo"></activity>
+        <activity android:name=".DebugActivityTwo" />
+
+        <activity android:name=".AdaptorTester"></activity>
+        <activity android:name=".DebugShoppingListActivity"></activity>
+
     </application>
 
 </manifest>
