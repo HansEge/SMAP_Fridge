@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:text="Name Of Item"
+        android:text="Name"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,10 +23,22 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Quantity Of Item"
+        android:text="Quantity"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/shoppingListAdaptor_tv_itemName"
         app:layout_constraintStart_toEndOf="@+id/shoppingListAdaptor_tv_itemName"
         app:layout_constraintTop_toTopOf="@+id/shoppingListAdaptor_tv_itemName"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/shoppingListAdaptor_tv_itemUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Unit"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/shoppingListAdaptor_tv_itemQuantity"
+        app:layout_constraintStart_toEndOf="@+id/shoppingListAdaptor_tv_itemQuantity"
+        app:layout_constraintTop_toTopOf="@+id/shoppingListAdaptor_tv_itemQuantity"
         app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>

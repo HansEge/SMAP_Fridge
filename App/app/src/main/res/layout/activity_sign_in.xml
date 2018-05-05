@@ -59,4 +59,16 @@
         android:text="debug 2"
         app:layout_constraintStart_toEndOf="@+id/signin_btn_debug"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/signing_btn_debugShoppingList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Shoppinglist"
+        app:layout_constraintBottom_toBottomOf="@+id/signing_btn_debugTwo"
+        app:layout_constraintStart_toEndOf="@+id/signing_btn_debugTwo"
+        app:layout_constraintTop_toTopOf="@+id/signing_btn_debugTwo"
+        app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>
