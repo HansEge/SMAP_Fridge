@@ -7,10 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import smap_f18_24.smap_fridge.ModelClasses.EssentialsList;
-import smap_f18_24.smap_fridge.ModelClasses.Fridge;
 import smap_f18_24.smap_fridge.ModelClasses.Item;
 import smap_f18_24.smap_fridge.R;
 

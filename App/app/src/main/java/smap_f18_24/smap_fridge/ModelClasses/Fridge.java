@@ -4,7 +4,6 @@ import java.util.List;
 
 public class Fridge {
 
-
     String Name;
     String ID;
     List<String> ConnectedUserEmails;
@@ -17,10 +16,15 @@ public class Fridge {
         //Empty constructor for use with firebase (i think..)
     }
 
-    public Fridge(String name)
+    public Fridge(String name, String id, List<String> connectedUserEmails, InventoryList inventory, EssentialsList essentials, List<ShoppingList> shoppingLists, List<IngredientList> ingredientLists)
     {
-        //TODO
-        //Create new fridge, get ID, Upload to DB.
+        Name = name;
+        ID = id;
+        ConnectedUserEmails = connectedUserEmails;
+        Inventory = inventory;
+        Essentials = essentials;
+        ShoppingLists = shoppingLists;
+        IngredientLists = ingredientLists;
     }
 
 

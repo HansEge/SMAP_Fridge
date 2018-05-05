@@ -17,6 +17,7 @@
         android:layout_marginStart="3dp"
         android:layout_marginTop="2dp"
         android:text="TextView"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toStartOf="@+id/divider3"
         app:layout_constraintStart_toEndOf="@+id/divider2"
@@ -38,9 +39,9 @@
         android:layout_marginLeft="2dp"
         android:layout_marginStart="2dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toStartOf="@+id/EssentialList_adaptor_qty"
+        app:layout_constraintEnd_toStartOf="@+id/InventoryList_adaptor_qty"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/EssentialList_adaptor_itemName"
+        app:layout_constraintStart_toEndOf="@+id/InventoryList_adaptor_itemName"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
@@ -52,8 +53,8 @@
         android:layout_marginRight="3dp"
         android:layout_marginStart="3dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toStartOf="@+id/EssentialList_adaptor_unit"
-        app:layout_constraintStart_toEndOf="@+id/EssentialList_adaptor_qty"
+        app:layout_constraintEnd_toStartOf="@+id/InventoryList_adaptor_unit"
+        app:layout_constraintStart_toEndOf="@+id/InventoryList_adaptor_qty"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -67,6 +68,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="2dp"
         android:text="TextView"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toStartOf="@+id/divider2"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,6 +83,7 @@
         android:layout_marginStart="3dp"
         android:layout_marginTop="2dp"
         android:text="TextView"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/divider3"
