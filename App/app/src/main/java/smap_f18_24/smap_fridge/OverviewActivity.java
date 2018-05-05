@@ -179,6 +179,32 @@ public class OverviewActivity extends AppCompatActivity {
             }
         });
 
+        //Ask user if they want to delete item if long-pressed
+        lv_fridgesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                final AlertDialog.Builder addExistingFridgeDialogBox = new AlertDialog.Builder(OverviewActivity.this);
+                addExistingFridgeDialogBox.setTitle("Do you want to delete the fridge?");
+
+                addExistingFridgeDialogBox.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //TODO - unsubscribe the fridge from the users connected fridge list
+                    }
+                });
+
+                addExistingFridgeDialogBox.setPositiveButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                return false;
+            }
+        });
+
 
 
 
