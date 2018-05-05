@@ -71,6 +71,6 @@ public class FridgeListAdaptor extends BaseAdapter {
 
 
 
-        return null;
+        return convertView;
     }
 }

@@ -47,7 +47,7 @@ public class DebugShoppingListActivity extends AppCompatActivity {
 
        Lv_Shoppinglist = findViewById(R.id.debug_Lv_Shoppinglist);
 
-       Lv_Shoppinglist.setAdapter(adaptor2);
+       Lv_Shoppinglist.setAdapter(adaptor1);
 
     }
     protected void onStart(){
