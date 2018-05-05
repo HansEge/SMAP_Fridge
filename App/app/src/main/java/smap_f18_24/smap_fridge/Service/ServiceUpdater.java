@@ -380,11 +380,10 @@ public class ServiceUpdater extends Service {
     //removes item from inventory
     public void removeItemFromInventory(String itemName, String fridge_ID)
     {
-        CollectionReference InventoryRef=db.collection(fridge_ID).document("Inventory").collection("Items");
+        CollectionReference InventoryRef=db.collection("Fridges").document(fridge_ID).collection("Content").document("Inventory").collection("Items");
 
         //Check current inventory to see if item already exists.
         //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
-        //BONANZA!!!
         InventoryList inventory=getFridge(fridge_ID).getInventory();
         for (Item i: inventory.getItems()
                 ) {
