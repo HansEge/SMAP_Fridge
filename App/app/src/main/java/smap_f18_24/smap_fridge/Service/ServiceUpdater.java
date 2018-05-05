@@ -335,8 +335,7 @@ public class ServiceUpdater extends Service {
 
     public void SubscribeToFridge(String ID)
     {
-        CollectionReference fridgeRef = db.collection(ID);
-        dbComm.SubscribeToFridge(fridgeRef);
+        dbComm.SubscribeToFridge(ID);
     }
 
     //Return fridge with ID matching parameter.
@@ -610,6 +609,10 @@ public class ServiceUpdater extends Service {
         dbComm.addShoppingList(fridge, listToAdd, listName, listID);
     }
 
+    public void createNewFridge(String ID, String Name)
+    {
+        dbComm.createNewFridge(ID, Name);
+    }
 
 }
 
