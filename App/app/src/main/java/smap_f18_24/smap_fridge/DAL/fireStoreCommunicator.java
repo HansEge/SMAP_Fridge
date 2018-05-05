@@ -251,7 +251,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         Log.d(TAG, "Item in inventory list: " + i.getName());
                     }
 
-                    callbackInterface.onInventoryChange(fridge.getId(),inventoryList);
+                    callbackInterface.onInventoryChange(fridge.getParent().getId(),inventoryList);
 
                 }
             }}).addOnFailureListener(new OnFailureListener() {
@@ -547,7 +547,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 Log.d(TAG, "SubscribeToFridge - Essentials of Fridge: " + fridgeID + " updated.");
 
                 //get new data and broadcast changes
-                getEssentialsList(fridgeListRef);
+                getInventoryList(fridgeListRef);
             }
         });
     }

@@ -7,167 +7,134 @@
     tools:context=".DebugActivity">
 
     <Button
-        android:id="@+id/debug_btn_write2db"
+        android:id="@+id/debug_btn_newFridge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Add test user to db"
+        android:text="New Fridge"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/debug_btn_addItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Add Test item to db"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/debug_btn_write2db" />
-
-    <Button
-        android:id="@+id/debug_btn_addList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Add Inventory List"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/debug_btn_addItem" />
-
-    <Button
-        android:id="@+id/debug_btn_addShoppingList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Add Shopping List"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/debug_btn_addList" />
-
     <EditText
-        android:id="@+id/debug_ET_ShoppingListName"
+        android:id="@+id/debug_et_fridgeName"
         android:layout_width="wrap_content"
-        android:layout_height="49dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
+        android:ems="10"
+        android:hint="Fridge name"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/debug_btn_newFridge"
+        app:layout_constraintStart_toEndOf="@+id/debug_btn_newFridge"
+        app:layout_constraintTop_toTopOf="@+id/debug_btn_newFridge" />
+
+    <Button
+        android:id="@+id/debug_btn_addItemToInv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Add IT2INV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/debug_btn_newFridge" />
+
+    <EditText
+        android:id="@+id/debug_et_itemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:hint="Item Name"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/debug_btn_addItemToInv"
+        app:layout_constraintStart_toEndOf="@+id/debug_btn_addItemToInv"
+        app:layout_constraintTop_toTopOf="@+id/debug_btn_addItemToInv" />
+
+    <Button
+        android:id="@+id/debug_btn_addItemToEss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="ADD IT 2 ESS"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/debug_btn_addItemToInv" />
+
+    <Button
+        android:id="@+id/debug_btn_addItemToShoppingList"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Add IT 2 SL"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/debug_btn_addItemToEss" />
+
+    <EditText
+        android:id="@+id/debug_et_listName"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Shopping List Name"
+        android:hint="List Name"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@+id/debug_btn_addShoppingList"
-        app:layout_constraintStart_toEndOf="@+id/debug_btn_addShoppingList"
-        app:layout_constraintTop_toTopOf="@+id/debug_btn_addShoppingList" />
+        app:layout_constraintBottom_toBottomOf="@+id/debug_btn_addItemToShoppingList"
+        app:layout_constraintTop_toTopOf="@+id/debug_btn_addItemToShoppingList"
+        tools:layout_editor_absoluteX="121dp" />
 
     <Button
-        android:id="@+id/debug_btn_addEssentialsList"
+        android:id="@+id/debug_btn_addItemToIngredientList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Add EssentialList"
+        android:text="ADD IT 2 SL"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/debug_btn_addShoppingList" />
+        app:layout_constraintTop_toBottomOf="@+id/debug_btn_addItemToShoppingList" />
 
     <Button
-        android:id="@+id/debug_btn_addIngredientList"
+        android:id="@+id/debug_btn_removeItemFromInventory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="add Ingredient list"
+        android:text="RMV IT FRM INV"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/debug_btn_addEssentialsList" />
+        app:layout_constraintTop_toBottomOf="@+id/debug_btn_addItemToIngredientList" />
+
+    <Button
+        android:id="@+id/debug_btn_removeItemFromShoppinList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="RMV IT FRM SL"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/debug_btn_removeItemFromInventory" />
 
     <EditText
-        android:id="@+id/debug_ET_ingredientListName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="Ingredient List Name"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@+id/debug_btn_addIngredientList"
-        app:layout_constraintStart_toEndOf="@+id/debug_btn_addIngredientList"
-        app:layout_constraintTop_toTopOf="@+id/debug_btn_addIngredientList" />
-
-    <Button
-        android:id="@+id/debug_btn_loadIngredientList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="load IngredientList"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/debug_btn_addIngredientList" />
-
-    <Button
-        android:id="@+id/debug_btn_loadShoppingList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="load shopping list"
-        app:layout_constraintBottom_toBottomOf="@+id/debug_btn_loadIngredientList"
-        app:layout_constraintStart_toEndOf="@+id/debug_btn_loadIngredientList"
-        app:layout_constraintTop_toTopOf="@+id/debug_btn_loadIngredientList" />
-
-    <Button
-        android:id="@+id/debug_btn_add2sl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Add item to SL"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/debug_btn_loadIngredientList" />
-
-    <EditText
-        android:id="@+id/debug_et_add2sl"
+        android:id="@+id/debug_et_fridgeID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:hint="Item name"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@+id/debug_btn_add2sl"
-        app:layout_constraintTop_toTopOf="@+id/debug_btn_add2sl"
-        tools:layout_editor_absoluteX="161dp" />
-
-    <Button
-        android:id="@+id/debug_btn_add2inv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Add Item to Inventory"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/debug_btn_add2sl" />
-
-    <EditText
-        android:id="@+id/debug_et_add2inv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="Fridge ID"
         android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintStart_toEndOf="@+id/debug_btn_add2inv"
-        app:layout_constraintTop_toTopOf="@+id/debug_btn_add2inv" />
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>
