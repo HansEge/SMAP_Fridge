@@ -23,7 +23,7 @@ public class ShoppingListAdaptor extends BaseAdapter {
     private Item item;
 
 
-    ShoppingListAdaptor(Context c, ArrayList<Item> shoppingListItems){
+    public ShoppingListAdaptor(Context c, ArrayList<Item> shoppingListItems){
         this.context = c;
         this.items = shoppingListItems;
     }
