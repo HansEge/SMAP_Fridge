@@ -24,7 +24,7 @@ public class FridgeListAdaptor extends BaseAdapter {
     private ArrayList<Fridge> fridges;
     private Fridge fridge;
 
-    FridgeListAdaptor(Context c, ArrayList<Fridge> fridgeList){
+    public FridgeListAdaptor(Context c, ArrayList<Fridge> fridgeList){
         this.context = c;
         this.fridges = fridgeList;
     }
