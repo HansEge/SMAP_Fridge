@@ -1,5 +1,6 @@
 package smap_f18_24.smap_fridge.fragment_details_tabs;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,26 +18,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
+import smap_f18_24.smap_fridge.OverviewActivity;
 import smap_f18_24.smap_fridge.R;
 
 
 public class details_fragment_tab1_inventory extends Fragment {
+
+    public TextView test;
+    public Button btn_goBackToOverview;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_details_tab1_inventory, container, false);
 
-        TextView test = (TextView) v.findViewById(R.id.section_label);
+        test = (TextView) v.findViewById(R.id.details_tab1_inventory_tv_sectionLabel);
+        btn_goBackToOverview = (Button) v.findViewById(R.id.details_tab1_inventory_btn_backToOverView);
 
-        test.setText("This is the inventory tab");
+        btn_goBackToOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });
 
         return v;
     }
+
 
 
 }
