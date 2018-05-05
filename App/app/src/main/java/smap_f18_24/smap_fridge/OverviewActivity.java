@@ -1,5 +1,6 @@
 package smap_f18_24.smap_fridge;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -10,7 +11,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import smap_f18_24.smap_fridge.fragment_details_tabs.DetailsActivity;
@@ -56,8 +59,43 @@ public class OverviewActivity extends AppCompatActivity {
         btn_addNewFridge.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent i = new Intent(OverviewActivity.this,AddNewFridgeActivity.class);
-                startActivity(i);
+
+
+                AlertDialog.Builder addNewFridgeDialogBox = new AlertDialog.Builder(OverviewActivity.this);
+                addNewFridgeDialogBox.setTitle("Creating a new fridge");
+
+                LinearLayout layout = new LinearLayout(OverviewActivity.this);
+                layout.setOrientation(LinearLayout.VERTICAL);
+
+                final EditText et_newFridgeName = new EditText(OverviewActivity.this);
+                et_newFridgeName.setHint("Name:");
+                et_newFridgeName.setInputType(InputType.TYPE_CLASS_TEXT);
+                layout.addView(et_newFridgeName);
+
+                final EditText et_newFridgeID = new EditText(OverviewActivity.this);
+                et_newFridgeID.setInputType(InputType.TYPE_CLASS_TEXT);
+                et_newFridgeID.setHint("ID:");
+                layout.addView(et_newFridgeID);
+
+                addNewFridgeDialogBox.setView(layout);
+
+                addNewFridgeDialogBox.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                });
+
+                addNewFridgeDialogBox.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                });
+
+                addNewFridgeDialogBox.show();
+
+
+
+
             }
         });
 
