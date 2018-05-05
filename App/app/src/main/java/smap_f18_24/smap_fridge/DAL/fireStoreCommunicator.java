@@ -245,8 +245,6 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                     Log.d(TAG, "Broadcasting Inventory list");
                     for (Item i: itemList
                          ) {
-                        //TODO: broadcast new list?
-                        //Do something with items.
                         inventoryList.AddItem(i);
                         Log.d(TAG, "Item in inventory list: " + i.getName());
                     }
@@ -293,7 +291,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                 Log.d(TAG, "Item on Essentials list: " + i.getName());
                             }
 
-                            callbackInterface.onEssentialsChange(fridge.getId(),essentialsList);
+                            callbackInterface.onEssentialsChange(fridge.getParent().getId(),essentialsList);
 
                         }
                     }}).addOnFailureListener(new OnFailureListener() {
@@ -354,7 +352,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                     for (Item i: shoppingList.getItems()
                                          )
 
-                                        callbackInterface.onShoppingListsChange(fridge.getId(),shoppingList);
+                                        callbackInterface.onShoppingListsChange(fridge.getParent().getId(),shoppingList);
                                 }
                             }
                             catch (Exception e)
@@ -396,7 +394,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                             for (Item i: shoppingList.getItems()
                                     ) {
                                 Log.d(TAG, "Item on Shopping list: " + i.getName());
-                                callbackInterface.onShoppingListsChange(fridge.getId(),shoppingList);
+                                callbackInterface.onShoppingListsChange(fridge.getParent().getId(),shoppingList);
                             }
                         }
 
@@ -459,7 +457,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                     for (Item i: ingredientList.getItems()
                                             ) {
                                         Log.d(TAG, "Item on Ingredient list: " + i.getName());
-                                        callbackInterface.onIngredientListsChange(fridge.getId(),ingredientList);
+                                        callbackInterface.onIngredientListsChange(fridge.getParent().getId(),ingredientList);
                                     }
                                 }
                             }
@@ -503,6 +501,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                     ) {
                                 Log.d(TAG, "Item on Shopping list: " + i.getName());
                             }
+                            callbackInterface.onIngredientListsChange(fridge.getParent().getId(),ingredientList);
                         }
 
                     }
