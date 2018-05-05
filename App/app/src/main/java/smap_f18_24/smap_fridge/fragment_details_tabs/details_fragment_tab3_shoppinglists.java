@@ -31,9 +31,8 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
                              Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_details_tab3_shoppinglists, container, false);
 
-        TextView test = (TextView) v.findViewById(R.id.section_label);
+        TextView test = (TextView) v.findViewById(R.id.details_tap3_shoppinglists_tv_sectionLabel);
 
-        test.setText("This is the shopping list tab");
 
         return v;
     }

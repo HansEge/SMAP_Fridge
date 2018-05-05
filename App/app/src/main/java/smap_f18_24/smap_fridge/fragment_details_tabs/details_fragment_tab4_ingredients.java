@@ -34,9 +34,7 @@ public class details_fragment_tab4_ingredients extends Fragment {
                              Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_details_tab4_ingredients, container, false);
 
-        TextView test = (TextView) v.findViewById(R.id.section_label);
-
-        test.setText("This is the ingredients tab");
+        TextView test = (TextView) v.findViewById(R.id.details_tab4_ingredients_tv_sectionLabel);
 
         return v;
     }

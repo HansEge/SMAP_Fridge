@@ -31,9 +31,7 @@ public class details_fragment_tab1_inventory extends Fragment {
                              Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_details_tab1_inventory, container, false);
 
-        TextView test = (TextView) v.findViewById(R.id.section_label);
-
-        test.setText("This is the inventory tab");
+        TextView test = (TextView) v.findViewById(R.id.details_tab1_inventory_tv_sectionLabel);
 
         return v;
     }
