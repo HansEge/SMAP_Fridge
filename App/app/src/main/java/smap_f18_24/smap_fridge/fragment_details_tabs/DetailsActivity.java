@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import smap_f18_24.smap_fridge.ModelClasses.Fridge;
 import smap_f18_24.smap_fridge.R;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 
@@ -57,6 +58,7 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.activity_details);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import smap_f18_24.smap_fridge.ModelClasses.Fridge;
 import smap_f18_24.smap_fridge.ModelClasses.Item;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 
