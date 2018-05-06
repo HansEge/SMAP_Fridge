@@ -9,5 +9,6 @@ public interface FridgeCallbackInterface {
     void onInventoryChange(String fridge_ID, InventoryList list);
     void onEssentialsChange(String fridge_ID, EssentialsList list);
     void onShoppingListsChange(String fridge_ID, ShoppingList list);
+    void onShoppingListDelete(String fridge_ID, ShoppingList list);
     void onIngredientListsChange(String fridge_ID, IngredientList list);
 }
