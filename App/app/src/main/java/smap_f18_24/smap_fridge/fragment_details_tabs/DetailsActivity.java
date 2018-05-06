@@ -1,5 +1,7 @@
 package smap_f18_24.smap_fridge.fragment_details_tabs;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -38,12 +40,12 @@ public class DetailsActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
+    public String clickedFridgeID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.activity_details);
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -139,4 +141,10 @@ public class DetailsActivity extends AppCompatActivity {
             return null;
         }
     }
+
+
+    public String getClickedFridgeID(){
+        return clickedFridgeID;
+    }
+
 }

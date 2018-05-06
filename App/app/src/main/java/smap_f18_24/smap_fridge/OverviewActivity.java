@@ -7,7 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -70,6 +72,9 @@ public class OverviewActivity extends AppCompatActivity {
 
 
         // INITIALIZING
+
+        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(this);
+
 
         //Start service
         Intent ServiceIntent = new Intent(OverviewActivity.this, ServiceUpdater.class);
@@ -203,10 +208,16 @@ public class OverviewActivity extends AppCompatActivity {
         //User pressing a fridge on the listview --> go to DetailsActivity
         lv_fridgesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent detailsActivityIntent = new Intent(OverviewActivity.this, DetailsActivity.class);
 
-                detailsActivityIntent.putExtra()
+                SharedPreferences.Editor sharedPrefsEditor = sharedData.edit();
+                String tmpID = debugList.get(position).getName();
+                sharedPrefsEditor.putString("clickedFridgeID",tmpID);
+                sharedPrefsEditor.apply();
+
+                detailsActivityIntent.putExtra("clickedFridgeID",tmpID);
+
 
                 startActivity(detailsActivityIntent);
 
@@ -239,10 +250,7 @@ public class OverviewActivity extends AppCompatActivity {
                 return false;
             }
         });
-<<<<<<< HEAD
 
-=======
->>>>>>> 9b64fd3f7c778af6f2dd5e996ca4fc01f253aa4d
     }
 
     @Override
@@ -288,13 +296,11 @@ public class OverviewActivity extends AppCompatActivity {
 
             /*
             mService.setContext(getApplicationContext());
-<<<<<<< HEAD
             mService.SubscribeToFridge("TestFridgeID");
 
-=======
             mService.SubscribeToFridge("TestFridge");
             */
->>>>>>> 9b64fd3f7c778af6f2dd5e996ca4fc01f253aa4d
+
         }
 
         @Override
