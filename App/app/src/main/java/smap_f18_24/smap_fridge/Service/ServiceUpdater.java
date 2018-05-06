@@ -76,6 +76,7 @@ public class ServiceUpdater extends Service {
         //Get instance of database-communicator
         dbComm= new fireStoreCommunicator(context,callbackInterface);
 
+        /*
 
         new Thread(new Runnable() {
             @Override
@@ -92,8 +93,7 @@ public class ServiceUpdater extends Service {
             }
         }).start();
 
-
-
+        */
 
         Log.d("NOTI_FROM_SERVICE", "Notification from service");
         //TODO Update stuff
@@ -187,6 +187,7 @@ public class ServiceUpdater extends Service {
     FridgeCallbackInterface callbackInterface = new FridgeCallbackInterface() {
         @Override
         public void onInventoryChange(String fridge_ID, InventoryList list) {
+            broadcastResult("Stuff was updated");
             Log.d(TAG, "Inventory of fridge " + fridge_ID + " updated.");
             //Update list for fridge with matching fridge ID
 

@@ -563,7 +563,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         fridgeListRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-                Toast.makeText(context, "Fridge with ID: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Fridge with ID: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "SubscribeToFridge - Fridge: " + fridgeID + " updated.");
             }
         });
@@ -582,7 +582,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         fridgeListRef.document("Essentials").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-                Toast.makeText(context, "Essentials of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Essentials of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "SubscribeToFridge - Essentials of Fridge: " + fridgeID + " updated.");
 
                 //get new data and broadcast changes
@@ -598,7 +598,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         fridgeListRef.document("Essentials").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-                Toast.makeText(context, "Essentials of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Essentials of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "SubscribeToFridge - Essentials of Fridge: " + fridgeID + " updated.");
 
                 //get new data and broadcast changes
@@ -697,12 +697,11 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists())
                         {
-                            Toast.makeText(context, "Fridge with ID " + ID + " already exists. Please choose another ID.", Toast.LENGTH_SHORT).show();
-                            Log.d(TAG, "onSuccess: Fridge with ID " + ID + " already exists.");
+                            Log.d(TAG, "onSuccess: Fridge with ID " + ID + " already exists. Name = " + Name);
                         }
                         else
                         {
-                            Log.d(TAG, "onFailure: creating Fridge with ID " + ID);
+                            Log.d(TAG, "onFailure: creating Fridge with ID " + ID + " Name = " + Name);
 
                             //Add ID and Name of fridge.
                             Map<String, Object> info = new HashMap<>();

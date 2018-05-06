@@ -1,6 +1,8 @@
 package smap_f18_24.smap_fridge.fragment_details_tabs;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -30,13 +32,21 @@ public class details_fragment_tab1_inventory extends Fragment {
     public TextView test;
     public Button btn_goBackToOverview;
 
+    public String clickedFridgeID;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_details_tab1_inventory, container, false);
 
+        // INITIALIZING
         test = (TextView) v.findViewById(R.id.details_tab1_inventory_tv_sectionLabel);
         btn_goBackToOverview = (Button) v.findViewById(R.id.details_tab1_inventory_btn_backToOverView);
+
+        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
+        test.setText("You are looking at the following fridge ID: " + clickedFridgeID);
+
 
         btn_goBackToOverview.setOnClickListener(new View.OnClickListener() {
             @Override

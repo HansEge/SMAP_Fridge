@@ -1,8 +1,13 @@
 package smap_f18_24.smap_fridge;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -63,14 +68,37 @@ public class DebugShoppingListActivity extends AppCompatActivity {
         debugList1.add(juice);
 
 
-       Lv_Shoppinglist = findViewById(R.id.debug_Lv_Shoppinglist);
+        Lv_Shoppinglist = findViewById(R.id.debug_Lv_Shoppinglist);
 
-       //Lv_Shoppinglist.setAdapter(adaptor1);
+        //Lv_Shoppinglist.setAdapter(adaptor1);
 
-       Lv_Shoppinglist.setAdapter(adaptor4);
+        Lv_Shoppinglist.setAdapter(adaptor4);
 
+        Lv_Shoppinglist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                setQuantityDialog();
+                return true;
+            }
+        });
+    }
+
+//quantity
+    private void setQuantityDialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Set quantity");
+
+        final EditText input = new EditText(this);
+
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        String inputResult = input.getText().toString();
 
     }
+//Connecting to service
     protected void onStart(){
         super.onStart();
     }

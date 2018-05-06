@@ -69,6 +69,20 @@ public class IngredientsListAdaptor extends BaseAdapter {
 
             TextView tv_IngredientsListItemUnit = (TextView) convertView.findViewById(R.id.ingredientsListAdaptor_tv_itemUnit);
             tv_IngredientsListItemUnit.setText(String.valueOf(item.getUnit()));
+
+
+
+
+            //Lille forsøg med dropdown box
+            /*Spinner dropdown = (Spinner) convertView.findViewById(R.id.spinner1);
+            List<String> dropdownItems = new ArrayList<>();
+            dropdownItems.add("1");
+            dropdownItems.add("2");
+            dropdownItems.add("3");
+            dropdownItems.add("4");
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, dropdownItems);
+            dropdown.setAdapter(arrayAdapter);*/
+
         }
 
         return convertView;
