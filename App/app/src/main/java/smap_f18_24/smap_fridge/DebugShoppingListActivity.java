@@ -91,14 +91,14 @@ public class DebugShoppingListActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                setMyCityDialog();
+                setQuantityDialog();
                 return true;
             }
         });
     }
 
 
-    private void setMyCityDialog(){
+    private void setQuantityDialog(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Set quantity");
@@ -131,7 +131,7 @@ public class DebugShoppingListActivity extends AppCompatActivity {
 
 
 
-
+//Connecting to service
     protected void onStart(){
         super.onStart();
 
