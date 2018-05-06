@@ -1,10 +1,17 @@
 package smap_f18_24.smap_fridge.fragment_details_tabs;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -22,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import smap_f18_24.smap_fridge.R;
+import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -39,7 +47,10 @@ public class DetailsActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private static boolean mBound = false;
 
+
+    public ServiceUpdater mService;
     public String clickedFridgeID;
 
     @Override
@@ -146,5 +157,38 @@ public class DetailsActivity extends AppCompatActivity {
     public String getClickedFridgeID(){
         return clickedFridgeID;
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Bind to LocalService
+        Intent intent = new Intent(this, ServiceUpdater.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+    }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            ServiceUpdater.ServiceBinder binder = (ServiceUpdater.ServiceBinder) iBinder;
+            mService = binder.getService();
+            mBound = true;
+
+            /*
+            mService.setContext(getApplicationContext());
+
+            mService.SubscribeToFridge("TestFridgeID");
+
+            mService.SubscribeToFridge("TestFridge");
+            */
+
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBound = false;
+        }
+    };
 
 }

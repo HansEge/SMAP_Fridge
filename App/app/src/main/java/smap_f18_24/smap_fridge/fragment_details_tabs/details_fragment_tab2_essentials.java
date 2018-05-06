@@ -54,7 +54,7 @@ public class details_fragment_tab2_essentials extends Fragment {
         clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
 
 
-        EssentialsListAdaptor adaptor = new EssentialsListAdaptor(this,);
+        EssentialsListAdaptor adaptor = new EssentialsListAdaptor(this,DetailsActivity);
 
         essentialList = (ListView) v.findViewById(R.id.lv_essential_tab2);
 
