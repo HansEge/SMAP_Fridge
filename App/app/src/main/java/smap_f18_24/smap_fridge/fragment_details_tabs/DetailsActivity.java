@@ -20,6 +20,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -190,6 +191,13 @@ public class DetailsActivity extends AppCompatActivity {
             mBound = false;
         }
     };
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Log.d("SYSTEM","Shutting down - onStop() in MainActivity");
+        unbindService(mConnection);
+    }
 
     public String fetchFridgeID(){
         final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

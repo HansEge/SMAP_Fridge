@@ -329,7 +329,6 @@ public class ServiceUpdater extends Service {
                     }
                 }
             }
-
             //TODO: Broadcast that new data is available.
         }
     };

@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -157,9 +158,6 @@ public class OverviewActivity extends AppCompatActivity {
 
                 addNewFridgeDialogBox.show();
 
-
-
-
             }
         });
 
@@ -279,5 +277,12 @@ public class OverviewActivity extends AppCompatActivity {
             mBound = false;
         }
     };
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Log.d("SYSTEM","Shutting down - onStop() in MainActivity");
+        unbindService(mConnection);
+    }
 
 }
