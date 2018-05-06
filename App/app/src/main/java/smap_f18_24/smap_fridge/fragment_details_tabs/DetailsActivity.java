@@ -40,12 +40,15 @@ public class DetailsActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-    public String clickedFridgeID;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.activity_details);
+
+
+        //clickedFridgeID is the ID of the correspondant clicked fridge in OverviewActivity
+        String clickedFridgeID = fetchFridgeID();
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -142,9 +145,14 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
+    public String fetchFridgeID(){
+        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String tmptmpID = sharedData.getString("clickedFridgeID","errorNoValue");
 
-    public String getClickedFridgeID(){
-        return clickedFridgeID;
+        //String clickedFridgeID = getIntent().getStringExtra("clickedFridgeID");
+
+
+        return tmptmpID;
     }
 
 }

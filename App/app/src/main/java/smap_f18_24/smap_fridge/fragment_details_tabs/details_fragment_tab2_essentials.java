@@ -29,14 +29,12 @@ import smap_f18_24.smap_fridge.R;
 public class details_fragment_tab2_essentials extends Fragment {
 
     private ListView essentialList;
-    private EssentialsListAdaptor adaptor = new EssentialsListAdaptor(this,DetailsActivity);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_details_tab2_essentials, container, false);
 
-        TextView test = (TextView) v.findViewById(R.id.details_tab2_essentials_tv_sectionLabel);
         Button btn_goBackToOverview = (Button) v.findViewById(R.id.details_tab2_essentials_btn_backToOverView);
 
 
@@ -49,7 +47,6 @@ public class details_fragment_tab2_essentials extends Fragment {
 
         essentialList = (ListView) v.findViewById(R.id.lv_essential_tab2);
 
-        essentialList.setAdapter(adaptor);
 
         return v;
     }
