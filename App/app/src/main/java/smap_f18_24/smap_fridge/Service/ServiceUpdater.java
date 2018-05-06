@@ -394,7 +394,6 @@ public class ServiceUpdater extends Service {
             }
         }
 
-
         //If item was not in inventory yet, just add it to list.
         dbComm.addItem(InventoryRef, item);
         Log.d(TAG, "addItemToInventory: Item was not in inventory yet, and has thus been added.");
@@ -433,13 +432,13 @@ public class ServiceUpdater extends Service {
     {
         //CollectionReference InventoryRef=db.collection(fridge_ID).document("Inventory").collection("Items");
         CollectionReference EssentialsRef=db.collection("Fridges").document(fridge_ID).collection("Content").document("Essentials").collection("Items");
-        EssentialsList esentials=getFridge(fridge_ID).getEssentials();
+        EssentialsList essentials=getFridge(fridge_ID).getEssentials();
 
         //Check current inventory to see if item already exists.
         //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
-        if(esentials!=null)
+        if(essentials!=null)
         {
-            for (Item i: esentials.getItems()
+            for (Item i: essentials.getItems()
                     ) {
                 if(i.getName().equals(item.getName()))
                 {
@@ -452,20 +451,19 @@ public class ServiceUpdater extends Service {
             }
         }
 
-
         //If item was not in inventory yet, just add it to list.
         dbComm.addItem(EssentialsRef, item);
         Log.d(TAG, "addItemToEssentials: Item was not in inventory yet, and has thus been added.");
     }
 
-    //removes item from essentials
+    //removes item from inventory
     public void removeItemFromEssentials(String itemName, String fridge_ID)
     {
         CollectionReference EssentialsRef=db.collection("Fridges").document(fridge_ID).collection("Content").document("Essentials").collection("Items");
 
         //Check current inventory to see if item already exists.
         //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
-        InventoryList essentials=getFridge(fridge_ID).getInventory();
+        EssentialsList essentials=getFridge(fridge_ID).getEssentials();
         for (Item i: essentials.getItems()
                 ) {
             if(i.getName().equals(itemName))
@@ -474,17 +472,16 @@ public class ServiceUpdater extends Service {
                 return;
             }
         }
-
         //If no item on list with name <itemName>
         Log.d(TAG, "removeItemFromEssentials: Item: " + itemName + " was not on list, and thus cannot be removed");
     }
 
-    //adds item to essentials and overwrites old data if any exists.
+    //adds item to inventory and overwrites old data if any exists.
     public void overwriteItemInEssentials(Item item, String fridge_ID)
     {
-        Log.d(TAG, "overwriteItemInEssentials Overwriting old data(if any) for item: " + item.getName());
-        CollectionReference InventoryRef=db.collection(fridge_ID).document("Essentials").collection("Items");
-        dbComm.addItem(InventoryRef, item);
+        Log.d(TAG, "overwriteItemInEssentials: Overwriting old data(if any) for item: " + item.getName());
+        CollectionReference EssentialsRef=db.collection("Fridges").document(fridge_ID).collection("Content").document("Essentials").collection("Items");
+        dbComm.addItem(EssentialsRef, item);
     }
 
     //add Item to Shopping List. Increments quantity, if item with matching name exists.
