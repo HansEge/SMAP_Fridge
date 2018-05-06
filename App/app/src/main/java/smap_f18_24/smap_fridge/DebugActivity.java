@@ -71,7 +71,7 @@ public class DebugActivity extends AppCompatActivity {
         btn_rmvFrmInv=findViewById(R.id.debug_btn_removeItemFromInventory);
         btn_rmvFrmSL=findViewById(R.id.debug_btn_removeItemFromShoppinList);
         btn_overWriteInv=findViewById(R.id.debug_btn_overWriteInventory);
-        btn_overWriteShoppingList=findViewById(R.id.debug_btn_removeItemFromShoppinList);
+        btn_overWriteShoppingList=findViewById(R.id.debug_btn_overWriteShoppingList);
 
         btn_add2inv.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -697,7 +697,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         else
                         {
                             //Convert dataSnapshot to list of List_IDs(yes these only contain a string, but a model class is necessary for Firebase to create objects from datasnapshots).
-                            ArrayList<List_ID> IDs = (ArrayList<List_ID>) queryDocumentSnapshots.toObjects(List_ID.class);
+                                ArrayList<List_ID> IDs = (ArrayList<List_ID>) queryDocumentSnapshots.toObjects(List_ID.class);
 
                             //Subscribe to each shopping list.
                             for (final List_ID id: IDs
