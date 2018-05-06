@@ -218,7 +218,6 @@ public class OverviewActivity extends AppCompatActivity {
 
                 detailsActivityIntent.putExtra("clickedFridgeID",tmpID);
 
-
                 startActivity(detailsActivityIntent);
 
 
@@ -296,10 +295,12 @@ public class OverviewActivity extends AppCompatActivity {
 
             /*
             mService.setContext(getApplicationContext());
+
             mService.SubscribeToFridge("TestFridgeID");
 
             mService.SubscribeToFridge("TestFridge");
             */
+
 
         }
 
