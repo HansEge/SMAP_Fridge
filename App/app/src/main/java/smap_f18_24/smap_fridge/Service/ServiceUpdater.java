@@ -373,7 +373,6 @@ public class ServiceUpdater extends Service {
     //Add item to inventory - increments quantity, if item with matching name exists.
     public void addItemToInventory(Item item, String fridge_ID)
     {
-
         //CollectionReference InventoryRef=db.collection(fridge_ID).document("Inventory").collection("Items");
         CollectionReference InventoryRef=db.collection("Fridges").document(fridge_ID).collection("Content").document("Inventory").collection("Items");
         InventoryList inventory=getFridge(fridge_ID).getInventory();
@@ -425,7 +424,7 @@ public class ServiceUpdater extends Service {
     public void overwriteItemInInventory(Item item, String fridge_ID)
     {
         Log.d(TAG, "overwriteItemInInventory: Overwriting old data(if any) for item: " + item.getName());
-        CollectionReference InventoryRef=db.collection(fridge_ID).document("Inventory").collection("Items");
+        CollectionReference InventoryRef=db.collection("Fridges").document(fridge_ID).collection("Content").document("Inventory").collection("Items");
         dbComm.addItem(InventoryRef, item);
     }
 
@@ -650,10 +649,12 @@ public class ServiceUpdater extends Service {
         }
     }
 
+    /*
     public void addShoppingList(CollectionReference fridge, final ShoppingList listToAdd, String listName, String listID)
     {
         dbComm.addShoppingList(fridge, listToAdd, listName, listID);
     }
+    */
 
     public void createNewFridge(String ID, String Name)
     {
