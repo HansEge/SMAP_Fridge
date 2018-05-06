@@ -187,6 +187,9 @@ public class ServiceUpdater extends Service {
     FridgeCallbackInterface callbackInterface = new FridgeCallbackInterface() {
         @Override
         public void onInventoryChange(String fridge_ID, InventoryList list) {
+
+            broadcastResult("Stuff was updated");
+            Log.d("BROADCAST","SEND broadcast");
             Log.d(TAG, "Inventory of fridge " + fridge_ID + " updated.");
             //Update list for fridge with matching fridge ID
 
