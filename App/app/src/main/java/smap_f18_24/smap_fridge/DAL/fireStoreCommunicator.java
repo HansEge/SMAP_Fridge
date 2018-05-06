@@ -302,10 +302,11 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
     }
 
-    public void getShoppingList(final CollectionReference fridge, String ID)
+    public void getShoppingList(final CollectionReference fridge, final String ID)
     {
 
         final ShoppingList shoppingList = new ShoppingList("NO_NAME_YET",ID);
+        final String fridge_ID=fridge.getParent().getId();
 
         //reference to fridge
         final CollectionReference shoppingListReference = fridge.document("ShoppingLists").collection(ID);
@@ -340,6 +341,15 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                         Log.d(TAG, "onSuccess: Item: " + i.getName());
                                         shoppingList.AddItem(i);
                                     }
+                                }
+                                //If only item in list was the Info-object, delete the list, both in database and locally.
+                                if(itemList.size()<2)
+                                {
+                                    //TODO:delete list in database.
+                                    deleteShoppingListFromDatabase(fridge_ID,ID);
+
+                                    //delete list locally.
+                                    callbackInterface.onShoppingListDelete(fridge.getParent().getId(),shoppingList);
                                 }
                                 if(shoppingList.getName().equals("NO_NAME_YET"))
                                 {
@@ -514,6 +524,35 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
+    private void deleteShoppingListFromDatabase(String fridge_id, final String list_ID)
+    {
+        DocumentReference fridgeRef = db.collection("Fridges").document(fridge_id);
+        final CollectionReference IDsRef = fridgeRef.collection("Content").document("ShoppingList_IDs").collection("IDs");
+        DocumentReference ListsRef = fridgeRef.collection("Content").document("ShoppingLists");
+
+        //Remove List ID from ID-list.
+        IDsRef.whereEqualTo("ID",list_ID).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        //If data exists, remove it.
+                        if(!queryDocumentSnapshots.isEmpty())
+                        {
+                            Log.d(TAG, "onSuccess: Deleting shopping list with ID: " + list_ID);
+                            String snapshotID = queryDocumentSnapshots.getDocuments().get(0).getId();
+                            IDsRef.document(snapshotID).delete();
+                        }
+                        else
+                        {
+                            Log.d(TAG, "onSuccess: List with ID: " + list_ID + " already didn't exist, and thus cannot be deleted.");
+                        }
+                    }
+                });
+
+
+    }
+
     public void SubscribeToFridge(final String fridgeID)
     {
 
@@ -594,7 +633,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                     @Override
                                     public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                                         Toast.makeText(context, "Shopping list " +id.getID() + " of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
-                                        Log.d(TAG, "SubscribeToFridge - Shopping List " + id.getID() + " of Fridge: " + fridgeID + " updated.");
+                                        Log.d(TAG, "SubscribefToFridge - Shopping List " + id.getID() + " of Fridge: " + fridgeID + " updated.");
 
                                         //get new data and broadcast changes
                                         getShoppingList(fridgeListRef,id.getID());

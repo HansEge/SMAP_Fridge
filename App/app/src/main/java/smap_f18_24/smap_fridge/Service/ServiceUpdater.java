@@ -16,6 +16,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -108,7 +109,7 @@ public class ServiceUpdater extends Service {
     {
         //For API version < 26
         if (Build.VERSION.SDK_INT < 26) {
-            Log.d("API<26","bobby olsen");
+            //Log.d("API<26","bobby olsen");
             notificationBuilder_PRE26();
             return;
         }
@@ -186,6 +187,9 @@ public class ServiceUpdater extends Service {
     FridgeCallbackInterface callbackInterface = new FridgeCallbackInterface() {
         @Override
         public void onInventoryChange(String fridge_ID, InventoryList list) {
+
+            broadcastResult("Stuff was updated");
+            Log.d("BROADCAST","SEND broadcast");
             Log.d(TAG, "Inventory of fridge " + fridge_ID + " updated.");
             //Update list for fridge with matching fridge ID
 
@@ -240,7 +244,7 @@ public class ServiceUpdater extends Service {
 
             ArrayList<ShoppingList> shoppingLists = null;
 
-            //Update list for fridge with matching fridge ID and matching list ID.
+            //Update list for fridge with matching fridge IDF and matching list ID.
 
             //check for fridge with matching ID.
             try
@@ -298,7 +302,16 @@ public class ServiceUpdater extends Service {
         }
 
         @Override
+        public void onShoppingListDelete(String fridge_ID, ShoppingList list) {
+            Toast.makeText(context, "Gotta delete the list " + list.getID(), Toast.LENGTH_SHORT).show();
+            List<ShoppingList> shoppingLists =  getFridge(fridge_ID).getShoppingLists();
+            ShoppingList list2remove = getShoppingList(list.getID(),shoppingLists);
+            shoppingLists.remove(list2remove);
+        }
+
+        @Override
         public void onIngredientListsChange(String fridge_ID, IngredientList list) {
+
             Log.d(TAG, "Ingredient list " + list.getID() + " of fridge " + fridge_ID + " updated.");
 
             ArrayList<IngredientList> ingredientLists;
@@ -341,6 +354,20 @@ public class ServiceUpdater extends Service {
             if(f.getID().equals(ID))
             {
                 return f;
+            }
+        }
+        return null;
+    }
+
+    //Return Shopping List with ID matching parameter.
+    private ShoppingList getShoppingList(String ID, List<ShoppingList> lists)
+    {
+        //For each fridge, check if ID matches. If no match, null is returned.
+        for (ShoppingList sl: lists
+                ) {
+            if(sl.getID().equals(ID))
+            {
+                return sl;
             }
         }
         return null;
