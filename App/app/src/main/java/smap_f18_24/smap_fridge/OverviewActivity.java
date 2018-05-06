@@ -212,7 +212,7 @@ public class OverviewActivity extends AppCompatActivity {
                 Intent detailsActivityIntent = new Intent(OverviewActivity.this, DetailsActivity.class);
 
                 SharedPreferences.Editor sharedPrefsEditor = sharedData.edit();
-                String tmpID = debugList.get(position).getName();
+                String tmpID = debugList.get(position).getID();
                 sharedPrefsEditor.putString("clickedFridgeID",tmpID);
                 sharedPrefsEditor.apply();
 
