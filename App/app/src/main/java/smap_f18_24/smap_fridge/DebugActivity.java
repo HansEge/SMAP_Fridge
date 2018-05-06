@@ -45,7 +45,7 @@ public class DebugActivity extends AppCompatActivity {
     ServiceUpdater mService;
 
     EditText etFridgeName, etItemName, etListName, etFridgeID, etListID;
-    Button btn_NewFridge, btn_add2inv, btn_add2ess, btn_add2SL, btn_add2IL, btn_rmvFrmInv, btn_rmvFrmSL;
+    Button btn_NewFridge, btn_add2inv, btn_add2ess, btn_add2SL, btn_overWriteInv, btn_overWriteShoppingList , btn_rmvFrmInv, btn_rmvFrmSL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +70,8 @@ public class DebugActivity extends AppCompatActivity {
         btn_NewFridge=findViewById(R.id.debug_btn_newFridge);
         btn_rmvFrmInv=findViewById(R.id.debug_btn_removeItemFromInventory);
         btn_rmvFrmSL=findViewById(R.id.debug_btn_removeItemFromShoppinList);
+        btn_overWriteInv=findViewById(R.id.debug_btn_overWriteInventory);
+        btn_overWriteShoppingList=findViewById(R.id.debug_btn_removeItemFromShoppinList);
 
         btn_add2inv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,11 +145,35 @@ public class DebugActivity extends AppCompatActivity {
                 String fridgeName=etFridgeName.getText().toString();
                 String fridgeID = etFridgeID.getText().toString();
                 Item i = new Item(itemName,"grams",5,"","");
-                mService.removeItemFromInventory(itemName,fridgeID);
+                mService.removeItemFromEssentials(itemName,fridgeID);
             }
         });
 
+        btn_overWriteInv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String listID=etListID.getText().toString();
+                String itemName=etItemName.getText().toString();
+                String listName = etListName.getText().toString();
+                String fridgeName=etFridgeName.getText().toString();
+                String fridgeID = etFridgeID.getText().toString();
+                Item i = new Item(itemName,"grams",5,"","");
+                mService.overwriteItemInEssentials(i,fridgeID);
+            }
+        });
 
+        btn_overWriteShoppingList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String listID=etListID.getText().toString();
+                String itemName=etItemName.getText().toString();
+                String listName = etListName.getText().toString();
+                String fridgeName=etFridgeName.getText().toString();
+                String fridgeID = etFridgeID.getText().toString();
+                Item i = new Item(itemName,"grams",5,"","");
+                mService.overWriteItemInShoppingList(i,fridgeID,listID);
+            }
+        });
 
     }
 

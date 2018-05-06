@@ -1,11 +1,9 @@
 package smap_f18_24.smap_fridge;
 
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.IBinder;
@@ -15,7 +13,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -47,7 +44,6 @@ public class OverviewActivity extends AppCompatActivity {
 
     ServiceUpdater mService;
     private boolean mBound = false;
-    private String broadcastResult;
 
     final public ArrayList<Fridge> debugList = new ArrayList<>();
     public FridgeListAdaptor adaptor1 = new FridgeListAdaptor(this, debugList);
@@ -62,6 +58,7 @@ public class OverviewActivity extends AppCompatActivity {
     IngredientList myIngredientsList1 = new IngredientList("ingredientsListName","ingredientsListID");
     ShoppingList myShoppingList1 = new ShoppingList("shoppingListName","shoppingListID");
 
+
     Fridge testFridge = new Fridge("Tester", "testID", connectedUserEmailss, inventoryList, essentialList, myShoppingLists, myIngredientsLists);
 
 
@@ -69,7 +66,6 @@ public class OverviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overview);
-
 
         // INITIALIZING
 
@@ -252,41 +248,14 @@ public class OverviewActivity extends AppCompatActivity {
                 return false;
             }
         });
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        // Bind to LocalService
+
         Intent intent = new Intent(this, ServiceUpdater.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
-
-        //can use registerReceiver(...)
-        //but using local broadcasts for this service:
-        LocalBroadcastManager.getInstance(this).registerReceiver(ServiceUpdaterReceiver,filter);
-
-    }
-
-    private BroadcastReceiver ServiceUpdaterReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d("Broadcast Receiver", "Broadcast reveiced from ServiceUpdater");
-            String result = null;
-
-            result = intent.getStringExtra(ServiceUpdater.EXTRA_TASK_RESULT);
-
-            if (result == null) {
-                Log.d("Broadcast Receiver", "Something went wrong in the broadcast receiver");
-            }
-            broadcastResult = result;
-            Log.d("BROADCAST_RESULT",result);
-
-        }
     };
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -296,16 +265,14 @@ public class OverviewActivity extends AppCompatActivity {
             mService = binder.getService();
             mBound = true;
 
-            /*
             mService.setContext(getApplicationContext());
 
             mService.SubscribeToFridge("TestFridgeID");
 
+        
             mService.SubscribeToFridge("TestFridge");
-            */
-
-
         }
+
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
