@@ -109,7 +109,7 @@ public class ServiceUpdater extends Service {
     {
         //For API version < 26
         if (Build.VERSION.SDK_INT < 26) {
-            Log.d("API<26","bobby olsen");
+            //Log.d("API<26","bobby olsen");
             notificationBuilder_PRE26();
             return;
         }
