@@ -43,6 +43,8 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.activity_details);
 
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three

@@ -6,6 +6,10 @@ public class IngredientList extends ItemList {
     String itemName;
     String ID;
 
+    public IngredientList(){
+
+    }
+
 
     public IngredientList(String _ItemName, String ID) {
         itemName = _ItemName;

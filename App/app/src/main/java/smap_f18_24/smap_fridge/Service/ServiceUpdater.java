@@ -109,7 +109,7 @@ public class ServiceUpdater extends Service {
     {
         //For API version < 26
         if (Build.VERSION.SDK_INT < 26) {
-            Log.d("API<26","bobby olsen");
+            //Log.d("API<26","bobby olsen");
             notificationBuilder_PRE26();
             return;
         }
@@ -310,6 +310,7 @@ public class ServiceUpdater extends Service {
 
         @Override
         public void onIngredientListsChange(String fridge_ID, IngredientList list) {
+
             Log.d(TAG, "Ingredient list " + list.getID() + " of fridge " + fridge_ID + " updated.");
 
             ArrayList<IngredientList> ingredientLists;
