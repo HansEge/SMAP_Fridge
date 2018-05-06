@@ -296,7 +296,6 @@ public class ServiceUpdater extends Service {
 
                 //TODO: Broadcast that new data is available.
             }
-
         }
 
         @Override
@@ -306,30 +305,70 @@ public class ServiceUpdater extends Service {
             ShoppingList list2remove = getShoppingList(list.getID(),shoppingLists);
             shoppingLists.remove(list2remove);
         }
-    
+
         @Override
         public void onIngredientListsChange(String fridge_ID, IngredientList list) {
             Log.d(TAG, "Ingredient list " + list.getID() + " of fridge " + fridge_ID + " updated.");
 
-            ArrayList<IngredientList> ingredientLists;
+            ArrayList<IngredientList> ingredientLists = null;
 
-            //Update list for fridge with matching fridge ID and matching list ID.
-            for (Fridge f: fridges
-                    ) {
-                if(f.getID().equals(fridge_ID))
-                {
-                    ingredientLists = (ArrayList<IngredientList>) f.getIngredientLists();
-                    for (IngredientList s: ingredientLists
-                            ) {
-                        if(s.getID().equals(list.getID()))
-                        {
-                            s=list;
+            //Update list for fridge with matching fridge IDF and matching list ID.
+
+            //check for fridge with matching ID.
+            try {
+                for (Fridge f : fridges
+                        ) {
+                    if (f.getID().equals(fridge_ID)) {
+                        //get current list of ShoppingLists
+                        ingredientLists = (ArrayList<IngredientList>) f.getIngredientLists();
+
+                        //Check if list is initiliazed yet.
+                        if (ingredientLists != null) {
+                            //If initialized, check for ingredient list with matching ID.
+                            for (IngredientList s : ingredientLists
+                                    ) {
+                                //If it exists, overwrite with updated list.
+                                if (s.getID().equals(list.getID())) {
+                                    int index = ingredientLists.indexOf(s);
+                                    ingredientLists.remove(s);
+                                    ingredientLists.add(index, list);
+                                    //TODO: Broadcast that new data is available.
+                                    return;
+                                }
+                            }
+                            //If Shopping list is not on list of ShoppingLists yet, add it.
+                            ingredientLists.add(list);
                         }
 
+                        //If list of shopping lists is not initialized yet, do so.
+                        else {
+                            ingredientLists = new ArrayList<IngredientList>();
+                            ingredientLists.add(list);
+                            f.setIngredientLists(ingredientLists);
+                        }
                     }
                 }
+            } catch (RuntimeException e) {
+
+                //If no matching fridge, create new fridge with list
+                Fridge placeholderFridge = new Fridge();
+                ingredientLists = new ArrayList<IngredientList>();
+                ingredientLists.add(list);
+                placeholderFridge.setIngredientLists(ingredientLists);
+                placeholderFridge.setID(fridge_ID);
+
+                //TODO: Broadcast that new data is available.
             }
-            //TODO: Broadcast that new data is available.
+
+        }
+
+        @Override
+        public void onIngredientListDelete(String fridge_ID, IngredientList list) {
+            Toast.makeText(context, "Gotta delete the list " + list.getID(), Toast.LENGTH_SHORT).show();
+            List<IngredientList> ingredientLists =  getFridge(fridge_ID).getIngredientLists();
+            IngredientList list2remove = getIngredientList(list.getID(),ingredientLists);
+            ingredientLists.remove(list2remove);
+
         }
     };
 
@@ -360,6 +399,20 @@ public class ServiceUpdater extends Service {
     {
         //For each fridge, check if ID matches. If no match, null is returned.
         for (ShoppingList sl: lists
+                ) {
+            if(sl.getID().equals(ID))
+            {
+                return sl;
+            }
+        }
+        return null;
+    }
+
+    //Return Shopping List with ID matching parameter.
+    private IngredientList getIngredientList(String ID, List<IngredientList> lists)
+    {
+        //For each fridge, check if ID matches. If no match, null is returned.
+        for (IngredientList sl: lists
                 ) {
             if(sl.getID().equals(ID))
             {
@@ -572,37 +625,50 @@ public class ServiceUpdater extends Service {
         }
     }
 
-    //add Item to Ingredient List. Ingredient list must exist.
-    public void addItemToIngredientList(Item item, String fridge_ID, String list_ID)
+    //add Item to Ingredient List. Increments quantity, if item with matching name exists.
+    // Shopping list must exist.
+    public void addItemToIngredientList(Item item, String fridge_ID, String list_name, String list_ID)
     {
         CollectionReference listRef = db.collection("Fridges").document(fridge_ID).collection("Content").document("IngredientLists").collection(list_ID);
 
         //Find list with matching name
         ArrayList<IngredientList> ingredientLists=(ArrayList<IngredientList>)getFridge(fridge_ID).getIngredientLists();
-        for (IngredientList s: ingredientLists
-                ) {
-            if(s.getID().equals(list_ID))
-            {
-                //Check current list to see if item already exists.
-                //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
-                for (Item i: s.getItems()
-                        ) {
-                    if(i.getName().equals(item.getName()))
-                    {
-                        float oldQty = i.getQuantity();
-                        i.setQuantity(oldQty+item.getQuantity());
-                        dbComm.addItem(listRef, i);
-                        Log.d(TAG, "addItemToIngredientList: Item already in ingredientList - Increasing qty " + oldQty+"->"+i.getQuantity());
-                        return;
+        //If list exists, check for item with matching name.
+        if(ingredientLists!=null)
+        {
+            for (IngredientList s: ingredientLists
+                    ) {
+                if(s.getID().equals(list_ID))
+                {
+                    //Check current list to see if item already exists.
+                    //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
+                    for (Item i: s.getItems()
+                            ) {
+                        if(i.getName().equals(item.getName()))
+                        {
+                            float oldQty = i.getQuantity();
+                            i.setQuantity(oldQty+item.getQuantity());
+                            dbComm.addItem(listRef, i);
+                            Log.d(TAG, "addItemToIngredientList: Item already on ingredient list - Increasing qty " + oldQty+"->"+i.getQuantity());
+                            return;
+                        }
                     }
+                    //If item was not in ingredient list yet, just add it to list.
+                    dbComm.addItem(listRef,item);
+                    return;
                 }
-                //If item was not in inventory yet, just add it to list.
-                dbComm.addItem(listRef,item);
             }
         }
+        //If list doesn't exist yet, just add item (list will be generated).
+        IngredientList newIL = new IngredientList();
+        newIL.setName(list_name);
+        newIL.setID(list_ID);
+        newIL.AddItem(item);
+        CollectionReference fridgeRef=listRef.getParent().getParent();
+        dbComm.addIngredientList(fridgeRef,newIL,list_name,list_ID);
     }
 
-    //adds item to shopping list and overwrites old data if any exists.
+    //adds item to ingredient list and overwrites old data if any exists.
     public void overWriteItemInIngredientList(Item item, String fridge_ID, String list_ID)
     {
         CollectionReference listRef = db.collection(fridge_ID).document("IngredientLists").collection(list_ID);
@@ -621,25 +687,28 @@ public class ServiceUpdater extends Service {
 
     public void removeItemFromIngredientList(String itemName, String fridge_ID, String list_ID)
     {
-        CollectionReference listRef = db.collection(fridge_ID).document("IngredientLists").collection(list_ID);
+        CollectionReference listRef = db.collection("Fridges").document(fridge_ID).collection("Content").document("IngredientLists").collection(list_ID);
 
         //Find list with matching name
         ArrayList<IngredientList> ingredientLists=(ArrayList<IngredientList>)getFridge(fridge_ID).getIngredientLists();
-        for (IngredientList s: ingredientLists
-                ) {
-            if(s.getID().equals(list_ID))
-            {
-                //Check current list to see if item already exists.
-                //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
-                for (Item i: s.getItems()
-                        ) {
-                    if(i.getName().equals(itemName))
-                    {
-                        Log.d(TAG, "removeItemFromIngredientList: Removing data for item: " + itemName);
-                        dbComm.removeItem(listRef, itemName);
-                        return;
+        if(ingredientLists!=null)
+        {
+            for (IngredientList s: ingredientLists
+                    ) {
+                if(s.getID().equals(list_ID))
+                {
+                    //Check current list to see if item already exists.
+                    //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
+                    for (Item i: s.getItems()
+                            ) {
+                        if(i.getName().equals(itemName))
+                        {
+                            Log.d(TAG, "removeItemFromIngredientList: Removing data for item: " + itemName);
+                            dbComm.removeItem(listRef, itemName);
+                            return;
+                        }
+                        Log.d(TAG, "removeItemFromIngredientList: Item: " + itemName + " was not on list, and thus cannot be removed");
                     }
-                    Log.d(TAG, "removeItemFromIngredientList: Item: " + itemName + " was not on list, and thus cannot be removed");
                 }
             }
         }

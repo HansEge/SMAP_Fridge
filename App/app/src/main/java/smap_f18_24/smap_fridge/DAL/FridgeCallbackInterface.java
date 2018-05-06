@@ -11,4 +11,5 @@ public interface FridgeCallbackInterface {
     void onShoppingListsChange(String fridge_ID, ShoppingList list);
     void onShoppingListDelete(String fridge_ID, ShoppingList list);
     void onIngredientListsChange(String fridge_ID, IngredientList list);
+    void onIngredientListDelete(String id, IngredientList ingredientList);
 }

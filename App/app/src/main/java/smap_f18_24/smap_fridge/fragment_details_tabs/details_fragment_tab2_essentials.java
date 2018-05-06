@@ -39,7 +39,6 @@ import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 public class details_fragment_tab2_essentials extends Fragment {
 
     private ListView essentialList;
-    private ServiceUpdater mConnection;
 
     private String clickedFridgeID;
     private Fridge fridge;
