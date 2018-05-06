@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import smap_f18_24.smap_fridge.ModelClasses.IngredientList;
 import smap_f18_24.smap_fridge.ModelClasses.Item;
 import smap_f18_24.smap_fridge.R;
 
@@ -18,19 +19,19 @@ import smap_f18_24.smap_fridge.R;
 
 public class IngredientsListAdaptor extends BaseAdapter {
     private Context context;
-    private ArrayList<Item> items;
+    private IngredientList ingredientList;
     private Item item;
 
-    public IngredientsListAdaptor(Context c, ArrayList<Item> shoppingListItems){
+    public IngredientsListAdaptor(Context c, IngredientList ingredients ){
         this.context = c;
-        this.items = shoppingListItems;
+        this.ingredientList = ingredients;
     }
 
     @Override
     public int getCount() {
         //return size of the array list (number of items in the ingredientslist)
-        if(items != null){
-            return items.size();
+        if(ingredientList != null){
+            return ingredientList.getItems().size();
         } else {
             return 0;
         }
@@ -39,8 +40,8 @@ public class IngredientsListAdaptor extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         //return the item (ingredientslist item) in our array list at the given position
-        if(items != null){
-            return items.get(position);
+        if(ingredientList != null){
+            return ingredientList.getItems().get(position);
         } else{
             return null;
         }
@@ -58,7 +59,7 @@ public class IngredientsListAdaptor extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = fridgeInFlator.inflate(R.layout.ingredients_list_item,null);
         }
-        item = items.get(position);
+        item = ingredientList.getItems().get(position);
         if(item != null){
             //set name of the fridge
             TextView tv_IngredientsListItemName = (TextView) convertView.findViewById(R.id.ingredientsListAdaptor_tv_itemName);
