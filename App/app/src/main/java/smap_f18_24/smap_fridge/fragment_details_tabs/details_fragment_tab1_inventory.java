@@ -45,7 +45,6 @@ public class details_fragment_tab1_inventory extends Fragment {
 
         final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
-        test.setText("You are looking at the following fridge ID: " + clickedFridgeID);
 
 
         btn_goBackToOverview.setOnClickListener(new View.OnClickListener() {

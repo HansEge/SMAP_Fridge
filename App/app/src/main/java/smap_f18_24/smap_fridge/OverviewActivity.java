@@ -205,16 +205,19 @@ public class OverviewActivity extends AppCompatActivity {
         lv_fridgesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent detailsActivityIntent = new Intent(OverviewActivity.this, DetailsActivity.class);
+                Intent DetailsActivityIntent = new Intent(OverviewActivity.this, DetailsActivity.class);
 
-                SharedPreferences.Editor sharedPrefsEditor = sharedData.edit();
                 String tmpID = debugList.get(position).getID();
+
+
+                // Umiddelbart skal dette ikke længere bruges, hvis Intent passer ID videre til detailsActivity, hvorefter det håndteres af fragmentManager
+                SharedPreferences.Editor sharedPrefsEditor = sharedData.edit();
                 sharedPrefsEditor.putString("clickedFridgeID",tmpID);
                 sharedPrefsEditor.apply();
 
-                detailsActivityIntent.putExtra("clickedFridgeID",tmpID);
+                DetailsActivityIntent.putExtra("clickedFridgeID",tmpID);
 
-                startActivity(detailsActivityIntent);
+                startActivity(DetailsActivityIntent);
 
 
             }
