@@ -206,7 +206,7 @@ public class OverviewActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent detailsActivityIntent = new Intent(OverviewActivity.this, DetailsActivity.class);
 
-                detailsActivityIntent.putExtra()
+                //detailsActivityIntent.putExtra()
 
                 startActivity(detailsActivityIntent);
 
@@ -239,10 +239,7 @@ public class OverviewActivity extends AppCompatActivity {
                 return false;
             }
         });
-<<<<<<< HEAD
 
-=======
->>>>>>> 9b64fd3f7c778af6f2dd5e996ca4fc01f253aa4d
     }
 
     @Override
@@ -288,13 +285,11 @@ public class OverviewActivity extends AppCompatActivity {
 
             /*
             mService.setContext(getApplicationContext());
-<<<<<<< HEAD
+
             mService.SubscribeToFridge("TestFridgeID");
 
-=======
             mService.SubscribeToFridge("TestFridge");
             */
->>>>>>> 9b64fd3f7c778af6f2dd5e996ca4fc01f253aa4d
         }
 
         @Override

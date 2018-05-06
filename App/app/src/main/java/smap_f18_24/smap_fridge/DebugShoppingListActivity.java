@@ -97,7 +97,7 @@ public class DebugShoppingListActivity extends AppCompatActivity {
         });
     }
 
-
+//quantity
     private void setQuantityDialog(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -113,6 +113,7 @@ public class DebugShoppingListActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 String inputResult = input.getText().toString();
+                //mService.overWriteItemInIngredientList();
 
 
             }
