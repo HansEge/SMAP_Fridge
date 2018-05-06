@@ -17,15 +17,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import smap_f18_24.smap_fridge.Adaptors.EssentialsListAdaptor;
 import smap_f18_24.smap_fridge.R;
-
-// TODO - Missing link to context in order to findView by R.id. for example
 
 
 public class details_fragment_tab2_essentials extends Fragment {
+
+    private ListView essentialList;
+    private EssentialsListAdaptor adaptor = new EssentialsListAdaptor(this,DetailsActivity);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,7 +47,9 @@ public class details_fragment_tab2_essentials extends Fragment {
             }
         });
 
+        essentialList = (ListView) v.findViewById(R.id.lv_essential_tab2);
 
+        essentialList.setAdapter(adaptor);
 
         return v;
     }
