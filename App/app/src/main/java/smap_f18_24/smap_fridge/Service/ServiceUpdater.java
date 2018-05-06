@@ -187,7 +187,6 @@ public class ServiceUpdater extends Service {
     FridgeCallbackInterface callbackInterface = new FridgeCallbackInterface() {
         @Override
         public void onInventoryChange(String fridge_ID, InventoryList list) {
-
             broadcastResult("Stuff was updated");
             Log.d(TAG, "Inventory of fridge " + fridge_ID + " updated.");
             //Update list for fridge with matching fridge ID
@@ -307,10 +306,9 @@ public class ServiceUpdater extends Service {
             ShoppingList list2remove = getShoppingList(list.getID(),shoppingLists);
             shoppingLists.remove(list2remove);
         }
-
+    
         @Override
         public void onIngredientListsChange(String fridge_ID, IngredientList list) {
-
             Log.d(TAG, "Ingredient list " + list.getID() + " of fridge " + fridge_ID + " updated.");
 
             ArrayList<IngredientList> ingredientLists;
@@ -375,7 +373,6 @@ public class ServiceUpdater extends Service {
     //Add item to inventory - increments quantity, if item with matching name exists.
     public void addItemToInventory(Item item, String fridge_ID)
     {
-
         //CollectionReference InventoryRef=db.collection(fridge_ID).document("Inventory").collection("Items");
         CollectionReference InventoryRef=db.collection("Fridges").document(fridge_ID).collection("Content").document("Inventory").collection("Items");
         InventoryList inventory=getFridge(fridge_ID).getInventory();
@@ -427,7 +424,7 @@ public class ServiceUpdater extends Service {
     public void overwriteItemInInventory(Item item, String fridge_ID)
     {
         Log.d(TAG, "overwriteItemInInventory: Overwriting old data(if any) for item: " + item.getName());
-        CollectionReference InventoryRef=db.collection(fridge_ID).document("Inventory").collection("Items");
+        CollectionReference InventoryRef=db.collection("Fridges").document(fridge_ID).collection("Content").document("Inventory").collection("Items");
         dbComm.addItem(InventoryRef, item);
     }
 
@@ -520,6 +517,7 @@ public class ServiceUpdater extends Service {
                     }
                     //If item was not in inventory yet, just add it to list.
                     dbComm.addItem(listRef,item);
+                    return;
                 }
             }
         }
@@ -555,21 +553,24 @@ public class ServiceUpdater extends Service {
 
         //Find list with matching name
         ArrayList<ShoppingList> shoppingLists=(ArrayList<ShoppingList>)getFridge(fridge_ID).getShoppingLists();
-        for (ShoppingList s: shoppingLists
-                ) {
-            if(s.getID().equals(list_ID))
-            {
-                //Check current list to see if item already exists.
-                //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
-                for (Item i: s.getItems()
-                        ) {
-                    if(i.getName().equals(itemName))
-                    {
-                        Log.d(TAG, "removeItemFromShoppingList: Removing data for item: " + itemName);
-                        dbComm.removeItem(listRef, itemName);
-                        return;
+        if(shoppingLists!=null)
+        {
+            for (ShoppingList s: shoppingLists
+                    ) {
+                if(s.getID().equals(list_ID))
+                {
+                    //Check current list to see if item already exists.
+                    //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
+                    for (Item i: s.getItems()
+                            ) {
+                        if(i.getName().equals(itemName))
+                        {
+                            Log.d(TAG, "removeItemFromShoppingList: Removing data for item: " + itemName);
+                            dbComm.removeItem(listRef, itemName);
+                            return;
+                        }
+                        Log.d(TAG, "removeItemFromShoppingList: Item: " + itemName + " was not on list, and thus cannot be removed");
                     }
-                    Log.d(TAG, "removeItemFromShoppingList: Item: " + itemName + " was not on list, and thus cannot be removed");
                 }
             }
         }
@@ -648,10 +649,12 @@ public class ServiceUpdater extends Service {
         }
     }
 
+    /*
     public void addShoppingList(CollectionReference fridge, final ShoppingList listToAdd, String listName, String listID)
     {
         dbComm.addShoppingList(fridge, listToAdd, listName, listID);
     }
+    */
 
     public void createNewFridge(String ID, String Name)
     {

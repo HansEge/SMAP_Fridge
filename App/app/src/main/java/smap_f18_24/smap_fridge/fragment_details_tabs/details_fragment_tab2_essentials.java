@@ -69,10 +69,11 @@ public class details_fragment_tab2_essentials extends Fragment {
 
         EssentialsListAdaptor adaptor = new EssentialsListAdaptor(getActivity().getApplicationContext(),fridge.getEssentials());
 
-        essentialList = (ListView) v.findViewById(R.id.lv_essential_tab2);
-
         essentialList.setAdapter(adaptor);
     */
+
+
+
         return v;
     }
 }
