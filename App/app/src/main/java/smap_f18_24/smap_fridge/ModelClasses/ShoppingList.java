@@ -6,6 +6,7 @@ public class ShoppingList extends ItemList {
 
     String Name;
     String ID;
+    String responsibility = "";
 
     public ShoppingList() {
         //Empty constructor for use with firebase (i think..)
@@ -33,6 +34,11 @@ public class ShoppingList extends ItemList {
         getItem(_itemName).setResponsibleUserEmail(_UserEmail);
         getItem(_itemName).setItemStatus("Responsibilty Claimed");
 
+    }
+
+    public String getResponsibility()
+    {
+        return responsibility;
     }
 
     public void MoveFromShoppingListToFridge(Item _toMove) {
