@@ -76,6 +76,7 @@ public class ServiceUpdater extends Service {
         //Get instance of database-communicator
         dbComm= new fireStoreCommunicator(context,callbackInterface);
 
+        /*
 
         new Thread(new Runnable() {
             @Override
@@ -92,8 +93,7 @@ public class ServiceUpdater extends Service {
             }
         }).start();
 
-
-
+        */
 
         Log.d("NOTI_FROM_SERVICE", "Notification from service");
         //TODO Update stuff
