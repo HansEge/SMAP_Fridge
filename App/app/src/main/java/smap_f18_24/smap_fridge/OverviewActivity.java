@@ -288,8 +288,15 @@ public class OverviewActivity extends AppCompatActivity {
 
             mService.SubscribeToFridge("TestFridgeID");
 
+
             mService.SubscribeToFridge("TestFridge");
             */
+
+
+            mService.SubscribeToFridge("TestFridge");
+
+
+
         }
 
         @Override
