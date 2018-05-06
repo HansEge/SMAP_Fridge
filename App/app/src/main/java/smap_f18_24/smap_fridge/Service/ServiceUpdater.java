@@ -305,7 +305,7 @@ public class ServiceUpdater extends Service {
             ShoppingList list2remove = getShoppingList(list.getID(),shoppingLists);
             shoppingLists.remove(list2remove);
         }
-
+    
         @Override
         public void onIngredientListsChange(String fridge_ID, IngredientList list) {
             Log.d(TAG, "Ingredient list " + list.getID() + " of fridge " + fridge_ID + " updated.");
@@ -517,6 +517,7 @@ public class ServiceUpdater extends Service {
                     }
                     //If item was not in inventory yet, just add it to list.
                     dbComm.addItem(listRef,item);
+                    return;
                 }
             }
         }
@@ -552,21 +553,24 @@ public class ServiceUpdater extends Service {
 
         //Find list with matching name
         ArrayList<ShoppingList> shoppingLists=(ArrayList<ShoppingList>)getFridge(fridge_ID).getShoppingLists();
-        for (ShoppingList s: shoppingLists
-                ) {
-            if(s.getID().equals(list_ID))
-            {
-                //Check current list to see if item already exists.
-                //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
-                for (Item i: s.getItems()
-                        ) {
-                    if(i.getName().equals(itemName))
-                    {
-                        Log.d(TAG, "removeItemFromShoppingList: Removing data for item: " + itemName);
-                        dbComm.removeItem(listRef, itemName);
-                        return;
+        if(shoppingLists!=null)
+        {
+            for (ShoppingList s: shoppingLists
+                    ) {
+                if(s.getID().equals(list_ID))
+                {
+                    //Check current list to see if item already exists.
+                    //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
+                    for (Item i: s.getItems()
+                            ) {
+                        if(i.getName().equals(itemName))
+                        {
+                            Log.d(TAG, "removeItemFromShoppingList: Removing data for item: " + itemName);
+                            dbComm.removeItem(listRef, itemName);
+                            return;
+                        }
+                        Log.d(TAG, "removeItemFromShoppingList: Item: " + itemName + " was not on list, and thus cannot be removed");
                     }
-                    Log.d(TAG, "removeItemFromShoppingList: Item: " + itemName + " was not on list, and thus cannot be removed");
                 }
             }
         }

@@ -111,6 +111,10 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                             String snapshotID = queryDocumentSnapshots.getDocuments().get(0).getId();
                             //Log.d(TAG, "SNapshotID: " + snapshotID);
                             destination.document(snapshotID).delete();
+                            if(queryDocumentSnapshots.getDocuments().size()==1)
+                            {
+                                Log.d(TAG, "onSuccess: DELETE SHOPPING LIST!");
+                            }
                         }
                         else
                         {
@@ -359,10 +363,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                 {
                                     //TODO: Return list through callback interface/broadcast new list.
                                     Log.d(TAG, "Broadcasting Shopping list: " + shoppingList.getName());
-                                    for (Item i: shoppingList.getItems()
-                                         )
-
-                                        callbackInterface.onShoppingListsChange(fridge.getParent().getId(),shoppingList);
+                                    callbackInterface.onShoppingListsChange(fridge.getParent().getId(),shoppingList);
                                 }
                             }
                             catch (Exception e)
