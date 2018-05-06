@@ -3,12 +3,12 @@ package smap_f18_24.smap_fridge.ModelClasses;
 public class Item {
 
 
-    String Name;
-    String Unit;
-    float Quantity;
-    String ResponsibleUserEmail;
+    private String itemName;
+    private String Unit;
+    private float Quantity;
+    private String ResponsibleUserEmail;
     //ItemStatus itemStatus;
-    String itemStatus;
+    private String itemStatus;
 
 
     //Constructors
@@ -18,53 +18,53 @@ public class Item {
         //Empty constructor for use with firebase (i think..)
     }
 
-    public Item(String name, String unit, float quantity, String responsibleUserEmail, String itemStatus) {
-        Name = name;
-        Unit = unit;
-        Quantity = quantity;
-        ResponsibleUserEmail = responsibleUserEmail;
-        this.itemStatus = itemStatus;
+    public Item(String _ItemName, String _unit, float _quantity, String _responsibleUserEmail, String _itemStatus) {
+        this.itemName = _ItemName;
+        this.Unit = _unit;
+        this.Quantity = _quantity;
+        this.ResponsibleUserEmail = _responsibleUserEmail;
+        this.itemStatus = _itemStatus;
     }
 
     //getters and setters
     public String getName() {
-        return Name;
+        return itemName;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setName(String _ItemName) {
+        this.itemName = _ItemName;
     }
 
     public String getUnit() {
         return Unit;
     }
 
-    public void setUnit(String unit) {
-        Unit = unit;
+    public void setUnit(String _unit) {
+        this.Unit = _unit;
     }
 
     public float getQuantity() {
         return Quantity;
     }
 
-    public void setQuantity(float quantity) {
-        Quantity = quantity;
+    public void setQuantity(float _quantity) {
+        this.Quantity = _quantity;
     }
 
     public String getResponsibleUserEmail() {
         return ResponsibleUserEmail;
     }
 
-    public void setResponsibleUserEmail(String responsibleUserEmail) {
-        ResponsibleUserEmail = responsibleUserEmail;
+    public void setResponsibleUserEmail(String _responsibleUserEmail) {
+        this.ResponsibleUserEmail = _responsibleUserEmail;
     }
 
     public String getItemStatus() {
         return itemStatus;
     }
 
-    public void setItemStatus(String itemStatus) {
-        this.itemStatus = itemStatus;
+    public void setItemStatus(String _itemStatus) {
+        this.itemStatus = _itemStatus;
     }
 
 

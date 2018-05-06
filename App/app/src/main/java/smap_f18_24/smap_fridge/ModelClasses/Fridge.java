@@ -16,15 +16,15 @@ public class Fridge {
         //Empty constructor for use with firebase (i think..)
     }
 
-    public Fridge(String name, String id, List<String> connectedUserEmails, InventoryList inventory, EssentialsList essentials, List<ShoppingList> shoppingLists, List<IngredientList> ingredientLists)
+    public Fridge(String _name, String _id, List<String> _connectedUserEmails, InventoryList _inventory, EssentialsList _essentials, List<ShoppingList> _shoppingLists, List<IngredientList> _ingredientLists)
     {
-        Name = name;
-        ID = id;
-        ConnectedUserEmails = connectedUserEmails;
-        Inventory = inventory;
-        Essentials = essentials;
-        ShoppingLists = shoppingLists;
-        IngredientLists = ingredientLists;
+        Name = _name;
+        ID = _id;
+        ConnectedUserEmails = _connectedUserEmails;
+        Inventory = _inventory;
+        Essentials = _essentials;
+        ShoppingLists = _shoppingLists;
+        IngredientLists = _ingredientLists;
     }
 
 
@@ -33,67 +33,67 @@ public class Fridge {
         return Name;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setName(String _name) {
+        Name = _name;
     }
 
     public String getID() {
         return ID;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setID(String _id) {
+        this.ID = _id;
     }
 
     public List<String> getConnectedUsers() {
         return ConnectedUserEmails;
     }
 
-    public void setConnectedUsers(List<String> connectedUsers) {
-        ConnectedUserEmails = connectedUsers;
+    public void setConnectedUsers(List<String> _connectedUsers) {
+        ConnectedUserEmails = _connectedUsers;
     }
 
     public InventoryList getInventory() {
         return Inventory;
     }
 
-    public void setInventory(InventoryList inventory) {
-        Inventory = inventory;
+    public void setInventory(InventoryList _inventory) {
+        Inventory = _inventory;
     }
 
     public EssentialsList getEssentials() {
         return Essentials;
     }
 
-    public void setEssentials(EssentialsList essentials) {
-        Essentials = essentials;
+    public void setEssentials(EssentialsList _essentials) {
+        Essentials = _essentials;
     }
 
     public List<ShoppingList> getShoppingLists() {
         return ShoppingLists;
     }
 
-    public void setShoppingLists(List<ShoppingList> shoppingLists) {
-        ShoppingLists = shoppingLists;
+    public void setShoppingLists(List<ShoppingList> _shoppingLists) {
+        ShoppingLists = _shoppingLists;
     }
 
     public List<IngredientList> getIngredientLists() {
         return IngredientLists;
     }
 
-    public void setIngredientLists(List<IngredientList> ingredientLists) {
-        IngredientLists = ingredientLists;
+    public void setIngredientLists(List<IngredientList> _ingredientLists) {
+        IngredientLists = _ingredientLists;
     }
 
 
     //Methods
 
-    public void AddUser(String userEmail)
+    public void AddUser(String _userEmail)
     {
         //Check if userEmail is already on list
         for (String s:ConnectedUserEmails
              ) {
-            if(s.equals(userEmail))
+            if(s.equals(_userEmail))
             {
                 return;
             }
@@ -103,7 +103,7 @@ public class Fridge {
         //If userEmail is not on list yet:
         //TODO
         //Add fridge ID to USERS list of connectedFridges
-        ConnectedUserEmails.add(userEmail);
+        ConnectedUserEmails.add(_userEmail);
     }
 
     /*
@@ -125,69 +125,69 @@ public class Fridge {
     }
     */
 
-    public void RemoveItemFromInventory(String itemName)
+    public void RemoveItemFromInventory(String _itemName)
     {
-        Inventory.getItems().remove(Inventory.getItem(itemName));
+        Inventory.getItems().remove(Inventory.getItem(_itemName));
     }
 
-    public void EditInventoryItemQuantity(String itemName, float quantity)
+    public void EditInventoryItemQuantity(String _itemName, float _quantity)
     {
-        Inventory.getItem(itemName).setQuantity(quantity);
+        Inventory.getItem(_itemName).setQuantity(_quantity);
         //TODO: Check essential quantity of item. If too low, add to shopping list.
     }
 
 
     //ESSENTIALS LIST-RELATED
-    public void AddItemToEssentials(Item toAdd)
+    public void AddItemToEssentials(Item _toAdd)
     {
-        Essentials.AddItem(toAdd);
+        Essentials.AddItem(_toAdd);
     }
 
-    public void RemoveItemFromEssentials(String itemName)
+    public void RemoveItemFromEssentials(String _itemName)
     {
-        Essentials.getItems().remove(Inventory.getItem(itemName));
+        Essentials.getItems().remove(Inventory.getItem(_itemName));
     }
 
-    public void EditEssentialsItemQuantity(String itemName, float quantity)
+    public void EditEssentialsItemQuantity(String _itemName, float _quantity)
     {
-        Essentials.EditItemQuantity(itemName,quantity);
+        Essentials.EditItemQuantity(_itemName,_quantity);
     }
 
     //SHOPPING LIST-RELATED
-    public void CreateNewShoppingList(String name)
+    public void CreateNewShoppingList(String _shoppingListName)
     {
         ID="";
         //TODO: Find a way to make ID - maybe fridgeID+name?
-        ShoppingLists.add(new ShoppingList(name,ID));
+        ShoppingLists.add(new ShoppingList(_shoppingListName,ID));
     }
 
-    public void AddItemToShoppingList(String ListID, Item toAdd)
+    public void AddItemToShoppingList(String _ListID, Item _toAdd)
     {
-        ShoppingList targetList = getShoppingList(ListID);
+        ShoppingList targetList = getShoppingList(_ListID);
         //TODO: Check if item is already on list - Maybe this should be done in ItemList?
         //If on list: Increment quantity properly
         //else: add entire item
     }
 
-    public void RemoveItemFromShoppingList(String ListID, String itemName)
+    public void RemoveItemFromShoppingList(String _ListID, String _itemName)
     {
-        ShoppingList targetList = getShoppingList(ListID);
-        targetList.RemoveItem(itemName);
+        ShoppingList targetList = getShoppingList(_ListID);
+        targetList.RemoveItem(_itemName);
     }
 
 
 
     //INGREDIENT LIST-RELATED
-    public void CreateNewIngredientList(String name)
+    public void CreateNewIngredientList(String _name)
     {
         ID="";
         //TODO: Find a way to make ID - maybe fridgeID+name?
-        IngredientLists.add(new IngredientList(name,ID));
+        IngredientLists.add(new IngredientList(_name,ID));
     }
 
-    public void AddItemToIngredientList(String ListID, Item toAdd)
+    public void AddItemToIngredientList(String _ListID, Item _ingredientsItemtoAdd)
     {
-        IngredientList targetList = getIngredientList(ListID);
+        IngredientList targetList = getIngredientList(_ListID);
         //TODO: Check if item is already on list - Maybe this should be done in ItemList?
         //If on list: Increment quantity properly
         //else: add entire item
@@ -201,7 +201,7 @@ public class Fridge {
 
 
 
-    public void UpdateShoppingListFromIngredientList(ShoppingList shoppingList ,InventoryList ingredientList)
+    public void UpdateShoppingListFromIngredientList(ShoppingList _shoppingList ,InventoryList _ingredientList)
     {
         //TODO: FOR EACH ITEM ON SHOPPING LIST
         //Check if item is in inventory
@@ -214,28 +214,28 @@ public class Fridge {
 
 
     //HELPER FUNCTIONS
-    private ShoppingList getShoppingList(String ListID)
+    private ShoppingList getShoppingList(String _ListID)
     {
         for (ShoppingList s: ShoppingLists
              ) {
-            if(s.ID.equals(ListID))
+            if(s.ID.equals(_ListID))
             {
                 return s;
             }
         }
-        throw new RuntimeException("ShoppingList " + ListID + " was not found on list");
+        throw new RuntimeException("ShoppingList " + _ListID + " was not found on list");
     }
 
-    private IngredientList getIngredientList(String ListID)
+    private IngredientList getIngredientList(String _ListID)
     {
         for (IngredientList s: IngredientLists
                 ) {
-            if(s.ID.equals(ListID))
+            if(s.ID.equals(_ListID))
             {
                 return s;
             }
         }
-        throw new RuntimeException("IngredientList " + ListID + " was not found on list");
+        throw new RuntimeException("IngredientList " + _ListID + " was not found on list");
     }
 
 }

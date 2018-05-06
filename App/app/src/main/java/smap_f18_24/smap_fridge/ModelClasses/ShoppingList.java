@@ -11,11 +11,10 @@ public class ShoppingList extends ItemList {
         //Empty constructor for use with firebase (i think..)
     }
 
-    public ShoppingList(String name, String id) {
-        Name = name;
-        ID = id;
+    public ShoppingList(String _name, String _id) {
+        Name = _name;
+        ID = _id;
     }
-
 
     public String getName() {
         return Name;
@@ -26,30 +25,27 @@ public class ShoppingList extends ItemList {
     }
 
 
-
-
-
-    public void EditItemQuantity(String name, float newValue) {
-        getItem(name).setQuantity(newValue);
+    public void EditItemQuantity(String _name, float _newValue) {
+        getItem(_name).setQuantity(_newValue);
     }
 
-    public void SetResponsibilityForItem(String UserEmail, String itemName) {
-        getItem(itemName).setResponsibleUserEmail(UserEmail);
-        getItem(itemName).setItemStatus("Responsibilty Claimed");
+    public void SetResponsibilityForItem(String _UserEmail, String _itemName) {
+        getItem(_itemName).setResponsibleUserEmail(_UserEmail);
+        getItem(_itemName).setItemStatus("Responsibilty Claimed");
 
     }
 
-    public void MoveFromShoppingListToFridge(Item toMove) {
+    public void MoveFromShoppingListToFridge(Item _toMove) {
         //TODO
         //Add toMove to InventoryList
         //Remove toMove from shopping list
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setName(String _name) {
+        Name = _name;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setID(String _ID) {
+        this.ID = _ID;
     }
 }
