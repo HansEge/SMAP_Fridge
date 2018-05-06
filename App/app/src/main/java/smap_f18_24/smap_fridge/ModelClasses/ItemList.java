@@ -17,12 +17,12 @@ public abstract class ItemList {
     public ItemList()
     {
         //Empty constructor for use with firebase (i think..)
-        Items=new ArrayList<Item>();
+        Items=new ArrayList<>();
     }
 
-    public ItemList(Fridge connectedFridge)
+    public ItemList(Fridge _connectedFridge)
     {
-        this.connectedFridge = connectedFridge;
+        this.connectedFridge = _connectedFridge;
     }
 
     //methods
@@ -36,23 +36,23 @@ public abstract class ItemList {
         Items.remove(getItem(itemName));
     }
 
-    public void EditItemQuantity(String itemName, float newValue)
+    public void EditItemQuantity(String singleItemName, float newValue)
     {
-        getItem(itemName).setQuantity(newValue);
+        getItem(singleItemName).setQuantity(newValue);
     }
 
     //Search list for item with given name. Returns it if it exists, throws exception if not.
-    public Item getItem(String itemName)
+    public Item getItem(String singleItemName)
     {
         for (Item i: Items
                 ) {
-            if(i.Name.equals(itemName))
+            if(i.getName().equals(singleItemName))
             {
                 return i;
             }
 
         }
-        throw new RuntimeException("Item " + itemName + " was not found on list");
+        throw new RuntimeException("Item " + singleItemName + " was not found on list");
     }
 
     public List<Item> getItems()

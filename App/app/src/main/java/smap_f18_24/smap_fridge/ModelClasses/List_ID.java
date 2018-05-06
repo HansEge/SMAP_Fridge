@@ -2,7 +2,16 @@ package smap_f18_24.smap_fridge.ModelClasses;
 
 public class List_ID {
 
-    String ID;
+    private String ID;
+
+    public List_ID(){
+        //For firebase, perhaps?
+    }
+
+    public List_ID(String ID){
+        setID(ID);
+    }
+
 
     public String getID() {
         return ID;

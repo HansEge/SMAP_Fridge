@@ -3,8 +3,8 @@ package smap_f18_24.smap_fridge.ModelClasses;
 public class EssentialsList extends ItemList {
 
 
-    public void EditItemMinimum(String name, float newValue)
+    public void EditItemMinimum(String _Itemname, float _ItemNewValue)
     {
-        EditItemQuantity(name, newValue);
+        EditItemQuantity(_Itemname, _ItemNewValue);
     }
 }
