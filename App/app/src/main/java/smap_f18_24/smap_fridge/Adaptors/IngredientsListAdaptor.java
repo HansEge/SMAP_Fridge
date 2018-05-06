@@ -79,7 +79,7 @@ public class IngredientsListAdaptor extends BaseAdapter {
             tv_IngredientsListItemUnit.setText(String.valueOf(item.getUnit()));
 
 
-          
+
 
             //Lille forsøg med dropdown box
             /*Spinner dropdown = (Spinner) convertView.findViewById(R.id.spinner1);
