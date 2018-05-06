@@ -1,13 +1,21 @@
 package smap_f18_24.smap_fridge.Adaptors;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import smap_f18_24.smap_fridge.ModelClasses.Item;
 import smap_f18_24.smap_fridge.R;
@@ -69,8 +77,58 @@ public class IngredientsListAdaptor extends BaseAdapter {
 
             TextView tv_IngredientsListItemUnit = (TextView) convertView.findViewById(R.id.ingredientsListAdaptor_tv_itemUnit);
             tv_IngredientsListItemUnit.setText(String.valueOf(item.getUnit()));
+
+
+          
+
+            //Lille forsøg med dropdown box
+            /*Spinner dropdown = (Spinner) convertView.findViewById(R.id.spinner1);
+            List<String> dropdownItems = new ArrayList<>();
+            dropdownItems.add("1");
+            dropdownItems.add("2");
+            dropdownItems.add("3");
+            dropdownItems.add("4");
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, dropdownItems);
+            dropdown.setAdapter(arrayAdapter);*/
+
+
+
+
+
+
+
         }
+
+
 
         return convertView;
     }
+    private void setMyCityDialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Set quantity");
+
+        final EditText input = new EditText(context);
+
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                String inputResult = input.getText().toString();
+
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.show();
+    }
+
 }

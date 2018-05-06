@@ -71,6 +71,8 @@ public class DebugShoppingListActivity extends AppCompatActivity {
 
 
     }
+
+
     protected void onStart(){
         super.onStart();
     }
