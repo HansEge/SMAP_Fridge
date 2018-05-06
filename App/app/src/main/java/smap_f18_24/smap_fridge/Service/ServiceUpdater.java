@@ -359,6 +359,7 @@ public class ServiceUpdater extends Service {
 
                 //TODO: Broadcast that new data is available.
             }
+
         }
 
         @Override
@@ -367,6 +368,7 @@ public class ServiceUpdater extends Service {
             List<IngredientList> ingredientLists =  getFridge(fridge_ID).getIngredientLists();
             IngredientList list2remove = getIngredientList(list.getID(),ingredientLists);
             ingredientLists.remove(list2remove);
+
         }
     };
 
