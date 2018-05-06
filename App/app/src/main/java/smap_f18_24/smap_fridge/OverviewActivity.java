@@ -58,6 +58,7 @@ public class OverviewActivity extends AppCompatActivity {
     IngredientList myIngredientsList1 = new IngredientList("ingredientsListName","ingredientsListID");
     ShoppingList myShoppingList1 = new ShoppingList("shoppingListName","shoppingListID");
 
+
     Fridge testFridge = new Fridge("Tester", "testID", connectedUserEmailss, inventoryList, essentialList, myShoppingLists, myIngredientsLists);
 
 
@@ -65,7 +66,6 @@ public class OverviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overview);
-
 
         // INITIALIZING
 
@@ -266,9 +266,10 @@ public class OverviewActivity extends AppCompatActivity {
 
             mService.SubscribeToFridge("TestFridgeID");
 
+        
             mService.SubscribeToFridge("TestFridge");
-
         }
+
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {

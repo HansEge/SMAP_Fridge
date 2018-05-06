@@ -5,6 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:tag="ESSENTIAL_TAB"
     tools:context=".fragment_details_tabs.details_fragment_tab2_essentials">
 
     <Button
