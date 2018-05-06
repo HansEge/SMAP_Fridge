@@ -38,6 +38,7 @@ public class details_fragment_tab1_inventory extends Fragment {
         test = (TextView) v.findViewById(R.id.details_tab1_inventory_tv_sectionLabel);
         btn_goBackToOverview = (Button) v.findViewById(R.id.details_tab1_inventory_btn_backToOverView);
 
+
         btn_goBackToOverview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

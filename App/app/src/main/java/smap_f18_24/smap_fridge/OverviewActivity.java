@@ -42,6 +42,21 @@ public class OverviewActivity extends AppCompatActivity {
     ServiceUpdater mService;
     private boolean mBound = false;
 
+    final public ArrayList<Fridge> debugList = new ArrayList<>();
+    public FridgeListAdaptor adaptor1 = new FridgeListAdaptor(this, debugList);
+
+    List<String> connectedUserEmailss;
+    final public InventoryList inventoryList = new InventoryList();
+    final public EssentialsList essentialList = new EssentialsList();
+
+    List<ShoppingList> myShoppingLists = new ArrayList<ShoppingList>();
+    List<IngredientList> myIngredientsLists = new ArrayList<IngredientList>();
+
+    IngredientList myIngredientsList1 = new IngredientList("ingredientsListName","ingredientsListID");
+    ShoppingList myShoppingList1 = new ShoppingList("shoppingListName","shoppingListID");
+
+    Fridge testFridge = new Fridge("Tester", "testID", connectedUserEmailss, inventoryList, essentialList, myShoppingLists, myIngredientsLists);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +79,10 @@ public class OverviewActivity extends AppCompatActivity {
 
 
         tv_welcomeUser = findViewById(R.id.overview_tv_welcomeUser);
+
+        debugList.add(testFridge);
+
+        lv_fridgesListView.setAdapter(adaptor1);
 
         // POST-INITIALIZATION
 
@@ -109,6 +128,17 @@ public class OverviewActivity extends AppCompatActivity {
                         //User will get Toast message if the ID already exists.
                         mService.createNewFridge(tmp_id,tmp_name);
 
+                        mService.SubscribeToFridge(tmp_id);
+
+                        Fridge tmpFridge = mService.getFridge(tmp_id);
+
+                        debugList.add(tmpFridge);
+
+                        lv_fridgesListView.setAdapter(adaptor1);
+
+
+                        //TODO - get data from database to Fridge listview - in other words --> global to local
+
 
                     }
                 });
@@ -153,25 +183,9 @@ public class OverviewActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        /*
-                            TODO
+                        //mService.SubscribeToFridge(et_uniqueCodeUserInput.getText().toString());
 
-                           Search database for unique code
-                            If found, then add fridge and all information to the users list of fridges
-                            If not, then present a errorMessage to the user
-
-                            At this point the errorMessage doesn't work. This is because the dialog closes before code is being executed.
-                            Try following work-around:
-                            https://stackoverflow.com/questions/40261250/validation-on-edittext-in-alertdialog
-
-                        */
-
-                        if (et_uniqueCodeUserInput.getText().toString().trim().equalsIgnoreCase("")) {
-                            //Tjek for den rigtige fejl og ikke bare tomt felt
-                            et_uniqueCodeUserInput.setError("The unique code doesn't exist");
-                        }
-
-
+                        //TODO - subscribe to an existing fridge by using the UNIQUE ID
 
                     }
                 });
@@ -186,7 +200,12 @@ public class OverviewActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent detailsActivityIntent = new Intent(OverviewActivity.this, DetailsActivity.class);
+
+                detailsActivityIntent.putExtra()
+
                 startActivity(detailsActivityIntent);
+
+
             }
         });
 
@@ -216,7 +235,6 @@ public class OverviewActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     @Override
@@ -235,7 +253,7 @@ public class OverviewActivity extends AppCompatActivity {
             mBound = true;
 
             mService.setContext(getApplicationContext());
-            mService.SubscribeToFridge("TestFridge");
+            mService.SubscribeToFridge("TestFridgeID");
 
         }
 
