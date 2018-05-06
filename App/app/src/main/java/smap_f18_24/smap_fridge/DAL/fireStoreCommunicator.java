@@ -341,6 +341,11 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                         shoppingList.AddItem(i);
                                     }
                                 }
+                                //If only item in list was the Info-object, delete the list, both in database and locally.
+                                if(itemList.size()<2)
+                                {
+                                    callbackInterface.onShoppingListDelete(fridge.getParent().getId(),shoppingList);
+                                }
                                 if(shoppingList.getName().equals("NO_NAME_YET"))
                                 {
                                     Log.d(TAG, "onSuccess: List name has not been set yet, and thus list is not returned yet.");
@@ -594,7 +599,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                     @Override
                                     public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                                         Toast.makeText(context, "Shopping list " +id.getID() + " of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
-                                        Log.d(TAG, "SubscribeToFridge - Shopping List " + id.getID() + " of Fridge: " + fridgeID + " updated.");
+                                        Log.d(TAG, "SubscribefToFridge - Shopping List " + id.getID() + " of Fridge: " + fridgeID + " updated.");
 
                                         //get new data and broadcast changes
                                         getShoppingList(fridgeListRef,id.getID());

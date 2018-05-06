@@ -3,7 +3,7 @@ package smap_f18_24.smap_fridge.ModelClasses;
 public class Item {
 
 
-    private String itemName;
+    private String Name;
     private String Unit;
     private float Quantity;
     private String ResponsibleUserEmail;
@@ -18,8 +18,8 @@ public class Item {
         //Empty constructor for use with firebase (i think..)
     }
 
-    public Item(String _ItemName, String _unit, float _quantity, String _responsibleUserEmail, String _itemStatus) {
-        this.itemName = _ItemName;
+    public Item(String Name, String _unit, float _quantity, String _responsibleUserEmail, String _itemStatus) {
+        this.Name = Name;
         this.Unit = _unit;
         this.Quantity = _quantity;
         this.ResponsibleUserEmail = _responsibleUserEmail;
@@ -28,11 +28,11 @@ public class Item {
 
     //getters and setters
     public String getName() {
-        return itemName;
+        return Name;
     }
 
-    public void setName(String _ItemName) {
-        this.itemName = _ItemName;
+    public void setName(String Name) {
+        this.Name = Name;
     }
 
     public String getUnit() {

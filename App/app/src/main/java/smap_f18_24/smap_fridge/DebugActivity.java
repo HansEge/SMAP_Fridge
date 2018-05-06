@@ -44,7 +44,7 @@ public class DebugActivity extends AppCompatActivity {
     private boolean mBound = false;
     ServiceUpdater mService;
 
-    EditText etFridgeName, etItemName, etListName, etFridgeID;
+    EditText etFridgeName, etItemName, etListName, etFridgeID, etListID;
     Button btn_NewFridge, btn_add2inv, btn_add2ess, btn_add2SL, btn_add2IL, btn_rmvFrmInv, btn_rmvFrmSL;
 
     @Override
@@ -62,10 +62,10 @@ public class DebugActivity extends AppCompatActivity {
         etItemName=findViewById(R.id.debug_et_itemName);
         etListName=findViewById(R.id.debug_et_listName);
         etFridgeID=findViewById(R.id.debug_et_fridgeID);
+        etListID=findViewById(R.id.debug_et_listID);
 
         btn_add2inv=findViewById(R.id.debug_btn_addItemToInv);
         btn_add2ess=findViewById(R.id.debug_btn_addItemToEss);
-        btn_add2IL=findViewById(R.id.debug_btn_addItemToIngredientList);
         btn_add2SL=findViewById(R.id.debug_btn_addItemToShoppingList);
         btn_NewFridge=findViewById(R.id.debug_btn_newFridge);
         btn_rmvFrmInv=findViewById(R.id.debug_btn_removeItemFromInventory);
@@ -74,6 +74,7 @@ public class DebugActivity extends AppCompatActivity {
         btn_add2inv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String listID=etListID.getText().toString();
                 String itemName=etItemName.getText().toString();
                 String fridgeName=etFridgeName.getText().toString();
                 String fridgeID = etFridgeID.getText().toString();
@@ -85,6 +86,7 @@ public class DebugActivity extends AppCompatActivity {
         btn_add2ess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String listID=etListID.getText().toString();
                 String itemName=etItemName.getText().toString();
                 String fridgeName=etFridgeName.getText().toString();
                 String fridgeID = etFridgeID.getText().toString();
@@ -96,6 +98,7 @@ public class DebugActivity extends AppCompatActivity {
         btn_NewFridge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String listID=etListID.getText().toString();
                 String itemName=etItemName.getText().toString();
                 String fridgeName=etFridgeName.getText().toString();
                 String fridgeID = etFridgeID.getText().toString();
@@ -105,37 +108,26 @@ public class DebugActivity extends AppCompatActivity {
             }
         });
 
-        btn_add2IL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String itemName=etItemName.getText().toString();
-                String listName = etListName.getText().toString();
-                String fridgeName=etFridgeName.getText().toString();
-                String fridgeID = etFridgeID.getText().toString();
-                Item i = new Item(itemName,"grams",5,"","");
-                mService.addItemToShoppingList(i,fridgeID,fridgeName,listName);
-            }
-        });
-
         btn_add2SL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String listID=etListID.getText().toString();
                 String itemName=etItemName.getText().toString();
                 String listName = etListName.getText().toString();
                 String fridgeName=etFridgeName.getText().toString();
                 String fridgeID = etFridgeID.getText().toString();
                 Item i = new Item(itemName,"grams",5,"","");
-                mService.addItemToShoppingList(i,fridgeID,listName,listName+"ID");
+                mService.addItemToShoppingList(i,fridgeID,listName,listID);
             }
         });
 
         btn_rmvFrmSL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String listID=etListID.getText().toString();
                 String itemName=etItemName.getText().toString();
                 String listName = etListName.getText().toString();
                 String fridgeName=etFridgeName.getText().toString();
-                String listID = listName+"ID";
                 String fridgeID = etFridgeID.getText().toString();
                 Item i = new Item(itemName,"grams",5,"","");
                 mService.removeItemFromShoppingList(itemName,fridgeID,listID);
@@ -145,6 +137,7 @@ public class DebugActivity extends AppCompatActivity {
         btn_rmvFrmInv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String listID=etListID.getText().toString();
                 String itemName=etItemName.getText().toString();
                 String listName = etListName.getText().toString();
                 String fridgeName=etFridgeName.getText().toString();
@@ -174,7 +167,7 @@ public class DebugActivity extends AppCompatActivity {
             mBound = true;
 
             mService.setContext(getApplicationContext());
-            mService.SubscribeToFridge("TestFridge");
+            mService.SubscribeToFridge("TestFridgeID");
 
 
         }
