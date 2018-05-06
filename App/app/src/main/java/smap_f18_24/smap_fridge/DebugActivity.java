@@ -145,7 +145,7 @@ public class DebugActivity extends AppCompatActivity {
                 String fridgeName=etFridgeName.getText().toString();
                 String fridgeID = etFridgeID.getText().toString();
                 Item i = new Item(itemName,"grams",5,"","");
-                mService.removeItemFromInventory(itemName,fridgeID);
+                mService.removeItemFromEssentials(itemName,fridgeID);
             }
         });
 
@@ -158,7 +158,7 @@ public class DebugActivity extends AppCompatActivity {
                 String fridgeName=etFridgeName.getText().toString();
                 String fridgeID = etFridgeID.getText().toString();
                 Item i = new Item(itemName,"grams",5,"","");
-                mService.overwriteItemInInventory(i,fridgeID);
+                mService.overwriteItemInEssentials(i,fridgeID);
             }
         });
 
