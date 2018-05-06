@@ -141,7 +141,7 @@ public class OverviewActivity extends AppCompatActivity {
                 addExistingFridgeDialogBox.setView(et_uniqueCodeUserInput);
 
                 //Functionality of the right sided button - cancels the dialogbox
-                addExistingFridgeDialogBox.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                addExistingFridgeDialogBox.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -149,7 +149,7 @@ public class OverviewActivity extends AppCompatActivity {
                 });
 
                 //Functionality of the right sided button - cancels the dialogbox
-                addExistingFridgeDialogBox.setNegativeButton("Add", new DialogInterface.OnClickListener() {
+                addExistingFridgeDialogBox.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
