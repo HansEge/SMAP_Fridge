@@ -92,11 +92,6 @@ public class IngredientsListAdaptor extends BaseAdapter {
             dropdown.setAdapter(arrayAdapter);*/
 
 
-
-
-
-
-
         }
 
 
