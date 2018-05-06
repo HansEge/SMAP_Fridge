@@ -59,7 +59,7 @@ public class OverviewActivity extends AppCompatActivity {
     ShoppingList myShoppingList1 = new ShoppingList("shoppingListName","shoppingListID");
 
 
-    Fridge testFridge = new Fridge("Tester", "testID", connectedUserEmailss, inventoryList, essentialList, myShoppingLists, myIngredientsLists);
+    public Fridge testFridge = new Fridge("Tester", "testID", connectedUserEmailss, inventoryList, essentialList, myShoppingLists, myIngredientsLists);
 
 
     @Override
@@ -70,6 +70,11 @@ public class OverviewActivity extends AppCompatActivity {
         // INITIALIZING
 
         final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(this);
+
+
+        ShoppingList s = new ShoppingList("hh","123");
+
+        myShoppingLists.add(s);
 
 
         //Start service
@@ -267,10 +272,10 @@ public class OverviewActivity extends AppCompatActivity {
 
             mService.setContext(getApplicationContext());
 
-            mService.SubscribeToFridge("TestFridgeID");
+            //mService.SubscribeToFridge("TestFridgeID");
 
 
-            mService.SubscribeToFridge("TestFridge");
+            //mService.SubscribeToFridge("TestFridge");
         }
 
 

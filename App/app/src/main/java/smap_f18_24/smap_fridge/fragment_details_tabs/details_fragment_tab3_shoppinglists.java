@@ -28,8 +28,12 @@ import java.util.List;
 
 import smap_f18_24.smap_fridge.Adaptors.ShoppingListAdaptor;
 import smap_f18_24.smap_fridge.Adaptors.ShoppingListListAdaptor;
+import smap_f18_24.smap_fridge.ModelClasses.EssentialsList;
 import smap_f18_24.smap_fridge.ModelClasses.Fridge;
+import smap_f18_24.smap_fridge.ModelClasses.IngredientList;
+import smap_f18_24.smap_fridge.ModelClasses.InventoryList;
 import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
+import smap_f18_24.smap_fridge.OverviewActivity;
 import smap_f18_24.smap_fridge.R;
 
 
@@ -40,6 +44,15 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
     private Fridge fridge;
 
     private ListView lv_shoppingList;
+
+
+    List<String> connectedUserEmailss;
+    InventoryList inventoryList = new InventoryList();
+    EssentialsList essentialList = new EssentialsList();
+
+    List<ShoppingList> myShoppingLists = new ArrayList<ShoppingList>();
+    List<IngredientList> myIngredientsLists = new ArrayList<IngredientList>();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +73,14 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
         final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
 
-        fridge = ((DetailsActivity)getActivity()).mService.getFridge(clickedFridgeID);
+
+        ShoppingList s = new ShoppingList("hh","123");
+
+        myShoppingLists.add(s);
+
+        //fridge = ((DetailsActivity)getActivity()).mService.getFridge(((DetailsActivity)getActivity()).clickedFridgeID); //TODO fix ID
+        fridge = new Fridge("Tester", "testID", connectedUserEmailss, inventoryList, essentialList, myShoppingLists, myIngredientsLists);
+
 
         ShoppingListListAdaptor adaptor = new ShoppingListListAdaptor(getActivity().getApplicationContext(),(ArrayList<ShoppingList>)fridge.getShoppingLists());
 
