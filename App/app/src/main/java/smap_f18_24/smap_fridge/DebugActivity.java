@@ -71,7 +71,7 @@ public class DebugActivity extends AppCompatActivity {
         btn_rmvFrmInv=findViewById(R.id.debug_btn_removeItemFromInventory);
         btn_rmvFrmSL=findViewById(R.id.debug_btn_removeItemFromShoppinList);
         btn_overWriteInv=findViewById(R.id.debug_btn_overWriteInventory);
-        btn_overWriteShoppingList=findViewById(R.id.debug_btn_removeItemFromShoppinList);
+        btn_overWriteShoppingList=findViewById(R.id.debug_btn_overWriteShoppingList);
 
         btn_add2inv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +119,7 @@ public class DebugActivity extends AppCompatActivity {
                 String fridgeName=etFridgeName.getText().toString();
                 String fridgeID = etFridgeID.getText().toString();
                 Item i = new Item(itemName,"grams",5,"","");
-                mService.addItemToShoppingList(i,fridgeID,listName,listID);
+                mService.addItemToIngredientList(i,fridgeID,listName,listID);
             }
         });
 
@@ -132,7 +132,7 @@ public class DebugActivity extends AppCompatActivity {
                 String fridgeName=etFridgeName.getText().toString();
                 String fridgeID = etFridgeID.getText().toString();
                 Item i = new Item(itemName,"grams",5,"","");
-                mService.removeItemFromShoppingList(itemName,fridgeID,listID);
+                mService.removeItemFromIngredientList(itemName,fridgeID,listID);
             }
         });
 
@@ -171,7 +171,7 @@ public class DebugActivity extends AppCompatActivity {
                 String fridgeName=etFridgeName.getText().toString();
                 String fridgeID = etFridgeID.getText().toString();
                 Item i = new Item(itemName,"grams",5,"","");
-                mService.overWriteItemInShoppingList(i,fridgeID,listID);
+                mService.overWriteItemInIngredientList(i,fridgeID,listID);
             }
         });
 
