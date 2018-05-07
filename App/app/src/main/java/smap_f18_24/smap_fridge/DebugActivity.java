@@ -193,7 +193,7 @@ public class DebugActivity extends AppCompatActivity {
             mBound = true;
 
             mService.setContext(getApplicationContext());
-            mService.SubscribeToFridge("TestFridgeID");
+            //mService.SubscribeToFridge("TestFridgeID");
 
 
         }

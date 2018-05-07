@@ -498,29 +498,31 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Log.d(TAG, "getIngredientList - got Info object.");
 
-                        String name = documentSnapshot.get("Name").toString();
-                        String ID = documentSnapshot.get("ID").toString();
-
-                        Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
-
-                        ingredientList.setName(name);
-                        ingredientList.setID(ID);
-
-                        if(ingredientList.getItems().size()==0)
+                        if(documentSnapshot.exists())
                         {
-                            Log.d(TAG, "onSuccess: List items have not been added yet, and thus list is not returned yet.");
-                        }
-                        else
-                        {
-                            //TODO: Return list through callback interface/broadcast new list.
-                            Log.d(TAG, "Broadcasting Ingredient list: " + ingredientList.getName());
-                            for (Item i: ingredientList.getItems()
-                                    ) {
-                                Log.d(TAG, "Item on Ingredient list: " + i.getName());
-                                callbackInterface.onIngredientListsChange(fridge.getParent().getId(),ingredientList);
+                            String name = documentSnapshot.get("Name").toString();
+                            String ID = documentSnapshot.get("ID").toString();
+
+                            Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
+
+                            ingredientList.setName(name);
+                            ingredientList.setID(ID);
+
+                            if(ingredientList.getItems().size()==0)
+                            {
+                                Log.d(TAG, "onSuccess: List items have not been added yet, and thus list is not returned yet.");
+                            }
+                            else
+                            {
+                                //TODO: Return list through callback interface/broadcast new list.
+                                Log.d(TAG, "Broadcasting Ingredient list: " + ingredientList.getName());
+                                for (Item i: ingredientList.getItems()
+                                        ) {
+                                    Log.d(TAG, "Item on Ingredient list: " + i.getName());
+                                    callbackInterface.onIngredientListsChange(fridge.getParent().getId(),ingredientList);
+                                }
                             }
                         }
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -702,24 +704,29 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                             //Subscribe to each shopping list.
                             for (final List_ID id: IDs
                                     ) {
-                                Log.d(TAG, "getIngredientListIDs: Subscribing to ingredient list: " + id.getID());
-
-                                //Subscribe to receive notifications every time there's a change in the Shopping list.
-                                fridgeListRef.document("IngredientLists").collection(id.getID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-                                        Toast.makeText(context, "Ingredient list " +id.getID() + " of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
-                                        Log.d(TAG, "SubscribefToFridge - Ingredient List " + id.getID() + " of Fridge: " + fridgeID + " updated.");
-
-                                        //get new data and broadcast changes
-                                        getIngredientList(fridgeListRef,id.getID());
-                                    }
-                                });
-
+                               SubscribeToIngredientList(fridgeListRef, id.getID(), fridgeID);
                             }
                         }
                     }
                 });
+
+    }
+
+    public void SubscribeToIngredientList(final CollectionReference fridgeListRef, final String listID, final String fridgeID)
+    {
+        Log.d(TAG, "getIngredientListIDs: Subscribing to ingredient list: " + listID);
+
+        //Subscribe to receive notifications every time there's a change in the Shopping list.
+        fridgeListRef.document("IngredientLists").collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+//                Toast.makeText(context, "Ingredient list " + listID + " of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "SubscribefToFridge - Ingredient List " +listID + " of Fridge: " + fridgeID + " updated.");
+
+                //get new data and broadcast changes
+                getIngredientList(fridgeListRef,listID);
+            }
+        });
     }
 
     public void createNewFridge(final String ID, final String Name) {

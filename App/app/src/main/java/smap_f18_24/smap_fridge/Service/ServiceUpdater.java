@@ -60,11 +60,18 @@ public class ServiceUpdater extends Service {
 
     ArrayList<Fridge> fridges;
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "onCreate: Service created");
+        fridges=new ArrayList<Fridge>();
+        dbComm=new fireStoreCommunicator(getApplicationContext(),callbackInterface);
+        SubscribeToFridge("TestFridgeID");
+    }
 
     public void setContext(Context c)
     {
         context = c;
-        dbComm=new fireStoreCommunicator(context,callbackInterface);
     }
 
     @Override
@@ -666,6 +673,7 @@ public class ServiceUpdater extends Service {
         newIL.AddItem(item);
         CollectionReference fridgeRef=listRef.getParent().getParent();
         dbComm.addIngredientList(fridgeRef,newIL,list_name,list_ID);
+        dbComm.SubscribeToIngredientList(fridgeRef,list_ID,fridge_ID);
     }
 
     //adds item to ingredient list and overwrites old data if any exists.
