@@ -385,29 +385,32 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Log.d(TAG, "getShoppingList - got Info object.");
 
-                        String name = documentSnapshot.get("Name").toString();
-                        String ID = documentSnapshot.get("ID").toString();
-
-                        Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
-
-                        shoppingList.setName(name);
-                        shoppingList.setID(ID);
-
-                        if(shoppingList.getItems().size()==0)
+                        if(documentSnapshot.exists())
                         {
-                            Log.d(TAG, "onSuccess: List items have not been added yet, and thus list is not returned yet.");
-                        }
-                        else
-                        {
-                            //TODO: Return list through callback interface/broadcast new list.
-                            Log.d(TAG, "Broadcasting Shopping list: " + shoppingList.getName());
-                            for (Item i: shoppingList.getItems()
-                                    ) {
-                                Log.d(TAG, "Item on Shopping list: " + i.getName());
-                                callbackInterface.onShoppingListsChange(fridge.getParent().getId(),shoppingList);
+                            String name = documentSnapshot.get("Name").toString();
+                            String ID = documentSnapshot.get("ID").toString();
+
+                            Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
+
+                            shoppingList.setName(name);
+                            shoppingList.setID(ID);
+
+                            if(shoppingList.getItems().size()==0)
+                            {
+                                Log.d(TAG, "onSuccess: List items have not been added yet, and thus list is not returned yet.");
+                            }
+                            else
+                            {
+                                //TODO: Return list through callback interface/broadcast new list.
+                                Log.d(TAG, "Broadcasting Shopping list: " + shoppingList.getName());
+                                for (Item i: shoppingList.getItems()
+                                        ) {
+                                    Log.d(TAG, "Item on Shopping list: " + i.getName());
+                                    callbackInterface.onShoppingListsChange(fridge.getParent().getId(),shoppingList);
+                                }
                             }
                         }
-
+                        //TODO: else - check if local copy of list exists. If it does, delete it. Do the same for Ingredient list.
                     }
                 })
         .addOnFailureListener(new OnFailureListener() {
@@ -664,24 +667,28 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                             //Subscribe to each shopping list.
                             for (final List_ID id: IDs
                                     ) {
-                                Log.d(TAG, "getShoppingListIDs: Subscribing to shopping list: " + id.getID());
-
-                                //Subscribe to receive notifications every time there's a change in the Shopping list.
-                                fridgeListRef.document("ShoppingLists").collection(id.getID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-                                        Toast.makeText(context, "Shopping list " +id.getID() + " of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
-                                        Log.d(TAG, "SubscribefToFridge - Shopping List " + id.getID() + " of Fridge: " + fridgeID + " updated.");
-
-                                        //get new data and broadcast changes
-                                        getShoppingList(fridgeListRef,id.getID());
-                                    }
-                                });
-
+                                SubscribeToIngredientList(fridgeListRef, id.getID(), fridgeID);
                             }
                         }
                     }
                 });
+    }
+
+    public void SubscribeToShoppingList(final CollectionReference fridgeListRef, final String listID, final String fridgeID)
+    {
+        Log.d(TAG, "getShoppingListIDs: Subscribing to shopping list: " + listID);
+
+        //Subscribe to receive notifications every time there's a change in the Shopping list.
+        fridgeListRef.document("ShoppingLists").collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+//                Toast.makeText(context, "Ingredient list " + listID + " of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "SubscribefToFridge - Shopping List " +listID + " of Fridge: " + fridgeID + " updated.");
+
+                //get new data and broadcast changes
+                getShoppingList(fridgeListRef,listID);
+            }
+        });
     }
 
     private void SubscribeToIngredientLists(final DocumentReference fridge, final String fridgeID)
