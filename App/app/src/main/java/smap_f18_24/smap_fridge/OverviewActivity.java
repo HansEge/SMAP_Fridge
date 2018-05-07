@@ -137,7 +137,7 @@ public class OverviewActivity extends AppCompatActivity {
                         String tmp_name = et_newFridgeName.getText().toString();
                         String tmp_id = et_newFridgeID.getText().toString();
 
-                        //User will get Toast message if the ID already exists.
+                        //Test with local data fridge
                         mService.createNewFridge(tmp_id,tmp_name);
 
                         mService.SubscribeToFridge(tmp_id);
@@ -192,9 +192,18 @@ public class OverviewActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        //mService.SubscribeToFridge(et_uniqueCodeUserInput.getText().toString());
+                        //Trying to find the database fridge and put it into the adaptor which presents it to the user
+                        String existingFridgeID = et_uniqueCodeUserInput.getText().toString();
 
-                        //TODO - subscribe to an existing fridge by using the UNIQUE ID
+                        mService.SubscribeToFridge(existingFridgeID);
+
+                        Fridge newFridge = mService.getFridge(existingFridgeID);
+
+                        debugList.add(newFridge);
+
+                        lv_fridgesListView.setAdapter(adaptor1);
+
+
 
                     }
                 });

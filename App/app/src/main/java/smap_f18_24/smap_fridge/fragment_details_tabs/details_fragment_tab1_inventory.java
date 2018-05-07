@@ -45,7 +45,7 @@ public class details_fragment_tab1_inventory extends Fragment {
 
         final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
-
+        
 
 
 
