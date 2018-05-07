@@ -677,20 +677,25 @@ public class ServiceUpdater extends Service {
     }
 
     //adds item to ingredient list and overwrites old data if any exists.
-    public void overWriteItemInIngredientList(Item item, String fridge_ID, String list_ID)
+    public void overWriteItemInIngredientList(Item item, String fridge_ID, String list_name, String list_ID)
     {
-        CollectionReference listRef = db.collection(fridge_ID).document("IngredientLists").collection(list_ID);
+        CollectionReference listRef = db.collection("Fridges").document(fridge_ID).collection("Content").document("IngredientLists").collection(list_ID);
 
-        //Find list with matching name
-        ArrayList<IngredientList> ingredientLists=(ArrayList<IngredientList>)getFridge(fridge_ID).getIngredientLists();
-        for (IngredientList s: ingredientLists
-                ) {
-            if(s.getID().equals(list_ID))
-            {
-                Log.d(TAG, "overWriteItemInIngredientList: Overwriting old data(if any) for item:" + item.getName());
-                dbComm.addItem(listRef, item);
-            }
+        Log.d(TAG, "overWriteItemInIngredientList: Overwriting old data(if any) for item:" + item.getName());
+        dbComm.addItem(listRef, item);
+
+        //If list doesn't exist yet, just add item (list will be generated).
+        if(getFridge(fridge_ID).getIngredientLists()==null)
+        {
+            IngredientList newIL = new IngredientList();
+            newIL.setName(list_name);
+            newIL.setID(list_ID);
+            newIL.AddItem(item);
+            CollectionReference fridgeRef=listRef.getParent().getParent();
+            dbComm.addIngredientList(fridgeRef,newIL,list_name,list_ID);
+            dbComm.SubscribeToIngredientList(fridgeRef,list_ID,fridge_ID);
         }
+
     }
 
     public void removeItemFromIngredientList(String itemName, String fridge_ID, String list_ID)
