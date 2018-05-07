@@ -47,6 +47,9 @@ public class details_fragment_tab1_inventory extends Fragment {
         clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
 
 
+
+
+
         btn_goBackToOverview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
