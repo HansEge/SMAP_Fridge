@@ -80,12 +80,16 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
 
 
 
-        //fridge = ((DetailsActivity)getActivity()).mService.getFridge(((DetailsActivity)getActivity()).clickedFridgeID); //TODO fix ID
+        fridge = ((DetailsActivity)getActivity()).mService.getFridge(((DetailsActivity)getActivity()).clickedFridgeID); //TODO fix ID
         fridge = new Fridge("Tester", "testID", connectedUserEmailss, inventoryList, essentialList, myShoppingLists, myIngredientsLists);
 
 
         fridge.CreateNewShoppingList("hh");
         fridge.CreateNewShoppingList("to");
+        fridge.CreateNewShoppingList("tre");
+
+        List<ShoppingList> list1 = fridge.getShoppingLists();
+
 
         ShoppingListListAdaptor adaptor = new ShoppingListListAdaptor(getActivity().getApplicationContext(),(ArrayList<ShoppingList>)fridge.getShoppingLists());
 
