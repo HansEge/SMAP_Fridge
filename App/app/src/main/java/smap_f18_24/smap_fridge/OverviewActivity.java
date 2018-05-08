@@ -197,9 +197,9 @@ public class OverviewActivity extends AppCompatActivity {
 
                         mService.SubscribeToFridge(existingFridgeID);
 
-                        Fridge newFridge = mService.getFridge(existingFridgeID);
+                        Fridge existingFridge = mService.getFridge(existingFridgeID);
 
-                        debugList.add(newFridge);
+                        debugList.add(existingFridge);
 
                         lv_fridgesListView.setAdapter(adaptor1);
 
