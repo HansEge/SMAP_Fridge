@@ -87,7 +87,6 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
         fridge.CreateNewShoppingList("hh");
         fridge.CreateNewShoppingList("to");
 
-
         ShoppingListListAdaptor adaptor = new ShoppingListListAdaptor(getActivity().getApplicationContext(),(ArrayList<ShoppingList>)fridge.getShoppingLists());
 
         lv_shoppingListList.setAdapter(adaptor);
