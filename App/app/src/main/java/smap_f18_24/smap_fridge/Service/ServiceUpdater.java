@@ -58,13 +58,13 @@ public class ServiceUpdater extends Service {
 
     fireStoreCommunicator dbComm;
 
-    ArrayList<Fridge> fridges;
+    ArrayList<Fridge> fridges = new ArrayList<Fridge>();
 
     @Override
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate: Service created");
-        fridges=new ArrayList<Fridge>();
+
         dbComm=new fireStoreCommunicator(getApplicationContext(),callbackInterface);
         SubscribeToFridge("TestFridgeID");
     }
@@ -78,10 +78,10 @@ public class ServiceUpdater extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         //Initialize list
-        fridges=new ArrayList<Fridge>();
+        //fridges=new ArrayList<Fridge>();
 
         //Get instance of database-communicator
-        dbComm= new fireStoreCommunicator(context,callbackInterface);
+        //dbComm= new fireStoreCommunicator(context,callbackInterface);
 
         /*
 
@@ -747,5 +747,10 @@ public class ServiceUpdater extends Service {
         dbComm.createNewFridge(ID, Name);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: SERVICE DESTROYED");
+    }
 }
 
