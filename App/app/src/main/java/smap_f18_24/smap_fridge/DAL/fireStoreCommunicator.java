@@ -35,6 +35,8 @@ public class fireStoreCommunicator {
     //database reference
     FirebaseFirestore db;
 
+
+
     public fireStoreCommunicator(Context context, FridgeCallbackInterface callbackInterface)
     {
         this.context=context;
@@ -594,12 +596,42 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
     }
 
+    public void getFridgeName(final String fridgeID){
+
+        DocumentReference docRef = db.collection("Fridges").document(fridgeID);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                        if (document != null){
+                            Log.d(TAG, "The name of fridgeID: " + fridgeID + " is: " + document.getString("Name"));
+                        }
+                        else{
+                            Log.d(TAG, "Error in finding fridgeID name");
+                        }
+
+                }
+            }
+        });
+
+
+    }
+
+
     public void SubscribeToFridge(final String fridgeID)
     {
+
+
 
         DocumentReference fridgeRef = db.collection("Fridges").document(fridgeID);
         Log.d(TAG, "SubscribeToFridge: Subscribing to fridge with ID " + fridgeID);
         CollectionReference fridgeListRef=fridgeRef.collection("Content");
+
+
+
+
         fridgeListRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
@@ -607,6 +639,8 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 Log.d(TAG, "SubscribeToFridge - Fridge: " + fridgeID + " updated.");
             }
         });
+
+        getFridgeName(fridgeID);
 
         SubscribeToInventory(fridgeRef, fridgeID);
         SubscribeToEssentials(fridgeRef, fridgeID);
