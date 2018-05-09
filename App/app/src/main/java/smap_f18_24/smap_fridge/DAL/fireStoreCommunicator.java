@@ -653,11 +653,11 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     {
         final CollectionReference fridgeListRef=fridge.collection("Content");
         //Subscribe to receive notifications every time there's a change in the Essentials list.
-        fridgeListRef.document("Essentials").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        fridgeListRef.document("Inventory").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                 //Toast.makeText(context, "Essentials of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "SubscribeToFridge - Essentials of Fridge: " + fridgeID + " updated.");
+                Log.d(TAG, "SubscribeToFridge - Inventory of Fridge: " + fridgeID + " updated.");
 
                 //get new data and broadcast changes
                 getInventoryList(fridgeListRef);
@@ -701,7 +701,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                             //Subscribe to each shopping list.
                             for (final List_ID id: IDs
                                     ) {
-                                SubscribeToIngredientList(fridgeListRef, id.getID(), fridgeID);
+                                SubscribeToShoppingList(fridgeListRef, id.getID(), fridgeID);
                             }
                         }
                     }
