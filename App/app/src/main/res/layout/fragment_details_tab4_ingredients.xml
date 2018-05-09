@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
+    android:id="@+id/lv_fragment_inventory"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment_details_tabs.details_fragment_tab4_ingredients">
@@ -14,7 +14,7 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="This is the INGREDIENTS tab"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="@+id/lv_fragment_inventory"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1" />
 

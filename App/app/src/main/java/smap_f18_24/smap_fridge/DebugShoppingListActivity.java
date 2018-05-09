@@ -23,6 +23,7 @@ import smap_f18_24.smap_fridge.Adaptors.FridgeListAdaptor;
 import smap_f18_24.smap_fridge.Adaptors.IngredientsListAdaptor;
 import smap_f18_24.smap_fridge.Adaptors.InventoryListAdaptor;
 import smap_f18_24.smap_fridge.Adaptors.ShoppingListAdaptor;
+import smap_f18_24.smap_fridge.Adaptors.ShoppingListListAdaptor;
 import smap_f18_24.smap_fridge.ModelClasses.EssentialsList;
 import smap_f18_24.smap_fridge.ModelClasses.IngredientList;
 import smap_f18_24.smap_fridge.ModelClasses.InventoryList;
@@ -37,10 +38,12 @@ public class DebugShoppingListActivity extends AppCompatActivity {
     final public EssentialsList essentialList = new EssentialsList();
     final public InventoryList inventoryList = new InventoryList();
     final public IngredientList debugList1 = new IngredientList();
+    final public ArrayList<ShoppingList> shoppingLists = new ArrayList<>();
     public ShoppingListAdaptor adaptor1 = new ShoppingListAdaptor(this, debugList);
     public EssentialsListAdaptor adaptor2 = new EssentialsListAdaptor(this, essentialList);
     public InventoryListAdaptor adaptor3 = new InventoryListAdaptor(this, inventoryList);
     public IngredientsListAdaptor adaptor4 = new IngredientsListAdaptor(this, debugList1);
+    public ShoppingListListAdaptor adaptor5 = new ShoppingListListAdaptor(this,shoppingLists);
 
     Item kartoffel = new Item("katoffel", "kg", 1000, "hejmeddig123@dibidut.au", "Status");
     Item Tomat = new Item("Tomat", "kg", 100, "hejmeddig123@dibidut.au", "Status");
@@ -76,12 +79,16 @@ public class DebugShoppingListActivity extends AppCompatActivity {
         debugList1.AddItem(Æg);
         debugList1.AddItem(juice);
 
+        shoppingLists.add(new ShoppingList("hej","e"));
+        shoppingLists.add(new ShoppingList("123","ee"));
+        shoppingLists.add(new ShoppingList("sef","eee"));
+
 
         Lv_Shoppinglist = findViewById(R.id.debug_Lv_Shoppinglist);
 
         //Lv_Shoppinglist.setAdapter(adaptor1);
 
-        Lv_Shoppinglist.setAdapter(adaptor4);
+        Lv_Shoppinglist.setAdapter(adaptor5);
 
         Lv_Shoppinglist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
