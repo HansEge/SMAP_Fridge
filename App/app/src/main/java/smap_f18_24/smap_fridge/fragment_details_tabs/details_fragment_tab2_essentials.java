@@ -104,6 +104,15 @@ public class details_fragment_tab2_essentials extends Fragment {
                 openEditItemDialogBox(i);
             }
         });
+
+        essentialList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Item i = (Item)adaptor.getItem(position);
+                openDeleteItemDialogBox(i.getName());
+                return true;
+            }
+        });
         return v;
     }
 
@@ -169,6 +178,7 @@ public class details_fragment_tab2_essentials extends Fragment {
        final EditText et_qty = new EditText(getActivity());
        et_qty.setHint("Quantity");
        et_qty.setInputType(InputType.TYPE_CLASS_NUMBER);
+       et_qty.setText(String.valueOf((i.getQuantity())));
        layout.addView(et_qty);
 
        ItemClickedDialog.setView(layout);
@@ -242,5 +252,33 @@ public class details_fragment_tab2_essentials extends Fragment {
 
        newItemDialog.show();
    }
+
+    private void openDeleteItemDialogBox(String itemName){
+        final String _itemName = itemName;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Are you sure you wanna delete this item?");
+
+        LinearLayout layout = new LinearLayout(getContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ((DetailsActivity)getActivity()).mService.removeItemFromEssentials(_itemName,currentFridge.getID());
+                Log.d("Broadcast Receiver", "Error in broadcast receiver");
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.show();
+    };
 }
 

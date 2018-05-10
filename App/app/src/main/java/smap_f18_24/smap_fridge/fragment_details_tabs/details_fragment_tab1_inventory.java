@@ -8,6 +8,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -51,6 +53,7 @@ public class details_fragment_tab1_inventory extends Fragment {
     InventoryListAdaptor inventoryListAdaptor;
 
     public String clickedFridgeID;
+    private Fridge currentFridge;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,13 +80,21 @@ public class details_fragment_tab1_inventory extends Fragment {
             }
         });
 
+        lv_inventoryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Item i = inventoryList.getItems().get(position);
+                openEditItemDialogBox(i);
+            }
+        });
+
         lv_inventoryList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 String itemName = inventoryList.getItems().get(i).getName();
 
-                deleteItem(itemName);
+                openDeleteItemDialogBox(itemName);
 
                 return true;
             }
@@ -99,6 +110,12 @@ public class details_fragment_tab1_inventory extends Fragment {
 
 
         return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        currentFridge = ((DetailsActivity)getActivity()).currentFridge;
     }
 
     private void addItemDialog(){
@@ -136,7 +153,7 @@ public class details_fragment_tab1_inventory extends Fragment {
                 String inputUnit = et_newItemUnit.getText().toString();
 
                 Item newItem = new Item(inputName, inputUnit,inputQuantity , "hejmeddig123@dibidut.au", "Status");
-                ((DetailsActivity)getActivity()).mService.addItemToInventory(newItem,"TestFridgeID");
+                ((DetailsActivity)getActivity()).mService.addItemToInventory(newItem,currentFridge.getID());
 
             }
         });
@@ -150,7 +167,7 @@ public class details_fragment_tab1_inventory extends Fragment {
 
     }
 
-    private void deleteItem(String itemName){
+    private void openDeleteItemDialogBox(String itemName){
         final String _itemName = itemName;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -178,6 +195,43 @@ public class details_fragment_tab1_inventory extends Fragment {
         builder.show();
     };
 
+    private void openEditItemDialogBox(final Item i)
+    {
+        AlertDialog.Builder ItemClickedDialog = new AlertDialog.Builder(getActivity());
+        ItemClickedDialog.setTitle(i.getName());
+
+        LinearLayout layout = new LinearLayout(getActivity());
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        //Quantity
+        final EditText et_qty = new EditText(getActivity());
+        et_qty.setHint("Quantity");
+        et_qty.setInputType(InputType.TYPE_CLASS_NUMBER);
+        et_qty.setText(String.valueOf((i.getQuantity())));
+        layout.addView(et_qty);
+
+        ItemClickedDialog.setView(layout);
+
+        ItemClickedDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        ItemClickedDialog.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                float quantity = Float.parseFloat(et_qty.getText().toString());
+                Item overwriteItem = i;
+                overwriteItem.setQuantity(quantity);
+                ((DetailsActivity)getActivity()).mService.overwriteItemInEssentials(overwriteItem,currentFridge.getID());
+            }
+        });
+
+        ItemClickedDialog.show();
+    }
+
 
     private BroadcastReceiver serviceUpdaterReceiver = new BroadcastReceiver() {
         @Override
@@ -203,7 +257,7 @@ public class details_fragment_tab1_inventory extends Fragment {
     {
         if(updateString.equals("DataUpdated"))
         {
-            ((DetailsActivity)getActivity()).currentFridge = ((DetailsActivity)getActivity()).mService.getFridge("TestFridgeID");
+            ((DetailsActivity)getActivity()).currentFridge = ((DetailsActivity)getActivity()).mService.getFridge(currentFridge.getID());
             inventoryList = ((DetailsActivity)getActivity()).currentFridge.getInventory();
             inventoryListAdaptor = new InventoryListAdaptor(getActivity().getApplicationContext(),inventoryList);
             lv_inventoryList.setAdapter(inventoryListAdaptor);
