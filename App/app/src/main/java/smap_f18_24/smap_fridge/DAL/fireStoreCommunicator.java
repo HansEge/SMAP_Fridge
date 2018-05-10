@@ -30,6 +30,7 @@ import smap_f18_24.smap_fridge.ModelClasses.InventoryList;
 import smap_f18_24.smap_fridge.ModelClasses.Item;
 import smap_f18_24.smap_fridge.ModelClasses.List_ID;
 import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
+import smap_f18_24.smap_fridge.ModelClasses.User;
 
 public class fireStoreCommunicator {
     //database reference
@@ -632,12 +633,36 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
     }
 
+    //TODO: NOT TESTED!
+    //Gets a list of fridges subscribed to by the user, and makes sure that updates in the subscribed fridges triggers callbacks to the provided callback interface.
+    public void SubscribeToSavedFridges(String userEmail)
+    {
+        //get list from database.
+        db.collection("Users").document(userEmail).collection("FridgeSubscribtions").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.isEmpty())
+                        {
+                            Log.d(TAG, "onSuccess: Failure getting QuerySnapshot in SubscribeToSavedFridges");
+                        }
+                        else
+                        {
+                            //Make list of ID-objects. (Yes, the class used is List_ID, but it only conatins a field ID, which is what we need here.)
+                            ArrayList<List_ID> Fridge_IDs = (ArrayList<List_ID>)queryDocumentSnapshots.toObjects(List_ID.class);
+
+                            //Subscribe to all fridges.
+                            for (List_ID id:Fridge_IDs
+                                 ) {
+                                SubscribeToFridge(id.getID());
+                            }
+                        }
+                    }
+                });
+    }
 
     public void SubscribeToFridge(final String fridgeID)
     {
-
-
-
         DocumentReference fridgeRef = db.collection("Fridges").document(fridgeID);
         Log.d(TAG, "SubscribeToFridge: Subscribing to fridge with ID " + fridgeID);
         CollectionReference fridgeListRef=fridgeRef.collection("Content");
@@ -831,4 +856,33 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         listRef.document("Info").update(newInfo);
     }
 
+    //TODO: NOT TESTED!
+    public void createNewUserInDatabase(String Name, String email)
+    {
+        Map<String, Object>  UserInfo = new HashMap<>();
+        UserInfo.put("Name",Name);
+        UserInfo.put("email",email);
+
+        db.collection("Users").document(email).set(UserInfo);
+    }
+
+    //TODO: NOT TESTED!
+    public void addFridgeID2listOfFridgeSubscriptions(String fridge_ID, String userEmail)
+    {
+        Map<String, Object> info = new HashMap<>();
+        info.put("ID", fridge_ID);
+        db.collection("Users").document(userEmail).collection("FridgeSubscribtions").document(fridge_ID).set(info)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+    }
 }
