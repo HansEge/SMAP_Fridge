@@ -29,9 +29,6 @@ import smap_f18_24.smap_fridge.R;
 public class details_fragment_tab1_inventory extends Fragment {
 
 
-    public Button btn_goBackToOverview;
-
-
     private Fridge fridge;
 
     List<String> connectedUserEmailss;
@@ -54,8 +51,6 @@ public class details_fragment_tab1_inventory extends Fragment {
         View v = inflater.inflate(R.layout.fragment_details_tab1_inventory, container, false);
 
         // INITIALIZING
-
-        btn_goBackToOverview = (Button) v.findViewById(R.id.details_tab1_inventory_btn_backToOverView);
         ListView lv_inventoryList = v.findViewById(R.id.lv_inventoryList_tap1);
 
 
@@ -75,13 +70,6 @@ public class details_fragment_tab1_inventory extends Fragment {
 
         lv_inventoryList.setAdapter(inventoryListAdaptor);
 
-
-        btn_goBackToOverview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().finish();
-            }
-        });
 
         return v;
     }
