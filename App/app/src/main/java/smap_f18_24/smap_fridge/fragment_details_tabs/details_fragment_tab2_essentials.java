@@ -3,16 +3,20 @@ package smap_f18_24.smap_fridge.fragment_details_tabs;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -21,6 +25,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,6 +35,8 @@ import android.view.ViewGroup;
 
 import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,19 +44,24 @@ import smap_f18_24.smap_fridge.Adaptors.EssentialsListAdaptor;
 import smap_f18_24.smap_fridge.ModelClasses.EssentialsList;
 import smap_f18_24.smap_fridge.ModelClasses.Fridge;
 import smap_f18_24.smap_fridge.ModelClasses.Item;
+import smap_f18_24.smap_fridge.OverviewActivity;
 import smap_f18_24.smap_fridge.R;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
+import android.widget.Button;
 
 
 public class details_fragment_tab2_essentials extends Fragment {
 
     private ListView essentialList;
     private EssentialsList EList = new EssentialsList();
+    Button btn_addNewItem;
 
     private String clickedFridgeID;
     private Fridge fridge;
 
     public EssentialsListAdaptor adaptor;
+
+    ServiceUpdater mService;
 
     /*
     Item kartoffel = new Item("katoffel", "kg", 1000, "hejmeddig123@dibidut.au", "Status");
@@ -62,6 +74,7 @@ public class details_fragment_tab2_essentials extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
 
+        mService = ((DetailsActivity)getActivity()).mService;
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
@@ -83,6 +96,65 @@ public class details_fragment_tab2_essentials extends Fragment {
         essentialList.setAdapter(adaptor);
 
         return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        btn_addNewItem= getView().findViewById(R.id.essentials_btn_newItem);
+        btn_addNewItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder newItemDialog = new AlertDialog.Builder(getActivity());
+                newItemDialog.setTitle("New Item");
+
+                LinearLayout layout = new LinearLayout(getActivity());
+                layout.setOrientation(LinearLayout.VERTICAL);
+
+                //item name
+                final EditText et_ItemName = new EditText(getActivity());
+                et_ItemName.setHint("Name");
+                et_ItemName.setInputType(InputType.TYPE_CLASS_TEXT);
+                layout.addView(et_ItemName);
+
+                //Quantity
+                final EditText et_qty = new EditText(getActivity());
+                et_qty.setHint("Quantity");
+                et_qty.setInputType(InputType.TYPE_CLASS_NUMBER);
+                layout.addView(et_qty);
+
+                //Unit
+                final EditText et_Unit = new EditText(getActivity());
+                et_Unit.setHint("Unit");
+                et_Unit.setInputType(InputType.TYPE_CLASS_TEXT);
+                layout.addView(et_Unit);
+
+                newItemDialog.setView(layout);
+
+                newItemDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        //Get info from editTexts
+                        String itemName=et_ItemName.getText().toString();
+                        float Quantity = Float.parseFloat(et_qty.getText().toString());
+                        String unit = et_Unit.getText().toString();
+
+                        Item i = new Item(itemName,unit,Quantity,"N/A","N/A");
+                        Fridge currentFridge = ((DetailsActivity)getActivity()).currentFridge;
+                        mService.addItemToEssentials(i,currentFridge.getID());
+                    }
+                });
+
+                newItemDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                });
+
+                newItemDialog.show();
+            }
+        });
     }
 
     private BroadcastReceiver serviceUpdaterReceiver = new BroadcastReceiver() {
