@@ -1,11 +1,16 @@
 package smap_f18_24.smap_fridge.fragment_details_tabs;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
@@ -23,6 +28,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import smap_f18_24.smap_fridge.Adaptors.EssentialsListAdaptor;
 import smap_f18_24.smap_fridge.Adaptors.InventoryListAdaptor;
 import smap_f18_24.smap_fridge.ModelClasses.EssentialsList;
 import smap_f18_24.smap_fridge.ModelClasses.Fridge;
@@ -32,26 +38,17 @@ import smap_f18_24.smap_fridge.ModelClasses.Item;
 import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
 import smap_f18_24.smap_fridge.OverviewActivity;
 import smap_f18_24.smap_fridge.R;
+import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 
 
 public class details_fragment_tab1_inventory extends Fragment {
 
-
-    private Fridge fridge;
-
+    ListView lv_inventoryList;
     Button btn_addItem;
 
-    List<String> connectedUserEmailss;
     InventoryList inventoryList = new InventoryList();
-    EssentialsList essentialList = new EssentialsList();
 
-    List<ShoppingList> myShoppingLists = new ArrayList<ShoppingList>();
-    List<IngredientList> myIngredientsLists = new ArrayList<IngredientList>();
-
-    Item kartoffel = new Item("katoffel", "kg", 1000, "hejmeddig123@dibidut.au", "Status");
-    Item Tomat = new Item("Tomat", "kg", 100, "hejmeddig123@dibidut.au", "Status");
-    Item Æg = new Item("Æg", "stk", 10, "hejmeddig123@dibidut.au", "Status");
-    Item juice = new Item("Juice", "L", 2, "hejmeddig123@dibidut.au", "Status");
+    InventoryListAdaptor inventoryListAdaptor;
 
     public String clickedFridgeID;
 
@@ -60,8 +57,13 @@ public class details_fragment_tab1_inventory extends Fragment {
                              Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_details_tab1_inventory, container, false);
 
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
+
+        LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).registerReceiver(serviceUpdaterReceiver,filter);
+
         // INITIALIZING
-        ListView lv_inventoryList = v.findViewById(R.id.lv_inventoryList_tap1);
+        lv_inventoryList = v.findViewById(R.id.lv_inventoryList_tap1);
 
 
         final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
@@ -80,9 +82,8 @@ public class details_fragment_tab1_inventory extends Fragment {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 String itemName = inventoryList.getItems().get(i).getName();
-                inventoryList.RemoveItem(itemName);
 
-                //editItemDialog();
+                deleteItem(itemName);
 
                 return true;
             }
@@ -91,12 +92,8 @@ public class details_fragment_tab1_inventory extends Fragment {
         //fridge = ((DetailsActivity)getActivity()).mService.getFridge(((DetailsActivity)getActivity()).clickedFridgeID); //TODO fix ID
         //fridge = new Fridge("Tester", "testID", connectedUserEmailss, inventoryList, essentialList, myShoppingLists, myIngredientsLists);
 
-        inventoryList.AddItem(kartoffel);
-        inventoryList.AddItem(Tomat);
-        inventoryList.AddItem(Æg);
-        inventoryList.AddItem(juice);
-
-        InventoryListAdaptor inventoryListAdaptor = new InventoryListAdaptor(getActivity().getApplicationContext(),inventoryList);
+        inventoryList = ((DetailsActivity)getActivity()).currentFridge.getInventory();
+        inventoryListAdaptor = new InventoryListAdaptor(getActivity().getApplicationContext(),inventoryList);
 
         lv_inventoryList.setAdapter(inventoryListAdaptor);
 
@@ -139,7 +136,7 @@ public class details_fragment_tab1_inventory extends Fragment {
                 String inputUnit = et_newItemUnit.getText().toString();
 
                 Item newItem = new Item(inputName, inputUnit,inputQuantity , "hejmeddig123@dibidut.au", "Status");
-                inventoryList.AddItem(newItem);
+                ((DetailsActivity)getActivity()).mService.addItemToInventory(newItem,"TestFridgeID");
 
             }
         });
@@ -153,30 +150,21 @@ public class details_fragment_tab1_inventory extends Fragment {
 
     }
 
-
-    private void editItemDialog(){
+    private void deleteItem(String itemName){
+        final String _itemName = itemName;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Edit Item Quantity or delete Item");
+        builder.setTitle("Are you sure you wanna delete this item?");
 
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        final EditText et_newItemQuantity = new EditText(getContext());
-        et_newItemQuantity.setHint("New quantity:");
-        et_newItemQuantity.setInputType(InputType.TYPE_CLASS_NUMBER);
-        layout.addView(et_newItemQuantity);
-
-
         builder.setView(layout);
 
-
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String itemName = inventoryList.getItems().get(i).getName();
-                //inventoryList.RemoveItem(itemName);
-                //float inputQuantity = Float.parseFloat(et_newItemQuantity.getText().toString());
+                ((DetailsActivity)getActivity()).mService.removeItemFromInventory(_itemName,"TestFridgeID");
                 Log.d("Broadcast Receiver", "Error in broadcast receiver");
 
             }
@@ -188,7 +176,38 @@ public class details_fragment_tab1_inventory extends Fragment {
             }
         });
         builder.show();
+    };
 
+
+    private BroadcastReceiver serviceUpdaterReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("ASDASD", "Broadcast reveiced from ServiceUpdater in tab1");
+            String result = null;
+
+            result = intent.getStringExtra(ServiceUpdater.EXTRA_TASK_RESULT);
+            Log.d("ASDASD", result);
+
+            if (result == null) {
+                Log.d("ASDASD", result);
+            }
+
+            if(result != null) {
+                updateData(result);
+            }
+
+        }
+    };
+
+    public void updateData(String updateString)
+    {
+        if(updateString.equals("DataUpdated"))
+        {
+            ((DetailsActivity)getActivity()).currentFridge = ((DetailsActivity)getActivity()).mService.getFridge("TestFridgeID");
+            inventoryList = ((DetailsActivity)getActivity()).currentFridge.getInventory();
+            inventoryListAdaptor = new InventoryListAdaptor(getActivity().getApplicationContext(),inventoryList);
+            lv_inventoryList.setAdapter(inventoryListAdaptor);
+        }
     }
 
 

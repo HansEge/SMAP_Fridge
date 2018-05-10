@@ -204,6 +204,7 @@ public class ServiceUpdater extends Service {
                 {
                     //if ID matches
                     f.setInventory(list);
+                    broadcastResult("DataUpdated");
                     return;
                 }
             }
@@ -243,7 +244,7 @@ public class ServiceUpdater extends Service {
 
             fridges.add(placeholderFridge);
             //TODO: Broadcast that new data is available.
-
+            broadcastResult("DataUpdated");
 
         }
 
