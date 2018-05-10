@@ -88,6 +88,7 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
         fridge.CreateNewShoppingList("to");
         fridge.CreateNewShoppingList("tre");
 
+
         List<ShoppingList> list1 = fridge.getShoppingLists();
 
 

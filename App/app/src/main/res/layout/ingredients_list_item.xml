@@ -15,6 +15,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Name"
+        android:textAlignment="center"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toStartOf="@+id/divider2"
@@ -64,11 +65,10 @@
         android:id="@+id/divider2"
         android:layout_width="1dp"
         android:layout_height="61dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginEnd="200dp"
         android:layout_marginStart="200dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toStartOf="@+id/divider3"
-        app:layout_constraintHorizontal_bias="0.586"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -77,9 +77,11 @@
         android:layout_width="1dp"
         android:layout_height="61dp"
         android:layout_marginEnd="100dp"
+        android:layout_marginStart="300dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toBottomOf="@+id/divider2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 

@@ -41,6 +41,11 @@ public class ShoppingList extends ItemList {
         return responsibility;
     }
 
+    public void setResponsibility(String responsibleUser)
+    {
+        responsibility=responsibleUser;
+    }
+
     public void MoveFromShoppingListToFridge(Item _toMove) {
         //TODO
         //Add toMove to InventoryList

@@ -28,7 +28,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".DebugActivityTwo" />
         <activity android:name=".DebugShoppingListActivity" />
-        <activity android:name=".IntentDebugActivity"/>
+        <activity android:name=".IntentDebugActivity" />
+        <activity android:name=".Debug_User"></activity>
     </application>
 
 </manifest>
