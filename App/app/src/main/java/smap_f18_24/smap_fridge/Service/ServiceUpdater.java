@@ -769,6 +769,21 @@ public class ServiceUpdater extends Service {
         }
     }
 
+    public void createNewUser(String userName, String userEmail)
+    {
+        dbComm.createNewUserInDatabase(userName,userEmail);
+    }
+
+    public void addFridgeIDtoListOfSubscribedFridges(String userEmail, String fridgeID)
+    {
+        dbComm.addFridgeID2listOfFridgeSubscriptions(fridgeID,userEmail);
+    }
+
+    public void removeFridgeIDfromListOfSubscribedFridges(String userEmail, String fridgeID)
+    {
+        dbComm.removeFridgeIDFromListOfFridgeSubscriptions(fridgeID,userEmail);
+    }
+
     public void setResponsibilityForShoppingList(String Fridge_ID, String List_ID, String User_ID)
     {
         dbComm.setResponsibilityForListShoppingList(Fridge_ID,List_ID, User_ID);
@@ -792,4 +807,5 @@ public class ServiceUpdater extends Service {
         Log.d(TAG, "onDestroy: SERVICE DESTROYED");
     }
 }
+
 

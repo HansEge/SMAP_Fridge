@@ -885,4 +885,27 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                     }
                 });
     }
+
+    //TODO: NOT TESTED!
+    //Removes fridge id from the list of subscribed fridges for the user with the given userEmail.
+    public void removeFridgeIDFromListOfFridgeSubscriptions(final String fridge_ID, String userEmail)
+    {
+        final CollectionReference listRef = db.collection("Users").document(userEmail).collection("FridgeSubscribtions");
+        listRef.whereEqualTo("ID",fridge_ID).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.isEmpty())
+                        {
+                            Log.d(TAG, "removeFridgeIDFromListOfFridgeSubscriptions - onSuccess: fridge with ID " + fridge_ID + " was not subscribed to in the first place");
+                        }
+                        else
+                        {
+                            Log.d(TAG, "removeFridgeIDFromListOfFridgeSubscriptions - onSuccess: Removing fridge ID " + fridge_ID + " from list of subscribed fridges.");
+                            String snapshotID = queryDocumentSnapshots.getDocuments().get(0).getId();
+                            listRef.document(snapshotID).delete();
+                        }
+                    }
+                });
+    }
 }
