@@ -6,7 +6,7 @@ public class ShoppingList extends ItemList {
 
     String Name;
     String ID;
-    String responsibility = "";
+    String responsibility = "Mathias Friis";
 
     public ShoppingList() {
         //Empty constructor for use with firebase (i think..)
