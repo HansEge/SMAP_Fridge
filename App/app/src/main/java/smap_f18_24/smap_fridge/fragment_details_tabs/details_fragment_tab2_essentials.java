@@ -34,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -52,12 +53,14 @@ import android.widget.Button;
 
 public class details_fragment_tab2_essentials extends Fragment {
 
+    private static final String TAG = "details_fragment_tab2_e";
+
     private ListView essentialList;
     private EssentialsList EList = new EssentialsList();
     Button btn_addNewItem;
 
     private String clickedFridgeID;
-    private Fridge fridge;
+    private Fridge currentFridge;
 
     public EssentialsListAdaptor adaptor;
 
@@ -90,11 +93,17 @@ public class details_fragment_tab2_essentials extends Fragment {
 
         essentialList = v.findViewById(R.id.lv_essential_tab2);
 
-        EList = ((DetailsActivity)getActivity()).currentFridge.getEssentials();
-        adaptor = new EssentialsListAdaptor(getActivity().getApplicationContext(),EList);
 
-        essentialList.setAdapter(adaptor);
 
+        //On click item
+        essentialList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Item i  = (Item)adaptor.getItem(position);
+                Log.d(TAG, "onClick: clicked Item " + i.getName());
+                openEditItemDialogBox(i);
+            }
+        });
         return v;
     }
 
@@ -102,57 +111,17 @@ public class details_fragment_tab2_essentials extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        EList = ((DetailsActivity)getActivity()).currentFridge.getEssentials();
+        adaptor = new EssentialsListAdaptor(getActivity().getApplicationContext(),EList);
+
+        essentialList.setAdapter(adaptor);
+
+        currentFridge = ((DetailsActivity)getActivity()).currentFridge;
         btn_addNewItem= getView().findViewById(R.id.essentials_btn_newItem);
         btn_addNewItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder newItemDialog = new AlertDialog.Builder(getActivity());
-                newItemDialog.setTitle("New Item");
-
-                LinearLayout layout = new LinearLayout(getActivity());
-                layout.setOrientation(LinearLayout.VERTICAL);
-
-                //item name
-                final EditText et_ItemName = new EditText(getActivity());
-                et_ItemName.setHint("Name");
-                et_ItemName.setInputType(InputType.TYPE_CLASS_TEXT);
-                layout.addView(et_ItemName);
-
-                //Quantity
-                final EditText et_qty = new EditText(getActivity());
-                et_qty.setHint("Quantity");
-                et_qty.setInputType(InputType.TYPE_CLASS_NUMBER);
-                layout.addView(et_qty);
-
-                //Unit
-                final EditText et_Unit = new EditText(getActivity());
-                et_Unit.setHint("Unit");
-                et_Unit.setInputType(InputType.TYPE_CLASS_TEXT);
-                layout.addView(et_Unit);
-
-                newItemDialog.setView(layout);
-
-                newItemDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                        //Get info from editTexts
-                        String itemName=et_ItemName.getText().toString();
-                        float Quantity = Float.parseFloat(et_qty.getText().toString());
-                        String unit = et_Unit.getText().toString();
-
-                        Item i = new Item(itemName,unit,Quantity,"N/A","N/A");
-                        Fridge currentFridge = ((DetailsActivity)getActivity()).currentFridge;
-                        mService.addItemToEssentials(i,currentFridge.getID());
-                    }
-                });
-
-                newItemDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                    }
-                });
-
-                newItemDialog.show();
+                openNewItemDialogBox();
             }
         });
     }
@@ -186,6 +155,92 @@ public class details_fragment_tab2_essentials extends Fragment {
            adaptor = new EssentialsListAdaptor(getActivity().getApplicationContext(),EList);
            essentialList.setAdapter(adaptor);
        }
+   }
+
+   private void openEditItemDialogBox(final Item i)
+   {
+       AlertDialog.Builder ItemClickedDialog = new AlertDialog.Builder(getActivity());
+       ItemClickedDialog.setTitle(i.getName());
+
+       LinearLayout layout = new LinearLayout(getActivity());
+       layout.setOrientation(LinearLayout.VERTICAL);
+
+       //Quantity
+       final EditText et_qty = new EditText(getActivity());
+       et_qty.setHint("Quantity");
+       et_qty.setInputType(InputType.TYPE_CLASS_NUMBER);
+       layout.addView(et_qty);
+
+       ItemClickedDialog.setView(layout);
+
+       ItemClickedDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+           @Override
+           public void onClick(DialogInterface dialog, int which) {
+
+           }
+       });
+
+       ItemClickedDialog.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+           @Override
+           public void onClick(DialogInterface dialog, int which) {
+               float quantity = Float.parseFloat(et_qty.getText().toString());
+               Item overwriteItem = i;
+               overwriteItem.setQuantity(quantity);
+               mService.overwriteItemInEssentials(overwriteItem,currentFridge.getID());
+           }
+       });
+
+       ItemClickedDialog.show();
+   }
+
+   private void openNewItemDialogBox()
+   {
+       AlertDialog.Builder newItemDialog = new AlertDialog.Builder(getActivity());
+       newItemDialog.setTitle("New Item");
+
+       LinearLayout layout = new LinearLayout(getActivity());
+       layout.setOrientation(LinearLayout.VERTICAL);
+
+       //item name
+       final EditText et_ItemName = new EditText(getActivity());
+       et_ItemName.setHint("Name");
+       et_ItemName.setInputType(InputType.TYPE_CLASS_TEXT);
+       layout.addView(et_ItemName);
+
+       //Quantity
+       final EditText et_qty = new EditText(getActivity());
+       et_qty.setHint("Quantity");
+       et_qty.setInputType(InputType.TYPE_CLASS_NUMBER);
+       layout.addView(et_qty);
+
+       //Unit
+       final EditText et_Unit = new EditText(getActivity());
+       et_Unit.setHint("Unit");
+       et_Unit.setInputType(InputType.TYPE_CLASS_TEXT);
+       layout.addView(et_Unit);
+
+       newItemDialog.setView(layout);
+
+       newItemDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int whichButton) {
+
+               //Get info from editTexts
+               String itemName=et_ItemName.getText().toString();
+               float Quantity = Float.parseFloat(et_qty.getText().toString());
+               String unit = et_Unit.getText().toString();
+
+               Item i = new Item(itemName,unit,Quantity,"N/A","N/A");
+               mService.addItemToEssentials(i,currentFridge.getID());
+           }
+       });
+
+       newItemDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int whichButton) {
+
+           }
+       });
+
+       newItemDialog.show();
    }
 }
 
