@@ -126,11 +126,12 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
-    private void addListInfo(CollectionReference destination, String name, String ID)
+    public void addListInfo(CollectionReference destination, String name, String ID, String responsibleUserEmail)
     {
         Map<String, Object> info = new HashMap<>();
         info.put("Name", name);
         info.put("ID", ID);
+        info.put("ResponsibleUserEmail",responsibleUserEmail);
 
         destination.document("Info").set(info)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -161,12 +162,17 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     {
         Map<String, Object>  ShoppingList = new HashMap<>();
         CollectionReference listRef = fridge.document("ShoppingLists").collection(listID);
-        addListInfo(listRef,listName,listID);
+        addListInfo(listRef,listName,listID,"None");
         for (Item i:listToAdd.getItems()
                 ) {
             addItem(listRef,i);
         }
 
+        addID2listofShoppingListIDs(fridge,listID);
+    }
+
+    public void addID2listofShoppingListIDs(CollectionReference fridge, String listID)
+    {
         //Add list ID to ShoppingList_IDs
         CollectionReference ID_Ref = fridge.document("ShoppingList_IDs").collection("IDs");
         Map<String, Object> info = new HashMap<>();
@@ -184,21 +190,24 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
-
-
     }
 
     public void addIngredientList(CollectionReference fridge, final IngredientList listToAdd, String listName, String listID)
     {
         Map<String, Object>  IngredientList = new HashMap<>();
         CollectionReference listRef = fridge.document("IngredientLists").collection(listID);
-        addListInfo(listRef,listName,listID);
+        addListInfo(listRef,listName,listID,"None");
         for (Item i:listToAdd.getItems()
                 ) {
             addItem(listRef,i);
         }
 
-        //Add list ID to IngredientList_IDs
+        addID2listofShoppingListIDs(fridge,listID);
+    }
+
+    public void addID2listofIngredientListIDs(CollectionReference fridge, String listID)
+    {
+        //Add list ID to ShoppingList_IDs
         CollectionReference ID_Ref = fridge.document("IngredientList_IDs").collection("IDs");
         Map<String, Object> info = new HashMap<>();
         info.put("ID", listID);
@@ -391,11 +400,13 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         {
                             String name = documentSnapshot.get("Name").toString();
                             String ID = documentSnapshot.get("ID").toString();
+                            String responsibleUser = documentSnapshot.get("ResponsibleUserEmail").toString();
 
                             Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
 
                             shoppingList.setName(name);
                             shoppingList.setID(ID);
+                            shoppingList.setResponsibility(responsibleUser);
 
                             if(shoppingList.getItems().size()==0)
                             {
@@ -606,7 +617,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 if(task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
                         if (document != null){
-                            Log.d(TAG, "The name of fridgeID: " + fridgeID + " is: " + document.getString("Name"));
+                            String name = document.getString("Name");
+                            Log.d(TAG, "The name of fridgeID: " + fridgeID + " is: " + name);
+                            callbackInterface.onFridgeName(fridgeID,name);
                         }
                         else{
                             Log.d(TAG, "Error in finding fridgeID name");
@@ -806,6 +819,16 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         }
                     }
                 });
+    }
+
+    public void setResponsibilityForListShoppingList(String fridge_ID, String list_ID, String ResponsibleUser)
+    {
+        final DocumentReference fridgesRef = db.collection("Fridges").document(fridge_ID);
+        final CollectionReference listRef = fridgesRef.collection("Content").document("ShoppingLists").collection(list_ID);
+
+        Map<String, Object>  newInfo = new HashMap<>();
+        newInfo.put("ResponsibleUserEmail",ResponsibleUser);
+        listRef.document("Info").update(newInfo);
     }
 
 }

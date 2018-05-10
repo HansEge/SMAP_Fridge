@@ -377,6 +377,13 @@ public class ServiceUpdater extends Service {
             ingredientLists.remove(list2remove);
 
         }
+
+        @Override
+        public void onFridgeName(String id, String name) {
+            Log.d(TAG, "onFridgeName: ID="+id + ", name="+name);
+            getFridge(id).setName(name);
+            //TODO: Broadcast that there's new data.
+        }
     };
 
     public void SubscribeToFridge(String ID)
@@ -543,6 +550,18 @@ public class ServiceUpdater extends Service {
         dbComm.addItem(EssentialsRef, item);
     }
 
+    //Create a new shopping list with the given attributes, but with no items on it.
+    public void createNewShoppingList(String fridge_ID, String list_name)
+    {
+        String list_ID=fridge_ID+"_"+list_name;
+        CollectionReference fridgeRef = db.collection("Fridges").document(fridge_ID).collection("Content");
+        ShoppingList emptySL=new ShoppingList();
+        emptySL.setID(list_ID);
+        emptySL.setName(list_name);
+        dbComm.addShoppingList(fridgeRef,emptySL,list_name,list_ID);
+        dbComm.addID2listofShoppingListIDs(fridgeRef,list_ID);
+    }
+
     //add Item to Shopping List. Increments quantity, if item with matching name exists.
     // Shopping list must exist.
     public void addItemToShoppingList(Item item, String fridge_ID, String list_name, String list_ID)
@@ -639,6 +658,21 @@ public class ServiceUpdater extends Service {
         }
     }
 
+    //Create a new shopping list with the given attributes, but with no items on it.
+    public void createNewIngredientList(String fridge_ID, String list_name)
+    {
+        String list_ID=fridge_ID+"_"+list_name;
+        CollectionReference fridgeRef = db.collection("Fridges").document(fridge_ID).collection("Content");
+        IngredientList emptyIL=new IngredientList();
+        emptyIL.setID(list_ID);
+        emptyIL.setName(list_name);
+        dbComm.addIngredientList(fridgeRef,emptyIL,list_name,list_ID);
+        CollectionReference IDs_ref=fridgeRef.document("ShoppingList_IDs").collection("IDs");
+        dbComm.addListInfo(IDs_ref,list_name,list_ID,"None");
+        dbComm.addID2listofIngredientListIDs(fridgeRef,list_ID);
+
+    }
+
     //add Item to Ingredient List. Increments quantity, if item with matching name exists.
     // Shopping list must exist.
     public void addItemToIngredientList(Item item, String fridge_ID, String list_name, String list_ID)
@@ -733,6 +767,11 @@ public class ServiceUpdater extends Service {
                 }
             }
         }
+    }
+
+    public void setResponsibilityForShoppingList(String Fridge_ID, String List_ID, String User_ID)
+    {
+        dbComm.setResponsibilityForListShoppingList(Fridge_ID,List_ID, User_ID);
     }
 
     /*
