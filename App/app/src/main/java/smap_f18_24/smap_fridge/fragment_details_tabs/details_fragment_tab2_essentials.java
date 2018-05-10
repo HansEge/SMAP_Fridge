@@ -51,11 +51,12 @@ public class details_fragment_tab2_essentials extends Fragment {
 
     public EssentialsListAdaptor adaptor;
 
+    /*
     Item kartoffel = new Item("katoffel", "kg", 1000, "hejmeddig123@dibidut.au", "Status");
     Item Tomat = new Item("Tomat", "kg", 100, "hejmeddig123@dibidut.au", "Status");
     Item Æg = new Item("Æg", "stk", 10, "hejmeddig123@dibidut.au", "Status");
     Item juice = new Item("Juice", "L", 2, "hejmeddig123@dibidut.au", "Status");
-
+    */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,19 +70,15 @@ public class details_fragment_tab2_essentials extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_details_tab2_essentials, container, false);
 
-        EList.AddItem(kartoffel);
-        EList.AddItem(Tomat);
-        EList.AddItem(Æg);
-        EList.AddItem(juice);
-
-        fridge = ((DetailsActivity)getActivity()).mService.getFridge("TestFridgeID"); //TODO fix ID
+        //fridge = ((DetailsActivity)getActivity()).mService.getFridge("TestFridgeID"); //TODO fix ID
 
         final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
 
         essentialList = v.findViewById(R.id.lv_essential_tab2);
 
-        adaptor = new EssentialsListAdaptor(getActivity().getApplicationContext(),((DetailsActivity)getActivity()).currentFridge.getEssentials());
+        EList = ((DetailsActivity)getActivity()).currentFridge.getEssentials();
+        adaptor = new EssentialsListAdaptor(getActivity().getApplicationContext(),EList);
 
         essentialList.setAdapter(adaptor);
 
@@ -95,9 +92,10 @@ public class details_fragment_tab2_essentials extends Fragment {
             String result = null;
 
             result = intent.getStringExtra(ServiceUpdater.EXTRA_TASK_RESULT);
+            Log.d("ASDASD", result);
 
             if (result == null) {
-                Log.d("ASDASD", "Something went wrong in the broadcast receiver");
+                Log.d("ASDASD", result);
             }
 
             if(result != null) {
@@ -112,6 +110,7 @@ public class details_fragment_tab2_essentials extends Fragment {
        if(updateString.equals("DataUpdated"))
        {
            ((DetailsActivity)getActivity()).currentFridge = ((DetailsActivity)getActivity()).mService.getFridge("TestFridgeID");
+           EList = ((DetailsActivity)getActivity()).currentFridge.getEssentials();
            adaptor.notifyDataSetChanged();
        }
    }
