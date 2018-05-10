@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import smap_f18_24.smap_fridge.ModelClasses.Fridge;
 import smap_f18_24.smap_fridge.ModelClasses.Item;
+import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
 import smap_f18_24.smap_fridge.R;
 
 /**
@@ -19,20 +20,20 @@ import smap_f18_24.smap_fridge.R;
 
 public class ShoppingListAdaptor extends BaseAdapter {
     private Context context;
-    private ArrayList<Item> items;
+    private ShoppingList shoppingList;
     private Item item;
 
 
-    public ShoppingListAdaptor(Context c, ArrayList<Item> shoppingListItems){
+    public ShoppingListAdaptor(Context c, ShoppingList shoppingLists){
         this.context = c;
-        this.items = shoppingListItems;
+        this.shoppingList = shoppingLists;
     }
 
     @Override
     public int getCount() {
         //return size of the array list (number of items in the shoppinglist)
-        if(items != null){
-            return items.size();
+        if(shoppingList != null){
+            return shoppingList.getItems().size();
         } else {
             return 0;
         }
@@ -41,8 +42,8 @@ public class ShoppingListAdaptor extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         //return the item (shoppinglist item) in our array list at the given position
-        if(items != null){
-            return items.get(position);
+        if(shoppingList != null){
+            return shoppingList.getItems().get(position);
         } else{
             return null;
         }
@@ -60,7 +61,7 @@ public class ShoppingListAdaptor extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = fridgeInFlator.inflate(R.layout.shopping_list_item,null);
         }
-        item = items.get(position);
+        item = shoppingList.getItems().get(position);
         if(item != null){
             //set name of the fridge
             TextView tv_ShoppingListItemName = (TextView) convertView.findViewById(R.id.shoppingListAdaptor_tv_itemName);

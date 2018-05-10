@@ -39,7 +39,7 @@ public class DebugShoppingListActivity extends AppCompatActivity {
     final public InventoryList inventoryList = new InventoryList();
     final public IngredientList debugList1 = new IngredientList();
     final public ArrayList<ShoppingList> shoppingLists = new ArrayList<>();
-    public ShoppingListAdaptor adaptor1 = new ShoppingListAdaptor(this, debugList);
+    //public ShoppingListAdaptor adaptor1 = new ShoppingListAdaptor(this, debugList);
     public EssentialsListAdaptor adaptor2 = new EssentialsListAdaptor(this, essentialList);
     public InventoryListAdaptor adaptor3 = new InventoryListAdaptor(this, inventoryList);
     public IngredientsListAdaptor adaptor4 = new IngredientsListAdaptor(this, debugList1);

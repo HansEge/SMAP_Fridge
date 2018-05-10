@@ -1,5 +1,6 @@
 package smap_f18_24.smap_fridge.fragment_details_tabs;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,7 +37,7 @@ import smap_f18_24.smap_fridge.ModelClasses.InventoryList;
 import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
 import smap_f18_24.smap_fridge.OverviewActivity;
 import smap_f18_24.smap_fridge.R;
-
+import smap_f18_24.smap_fridge.ShoppingListActivity;
 
 
 public class details_fragment_tab3_shoppinglists extends Fragment {
@@ -73,6 +75,22 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
         final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
 
+
+        lv_shoppingListList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Intent intent = new Intent(getActivity().getApplicationContext(), ShoppingListActivity.class);
+
+                String tmpID = ((DetailsActivity)getActivity()).currentFridge.getID();
+
+                intent.putExtra("CurrentFridgeID",tmpID);
+                intent.putExtra("PositionOfShoppingList",i);
+
+                startActivity(intent);
+
+            }
+        });
 
         ShoppingList s = new ShoppingList("hh","123");
 

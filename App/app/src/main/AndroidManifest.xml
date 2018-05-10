@@ -29,7 +29,8 @@
         <activity android:name=".DebugActivityTwo" />
         <activity android:name=".DebugShoppingListActivity" />
         <activity android:name=".IntentDebugActivity" />
-        <activity android:name=".Debug_User"></activity>
+        <activity android:name=".Debug_User" />
+        <activity android:name=".ShoppingListActivity"></activity>
     </application>
 
 </manifest>
