@@ -6,23 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:tag="ESSENTIAL_TAB"
-    tools:context=".fragment_details_tabs.details_fragment_tab2_essentials">
-
-    <Button
-        android:id="@+id/details_tab2_essentials_btn_backToOverView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="16dp"
-        android:text="Back to Overview"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/_dynamic" />
+    tools:context=".fragment_details_tabs.details_fragment_tab2_essentials"
+    tools:layout_editor_absoluteY="81dp">
 
     <ListView
         android:id="@+id/lv_essential_tab2"
@@ -34,7 +19,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/details_tab2_essentials_btn_backToOverView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

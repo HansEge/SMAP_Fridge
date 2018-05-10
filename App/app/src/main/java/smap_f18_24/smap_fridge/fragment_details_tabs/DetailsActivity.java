@@ -1,5 +1,6 @@
 package smap_f18_24.smap_fridge.fragment_details_tabs;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +30,8 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import smap_f18_24.smap_fridge.ModelClasses.Fridge;
 import smap_f18_24.smap_fridge.R;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
@@ -51,7 +54,7 @@ public class DetailsActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private static boolean mBound = false;
 
-
+    public Fridge currentFridge;
     public ServiceUpdater mService;
     public String clickedFridgeID;
 
@@ -168,6 +171,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     }
 
+
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -175,14 +179,8 @@ public class DetailsActivity extends AppCompatActivity {
             mService = binder.getService();
             mBound = true;
 
-            /*
-            mService.setContext(getApplicationContext());
 
-            mService.SubscribeToFridge("TestFridgeID");
-
-            mService.SubscribeToFridge("TestFridge");
-            */
-
+            currentFridge = mService.getFridge("TestFridgeID"); //TODO Get the correct ID from overviewActivity
 
         }
 
@@ -208,5 +206,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         return tmptmpID;
     }
+
+
 
 }

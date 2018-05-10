@@ -194,7 +194,6 @@ public class ServiceUpdater extends Service {
     FridgeCallbackInterface callbackInterface = new FridgeCallbackInterface() {
         @Override
         public void onInventoryChange(String fridge_ID, InventoryList list) {
-            broadcastResult("Stuff was updated");
             Log.d(TAG, "Inventory of fridge " + fridge_ID + " updated.");
             //Update list for fridge with matching fridge ID
 
@@ -215,11 +214,12 @@ public class ServiceUpdater extends Service {
 
             fridges.add(placeholderFridge);
             //TODO: Broadcast that new data is available.
+            broadcastResult("DataUpdated");
         }
 
         @Override
         public void onEssentialsChange(String fridge_ID, EssentialsList list) {
-            Log.d(TAG, "Inventory of fridge " + fridge_ID + " updated.");
+            Log.d(TAG, "Essential of fridge " + fridge_ID + " updated.");
             //Update list for fridge with matching fridge ID
 
             //check for fridge with matching ID.
@@ -229,6 +229,10 @@ public class ServiceUpdater extends Service {
                 {
                     //if ID matches
                     f.setEssentials(list);
+
+                    Log.d("BROADCASTFROMSERVICE", "BROADCAST!");
+                    broadcastResult("DataUpdated");
+
                     return;
                 }
             }
@@ -274,6 +278,7 @@ public class ServiceUpdater extends Service {
                                     shoppingLists.remove(s);
                                     shoppingLists.add(index,list);
                                     //TODO: Broadcast that new data is available.
+                                    broadcastResult("DataUpdated");
                                     return;
                                 }
                             }
@@ -302,6 +307,7 @@ public class ServiceUpdater extends Service {
                 placeholderFridge.setID(fridge_ID);
 
                 //TODO: Broadcast that new data is available.
+                broadcastResult("DataUpdated");
             }
         }
 
@@ -340,6 +346,7 @@ public class ServiceUpdater extends Service {
                                     ingredientLists.remove(s);
                                     ingredientLists.add(index, list);
                                     //TODO: Broadcast that new data is available.
+                                    broadcastResult("DataUpdated");
                                     return;
                                 }
                             }
@@ -365,6 +372,7 @@ public class ServiceUpdater extends Service {
                 placeholderFridge.setID(fridge_ID);
 
                 //TODO: Broadcast that new data is available.
+                broadcastResult("DataUpdated");
             }
 
         }
