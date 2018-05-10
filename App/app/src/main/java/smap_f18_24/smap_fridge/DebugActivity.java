@@ -44,8 +44,8 @@ public class DebugActivity extends AppCompatActivity {
     private boolean mBound = false;
     ServiceUpdater mService;
 
-    EditText etFridgeName, etItemName, etListName, etFridgeID, etListID;
-    Button btn_NewFridge, btn_add2inv, btn_add2ess, btn_add2SL, btn_overWriteInv, btn_overWriteShoppingList , btn_rmvFrmInv, btn_rmvFrmSL;
+    EditText etFridgeName, etItemName, etListName, etFridgeID, etListID, etResponsibleUser;
+    Button btn_NewFridge, btn_add2inv, btn_add2ess, btn_add2SL, btn_overWriteInv, btn_overWriteShoppingList , btn_rmvFrmInv, btn_rmvFrmSL, btnResponsiblUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +63,7 @@ public class DebugActivity extends AppCompatActivity {
         etListName=findViewById(R.id.debug_et_listName);
         etFridgeID=findViewById(R.id.debug_et_fridgeID);
         etListID=findViewById(R.id.debug_et_listID);
+        etResponsibleUser=findViewById(R.id.debug_et_responsibleUser);
 
         btn_add2inv=findViewById(R.id.debug_btn_addItemToInv);
         btn_add2ess=findViewById(R.id.debug_btn_addItemToEss);
@@ -72,6 +73,7 @@ public class DebugActivity extends AppCompatActivity {
         btn_rmvFrmSL=findViewById(R.id.debug_btn_removeItemFromShoppinList);
         btn_overWriteInv=findViewById(R.id.debug_btn_overWriteInventory);
         btn_overWriteShoppingList=findViewById(R.id.debug_btn_overWriteShoppingList);
+        btnResponsiblUser=findViewById(R.id.debug_btn_setResposibleUser);
 
         btn_add2inv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +177,20 @@ public class DebugActivity extends AppCompatActivity {
             }
         });
 
+
+        btnResponsiblUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String listID=etListID.getText().toString();
+                String itemName=etItemName.getText().toString();
+                String listName = etListName.getText().toString();
+                String fridgeName=etFridgeName.getText().toString();
+                String fridgeID = etFridgeID.getText().toString();
+                String responsibleUser = etResponsibleUser.getText().toString();
+                Item i = new Item(itemName,"grams",5,"","");
+                mService.setResponsibilityForShoppingList(fridgeID,listID,responsibleUser);
+            }
+        });
     }
 
     @Override

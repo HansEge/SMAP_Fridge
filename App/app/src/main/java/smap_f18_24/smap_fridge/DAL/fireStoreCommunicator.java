@@ -400,11 +400,13 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         {
                             String name = documentSnapshot.get("Name").toString();
                             String ID = documentSnapshot.get("ID").toString();
+                            String responsibleUser = documentSnapshot.get("ResponsibleUserEmail").toString();
 
                             Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
 
                             shoppingList.setName(name);
                             shoppingList.setID(ID);
+                            shoppingList.setResponsibility(responsibleUser);
 
                             if(shoppingList.getItems().size()==0)
                             {
@@ -817,6 +819,16 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         }
                     }
                 });
+    }
+
+    public void setResponsibilityForListShoppingList(String fridge_ID, String list_ID, String ResponsibleUser)
+    {
+        final DocumentReference fridgesRef = db.collection("Fridges").document(fridge_ID);
+        final CollectionReference listRef = fridgesRef.collection("Content").document("ShoppingLists").collection(list_ID);
+
+        Map<String, Object>  newInfo = new HashMap<>();
+        newInfo.put("ResponsibleUserEmail",ResponsibleUser);
+        listRef.document("Info").update(newInfo);
     }
 
 }

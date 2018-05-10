@@ -769,6 +769,11 @@ public class ServiceUpdater extends Service {
         }
     }
 
+    public void setResponsibilityForShoppingList(String Fridge_ID, String List_ID, String User_ID)
+    {
+        dbComm.setResponsibilityForListShoppingList(Fridge_ID,List_ID, User_ID);
+    }
+
     /*
     public void addShoppingList(CollectionReference fridge, final ShoppingList listToAdd, String listName, String listID)
     {

@@ -164,4 +164,29 @@
         app:layout_constraintHorizontal_bias="0.027"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/debug_btn_overWriteInventory" />
+
+    <Button
+        android:id="@+id/debug_btn_setResposibleUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="SetRsp4SL"
+        app:layout_constraintBottom_toBottomOf="@+id/debug_btn_overWriteShoppingList"
+        app:layout_constraintStart_toEndOf="@+id/debug_btn_overWriteShoppingList"
+        app:layout_constraintTop_toTopOf="@+id/debug_btn_overWriteShoppingList" />
+
+    <EditText
+        android:id="@+id/debug_et_responsibleUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="smukkeStinus@poopmail.com"
+        app:layout_constraintBottom_toTopOf="@+id/debug_btn_overWriteShoppingList"
+        app:layout_constraintStart_toEndOf="@+id/debug_btn_overWriteInventory"
+        app:layout_constraintTop_toTopOf="@+id/debug_btn_overWriteInventory" />
 </android.support.constraint.ConstraintLayout>
