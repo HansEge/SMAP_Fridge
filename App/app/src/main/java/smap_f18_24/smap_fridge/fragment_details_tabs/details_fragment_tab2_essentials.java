@@ -111,7 +111,8 @@ public class details_fragment_tab2_essentials extends Fragment {
        {
            ((DetailsActivity)getActivity()).currentFridge = ((DetailsActivity)getActivity()).mService.getFridge("TestFridgeID");
            EList = ((DetailsActivity)getActivity()).currentFridge.getEssentials();
-           adaptor.notifyDataSetChanged();
+           adaptor = new EssentialsListAdaptor(getActivity().getApplicationContext(),EList);
+           essentialList.setAdapter(adaptor);
        }
    }
 }
