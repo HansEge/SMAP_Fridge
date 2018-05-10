@@ -20,6 +20,9 @@ public class ShoppingListActivity extends AppCompatActivity {
 
     private ListView lv_shoppingList;
 
+    String fridgeID;
+    int position;
+
     private boolean mBound = false;
     public ServiceUpdater mService;
 
@@ -33,14 +36,12 @@ public class ShoppingListActivity extends AppCompatActivity {
 
         Intent i = getIntent();
 
-        String fridgeID = i.getStringExtra("CurrentFridgeID");
-        int position = i.getIntExtra("PositionOfShoppingList",0);
+        fridgeID = i.getStringExtra("CurrentFridgeID");
+        position = i.getIntExtra("PositionOfShoppingList",0);
 
         lv_shoppingList = findViewById(R.id.shoppingList_lv_list);
 
-        adaptor = new ShoppingListAdaptor(this,mService.getFridge(fridgeID).getShoppingLists().get(position));
 
-        lv_shoppingList.setAdapter(adaptor);
 
     }
 
@@ -66,6 +67,9 @@ public class ShoppingListActivity extends AppCompatActivity {
             mService = binder.getService();
             Log.d("ServiceShopping","Service connected");
             mBound = true;
+
+            adaptor = new ShoppingListAdaptor(getApplicationContext(),mService.getFridge(fridgeID).getShoppingLists().get(position));
+            lv_shoppingList.setAdapter(adaptor);
         }
 
         @Override
