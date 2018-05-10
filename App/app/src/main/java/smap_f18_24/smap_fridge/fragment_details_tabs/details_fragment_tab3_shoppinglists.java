@@ -43,18 +43,6 @@ import smap_f18_24.smap_fridge.ShoppingListActivity;
 public class details_fragment_tab3_shoppinglists extends Fragment {
 
     private String clickedFridgeID;
-    private Fridge fridge;
-
-    private ListView lv_shoppingList;
-
-
-    List<String> connectedUserEmailss;
-    InventoryList inventoryList = new InventoryList();
-    EssentialsList essentialList = new EssentialsList();
-
-    List<ShoppingList> myShoppingLists = new ArrayList<ShoppingList>();
-    List<IngredientList> myIngredientsLists = new ArrayList<IngredientList>();
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,26 +79,8 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
 
             }
         });
-
-        ShoppingList s = new ShoppingList("hh","123");
-
-        myShoppingLists.add(s);
-
-
-
-        fridge = ((DetailsActivity)getActivity()).mService.getFridge(((DetailsActivity)getActivity()).clickedFridgeID); //TODO fix ID
-        fridge = new Fridge("Tester", "testID", connectedUserEmailss, inventoryList, essentialList, myShoppingLists, myIngredientsLists);
-
-
-        fridge.CreateNewShoppingList("hh");
-        fridge.CreateNewShoppingList("to");
-        fridge.CreateNewShoppingList("tre");
-
-
-        List<ShoppingList> list1 = fridge.getShoppingLists();
-
-
-        ShoppingListListAdaptor adaptor = new ShoppingListListAdaptor(getActivity().getApplicationContext(),(ArrayList<ShoppingList>)fridge.getShoppingLists());
+        
+        ShoppingListListAdaptor adaptor = new ShoppingListListAdaptor(getActivity().getApplicationContext(),(ArrayList<ShoppingList>)((DetailsActivity)getActivity()).currentFridge.getShoppingLists());
 
         lv_shoppingListList.setAdapter(adaptor);
 
