@@ -46,10 +46,27 @@ public class ShoppingList extends ItemList {
         responsibility=responsibleUser;
     }
 
-    public void MoveFromShoppingListToFridge(Item _toMove) {
+    public void MoveFromShoppingListToFridge( ShoppingList shoppingList, InventoryList inventoryList) {
         //TODO
         //Add toMove to InventoryList
         //Remove toMove from shopping list
+
+        for (Item i: shoppingList.getItems()) {
+
+            for (Item j: inventoryList.getItems()) {
+
+                if (i.getName().equals(j.getName()))
+                {
+                    j.setQuantity(i.getQuantity()+j.getQuantity());
+                    shoppingList.RemoveItem(i.getName());
+                }
+                else
+                {
+                    inventoryList.AddItem(shoppingList.getItem(i.getName()));
+                    shoppingList.RemoveItem(i.getName());
+                }
+            }
+        }
     }
 
     public void setName(String _name) {
