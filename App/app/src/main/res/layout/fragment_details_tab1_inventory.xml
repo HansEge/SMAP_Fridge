@@ -6,6 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment_details_tabs.details_fragment_tab1_inventory">
+    <View
+        android:id="@+id/divider"
+        android:layout_width="380dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
     <View
         android:id="@+id/divider2"
@@ -42,6 +50,7 @@
         android:text="Name"
         android:textAlignment="center"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/lv_inventoryList_tap1"
         app:layout_constraintEnd_toStartOf="@+id/divider2"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,6 +66,7 @@
         android:layout_marginTop="8dp"
         android:text="Quantity"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/lv_inventoryList_tap1"
         app:layout_constraintEnd_toEndOf="@+id/divider3"
         app:layout_constraintStart_toEndOf="@+id/divider2"
@@ -72,6 +82,7 @@
         android:layout_marginTop="8dp"
         android:text="Unit"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/lv_inventoryList_tap1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/divider3"
@@ -86,7 +97,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
