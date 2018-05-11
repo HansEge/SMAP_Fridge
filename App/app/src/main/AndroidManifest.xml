@@ -30,7 +30,8 @@
         <activity android:name=".DebugShoppingListActivity" />
         <activity android:name=".IntentDebugActivity" />
         <activity android:name=".Debug_User" />
-        <activity android:name=".ShoppingListActivity"></activity>
+        <activity android:name=".ShoppingListActivity" />
+        <activity android:name=".IngredientsListActivity"></activity>
     </application>
 
 </manifest>

@@ -1,5 +1,8 @@
 package smap_f18_24.smap_fridge.fragment_details_tabs;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,38 +20,67 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.data.model.Resource;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
+import smap_f18_24.smap_fridge.Adaptors.IngredientsListListAdaptor;
+import smap_f18_24.smap_fridge.Adaptors.InventoryListAdaptor;
+import smap_f18_24.smap_fridge.IngredientsListActivity;
+import smap_f18_24.smap_fridge.ModelClasses.IngredientList;
 import smap_f18_24.smap_fridge.R;
+import smap_f18_24.smap_fridge.ShoppingListActivity;
 
 // TODO - Missing link to context in order to findView by R.id. for example
 
 public class details_fragment_tab4_ingredients extends Fragment {
+
+
+    ListView lv_ingredientsList;
+
+    IngredientsListListAdaptor adaptor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_details_tab4_ingredients, container, false);
 
-        TextView test = (TextView) v.findViewById(R.id.details_tab4_ingredients_tv_sectionLabel);
-        Button btn_goBackToOverview = (Button) v.findViewById(R.id.details_tap4_ingredients_btn_backToOverView);
+        lv_ingredientsList = v.findViewById(R.id.lv_ingredients_tab4);
 
-
-        btn_goBackToOverview.setOnClickListener(new View.OnClickListener() {
+        lv_ingredientsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                getActivity().finish();
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Intent intent = new Intent(getActivity().getApplicationContext(), IngredientsListActivity.class);
+
+                String tmpID = ((DetailsActivity)getActivity()).currentFridge.getID();
+
+                intent.putExtra("CurrentFridgeID",tmpID);
+                intent.putExtra("PositionOfShoppingList",i);
+
+                startActivity(intent);
+
+
             }
         });
-
 
         return v;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        adaptor = new IngredientsListListAdaptor(getActivity().getApplicationContext(), (ArrayList<IngredientList>)((DetailsActivity)getActivity()).currentFridge.getIngredientLists());
+
+        lv_ingredientsList.setAdapter(adaptor);
+
+    }
 }

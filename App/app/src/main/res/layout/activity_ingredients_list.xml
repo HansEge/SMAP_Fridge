@@ -2,13 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/lv_fragment_inventory"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment_details_tabs.details_fragment_tab4_ingredients">
+    tools:context=".IngredientsListActivity">
 
     <ListView
-        android:id="@+id/lv_ingredients_tab4"
+        android:id="@+id/ingredientsList_lv_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"

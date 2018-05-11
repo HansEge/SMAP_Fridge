@@ -79,7 +79,7 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
 
             }
         });
-        
+
         ShoppingListListAdaptor adaptor = new ShoppingListListAdaptor(getActivity().getApplicationContext(),(ArrayList<ShoppingList>)((DetailsActivity)getActivity()).currentFridge.getShoppingLists());
 
         lv_shoppingListList.setAdapter(adaptor);
