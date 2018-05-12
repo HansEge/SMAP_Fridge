@@ -425,7 +425,15 @@ public class ServiceUpdater extends Service {
         @Override
         public void onFridgeName(String id, String name) {
             Log.d(TAG, "onFridgeName: ID="+id + ", name="+name);
-            getFridge(id).setName(name);
+            try
+            {
+                getFridge(id).setName(name);
+            }
+            catch (RuntimeException e)
+            {
+                Log.d(TAG, "onFridgeName: fridge does not exist on list.");
+            }
+            
             //TODO: Broadcast that there's new data.
         }
 
