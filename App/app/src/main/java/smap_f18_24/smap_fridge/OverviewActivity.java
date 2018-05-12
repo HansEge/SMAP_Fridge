@@ -233,7 +233,7 @@ public class OverviewActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                final String tmpID = debugList.get(i).getID();
+                final String tmpFridgeID = debugList.get(i).getID();
 
                 AlertDialog.Builder dialogB = new AlertDialog.Builder(OverviewActivity.this);
                 dialogB.setTitle("Do you want to Share or Delete the fridge?");
@@ -251,7 +251,7 @@ public class OverviewActivity extends AppCompatActivity {
 
                         //Current way of displaying the user the fridgeID - should we do this in another way?
                             //User should properly be aple to copy that ID - to make it easy to send
-                        Toast toast = Toast.makeText(OverviewActivity.this,"Fridge ID: " + tmpID, Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(OverviewActivity.this,"Fridge ID: " + tmpFridgeID, Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER,0,0);
                         toast.show();
                     }
@@ -260,8 +260,13 @@ public class OverviewActivity extends AppCompatActivity {
                 dialogB.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
+
+                        String tmpUserEmail = mService.getCurrentUserEmail();
+
                         //Deleting the fridge from eventlisteners, locally and userID from database to the correspondant fridge
-                        
+                        mService.UnsubscribeFromFridge(tmpFridgeID,tmpUserEmail);
+
 
                     }
                 });

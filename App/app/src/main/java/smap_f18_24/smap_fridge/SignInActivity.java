@@ -57,9 +57,6 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         // Create and launch sign-in intent
-
-        // Crashed if this wasn't commented on API 25
-        /*
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -67,7 +64,7 @@ public class SignInActivity extends AppCompatActivity {
                         .setLogo(R.drawable.stinus_face)      // Set logo drawable
                         .build(),
                 RC_SIGN_IN);
-*/
+
         btn_debug=findViewById(R.id.signin_btn_debug);
         btn_debug.setOnClickListener(new View.OnClickListener() {
             @Override
