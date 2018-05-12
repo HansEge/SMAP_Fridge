@@ -19,17 +19,11 @@
 
         <service android:name=".Service.ServiceUpdater" />
 
-        <activity android:name=".DebugActivity" />
-        <activity android:name=".ServiceTester" />
         <activity android:name=".OverviewActivity" />
         <activity
             android:name=".fragment_details_tabs.DetailsActivity"
             android:label="@string/title_activity_details"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DebugActivityTwo" />
-        <activity android:name=".DebugShoppingListActivity" />
-        <activity android:name=".IntentDebugActivity" />
-        <activity android:name=".Debug_User" />
         <activity android:name=".ShoppingListActivity" />
         <activity android:name=".IngredientsListActivity"></activity>
     </application>
