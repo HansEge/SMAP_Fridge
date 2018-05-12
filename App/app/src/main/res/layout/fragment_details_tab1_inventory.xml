@@ -91,7 +91,7 @@
     <ListView
         android:id="@+id/lv_inventoryList_tap1"
         android:layout_width="0dp"
-        android:layout_height="326dp"
+        android:layout_height="381dp"
         android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -104,7 +104,6 @@
         android:id="@+id/details_tap1_inventory_btn_addItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
