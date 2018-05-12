@@ -72,7 +72,7 @@ public class ServiceUpdater extends Service {
 
         dbComm=new fireStoreCommunicator(getApplicationContext(),callbackInterface);
         currentUser = getCurrentUserInformation();
-        dbComm.SubscribeToSavedFridges(getCurrentUserEmail());
+        dbComm.SubscribeToSavedFridges(getCurrentUserEmail(),callbackInterface);
     }
 
     public void setContext(Context c)
@@ -196,7 +196,7 @@ public class ServiceUpdater extends Service {
     }
 
     public void getUserSubscribedFridges(String userEmail){
-            dbComm.SubscribeToSavedFridges(userEmail);
+            dbComm.SubscribeToSavedFridges(userEmail,callbackInterface);
     }
 
 
@@ -428,7 +428,20 @@ public class ServiceUpdater extends Service {
             getFridge(id).setName(name);
             //TODO: Broadcast that there's new data.
         }
+
+        @Override
+        public void onSubscribingToFridge(String id) {
+            //Add new placeholder fridge.
+            Fridge fridgeToAdd = new Fridge();
+            fridgeToAdd.setID(id);
+            fridges.add(fridgeToAdd);
+        }
     };
+
+    public ArrayList<Fridge> getAllFridges()
+    {
+        return fridges;
+    }
 
     public void SubscribeToFridge(String ID)
     {

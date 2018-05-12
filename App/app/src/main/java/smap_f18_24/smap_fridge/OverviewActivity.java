@@ -1,9 +1,11 @@
 package smap_f18_24.smap_fridge;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.IBinder;
@@ -50,8 +52,8 @@ public class OverviewActivity extends AppCompatActivity {
     ServiceUpdater mService;
     private boolean mBound = false;
 
-    final public ArrayList<Fridge> debugList = new ArrayList<>();
-    public FridgeListAdaptor adaptor1 = new FridgeListAdaptor(this, debugList);
+    private ArrayList<Fridge> localList = new ArrayList<>();
+    public FridgeListAdaptor adaptor1 = new FridgeListAdaptor(this, localList);
 
     List<String> connectedUserEmailss;
     final public InventoryList inventoryList = new InventoryList();
@@ -76,14 +78,19 @@ public class OverviewActivity extends AppCompatActivity {
         final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(this);
 
 
-        ShoppingList s = new ShoppingList("hh","123");
+        //ShoppingList s = new ShoppingList("hh","123");
 
-        myShoppingLists.add(s);
+        //myShoppingLists.add(s);
 
 
         //Start service
         Intent ServiceIntent = new Intent(OverviewActivity.this, ServiceUpdater.class);
         startService(ServiceIntent);
+
+        //register to broadcasts.
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
+        LocalBroadcastManager.getInstance(this).registerReceiver(serviceUpdaterReceiver,filter);
 
         btn_addNewFridge = findViewById(R.id.overview_btn_addNewFridge);
         btn_addExistingFridge = findViewById(R.id.overview_btn_addExistingFridge);
@@ -93,7 +100,7 @@ public class OverviewActivity extends AppCompatActivity {
         tv_welcomeUser = findViewById(R.id.overview_tv_welcomeUser);
         tv_welcomeUser.setText("Welcome, " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
 
-        debugList.add(testFridge);
+        //localList.add(testFridge);
 
         lv_fridgesListView.setAdapter(adaptor1);
 
@@ -137,7 +144,7 @@ public class OverviewActivity extends AppCompatActivity {
 
                         Fridge tmpFridge = mService.getFridge(tmp_id);
 
-                        debugList.add(tmpFridge);
+                        //localList.add(tmpFridge);
 
                         lv_fridgesListView.setAdapter(adaptor1);
 
@@ -188,11 +195,12 @@ public class OverviewActivity extends AppCompatActivity {
                         //Trying to find the database fridge and put it into the adaptor which presents it to the user
                         String existingFridgeID = et_uniqueCodeUserInput.getText().toString();
 
+                        mService.addFridgeIDtoListOfSubscribedFridges(mService.getCurrentUserEmail(),existingFridgeID);
                         mService.SubscribeToFridge(existingFridgeID);
 
                         Fridge existingFridge = mService.getFridge(existingFridgeID);
 
-                        debugList.add(existingFridge);
+                        localList.add(existingFridge);
 
                         lv_fridgesListView.setAdapter(adaptor1);
 
@@ -212,7 +220,7 @@ public class OverviewActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent DetailsActivityIntent = new Intent(OverviewActivity.this, DetailsActivity.class);
 
-                String tmpID = debugList.get(position).getID();
+                String tmpID = localList.get(position).getID();
 
 
                 // Umiddelbart skal dette ikke længere bruges, hvis Intent passer ID videre til detailsActivity, hvorefter det håndteres af fragmentManager
@@ -233,7 +241,7 @@ public class OverviewActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                final String tmpFridgeID = debugList.get(i).getID();
+                final String tmpFridgeID = localList.get(i).getID();
 
                 AlertDialog.Builder dialogB = new AlertDialog.Builder(OverviewActivity.this);
                 dialogB.setTitle("Do you want to Share or Delete the fridge?");
@@ -308,6 +316,9 @@ public class OverviewActivity extends AppCompatActivity {
             mBound = true;
 
             mService.setContext(getApplicationContext());
+            localList=mService.getAllFridges();
+            UpdateUI();
+
 
 
             //mService.SubscribeToFridge("TestFridgeID");
@@ -323,6 +334,14 @@ public class OverviewActivity extends AppCompatActivity {
         }
     };
 
+    private void UpdateUI()
+    {
+        //reset adaptor to update UI.
+        adaptor1 = new FridgeListAdaptor(this, localList);
+        lv_fridgesListView.setAdapter(adaptor1);
+
+    }
+
     @Override
     protected void onStop(){
         super.onStop();
@@ -330,4 +349,23 @@ public class OverviewActivity extends AppCompatActivity {
         unbindService(mConnection);
     }
 
+
+    private BroadcastReceiver serviceUpdaterReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("ASDASD", "Broadcast reveiced from ServiceUpdater in tab1");
+            String result = null;
+
+            result = intent.getStringExtra(ServiceUpdater.EXTRA_TASK_RESULT);
+            Log.d("ASDASD", result);
+
+            if (result == null) {
+                Log.d("ASDASD", result);
+            }
+
+            if(result != null) {
+                UpdateUI();
+            }
+        }
+    };
 }

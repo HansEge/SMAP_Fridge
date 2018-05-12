@@ -649,7 +649,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
 
     //Gets a list of fridges subscribed to by the user, and makes sure that updates in the subscribed fridges triggers callbacks to the provided callback interface.
-    public void SubscribeToSavedFridges(String userEmail)
+    public void SubscribeToSavedFridges(String userEmail, final FridgeCallbackInterface callbackInterface)
     {
         //get list from database.
         db.collection("Users").document(userEmail).collection("FridgeSubscribtions").get()
@@ -668,6 +668,8 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                             //Subscribe to all fridges.
                             for (List_ID id:Fridge_IDs
                                  ) {
+                                //create new placeholder fridge in service.
+                                callbackInterface.onSubscribingToFridge(id.getID());
                                 SubscribeToFridge(id.getID());
                             }
                         }
