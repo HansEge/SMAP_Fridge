@@ -44,10 +44,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        btn_service = findViewById(R.id.service_btn_service);
         btn_toOverViewActivity = findViewById(R.id.signin_btn_toOverviewActivity);
-        btn_debugUser = findViewById(R.id.signin_btn_debugUser);
-
 
         btn_logout = findViewById(R.id.signin_btn_logout);
 
@@ -67,6 +64,8 @@ public class SignInActivity extends AppCompatActivity {
                         .build(),
                 RC_SIGN_IN);
 
+
+
         btn_toOverViewActivity.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -74,8 +73,6 @@ public class SignInActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
-
 
     }
     @Override
