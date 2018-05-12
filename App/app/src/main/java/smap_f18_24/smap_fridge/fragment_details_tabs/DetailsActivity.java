@@ -68,8 +68,6 @@ public class DetailsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ServiceUpdater.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
-        Bundle Extras = getIntent().getExtras();
-
         String bob = getIntent().getStringExtra("clickedFridgeID");
         Toast.makeText(this, bob, Toast.LENGTH_SHORT).show();
 

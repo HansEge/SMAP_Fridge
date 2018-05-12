@@ -349,10 +349,12 @@ public class ServiceUpdater extends Service {
 
         @Override
         public void onShoppingListDelete(String fridge_ID, ShoppingList list) {
+            /*
             Toast.makeText(context, "Gotta delete the list " + list.getID(), Toast.LENGTH_SHORT).show();
             List<ShoppingList> shoppingLists =  getFridge(fridge_ID).getShoppingLists();
             ShoppingList list2remove = getShoppingList(list.getID(),shoppingLists);
             shoppingLists.remove(list2remove);
+            */
         }
 
         @Override
@@ -415,10 +417,12 @@ public class ServiceUpdater extends Service {
 
         @Override
         public void onIngredientListDelete(String fridge_ID, IngredientList list) {
+            /*
             Toast.makeText(context, "Gotta delete the list " + list.getID(), Toast.LENGTH_SHORT).show();
             List<IngredientList> ingredientLists =  getFridge(fridge_ID).getIngredientLists();
             IngredientList list2remove = getIngredientList(list.getID(),ingredientLists);
             ingredientLists.remove(list2remove);
+            */
 
         }
 
@@ -642,6 +646,7 @@ public class ServiceUpdater extends Service {
         emptySL.setName(list_name);
         dbComm.addShoppingList(fridgeRef,emptySL,list_name,list_ID);
         dbComm.addID2listofShoppingListIDs(fridgeRef,list_ID);
+        dbComm.SubscribeToShoppingList(fridgeRef,list_ID,fridge_ID);
     }
 
     //add Item to Shopping List. Increments quantity, if item with matching name exists.

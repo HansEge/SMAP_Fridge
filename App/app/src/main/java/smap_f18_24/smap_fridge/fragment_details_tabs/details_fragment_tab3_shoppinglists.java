@@ -9,24 +9,14 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -35,23 +25,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import smap_f18_24.smap_fridge.Adaptors.EssentialsListAdaptor;
-import smap_f18_24.smap_fridge.Adaptors.ShoppingListAdaptor;
 import smap_f18_24.smap_fridge.Adaptors.ShoppingListListAdaptor;
-import smap_f18_24.smap_fridge.ModelClasses.EssentialsList;
 import smap_f18_24.smap_fridge.ModelClasses.Fridge;
-import smap_f18_24.smap_fridge.ModelClasses.IngredientList;
-import smap_f18_24.smap_fridge.ModelClasses.InventoryList;
 import smap_f18_24.smap_fridge.ModelClasses.Item;
 import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
-import smap_f18_24.smap_fridge.OverviewActivity;
 import smap_f18_24.smap_fridge.R;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 import smap_f18_24.smap_fridge.ShoppingListActivity;
@@ -64,6 +46,7 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
     private Fridge currentFridge;
     private ShoppingListListAdaptor adaptor;
     private ListView lv_shoppingListList;
+    Button btn_newList;
 
 
     @Override
@@ -84,13 +67,13 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
 
         mService = ((DetailsActivity)getActivity()).mService;
         lv_shoppingListList = v.findViewById(R.id.lv_shoppingListList_tab3);
-        Button btn_goBackToOverview = (Button) v.findViewById(R.id.details_tap3_shoppinglists_btn_backToOverView);
+        btn_newList = (Button) v.findViewById(R.id.details_tab3_shoppinglists_btn_newList);
 
 
-        btn_goBackToOverview.setOnClickListener(new View.OnClickListener() {
+        btn_newList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().finish();
+                OpenNewListDialogBox();
             }
         });
 
@@ -184,5 +167,42 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
             adaptor = new ShoppingListListAdaptor(getActivity().getBaseContext(), (ArrayList<ShoppingList>) ((DetailsActivity) getActivity()).currentFridge.getShoppingLists());
             lv_shoppingListList.setAdapter(adaptor);
         }
+    }
+
+    private void OpenNewListDialogBox()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Add new List");
+
+        LinearLayout layout = new LinearLayout(getContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        final EditText et_newItemName = new EditText(getContext());
+        et_newItemName.setHint("Name:");
+        et_newItemName.setInputType(InputType.TYPE_CLASS_TEXT);
+        layout.addView(et_newItemName);
+
+
+        builder.setView(layout);
+
+
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                String listName = et_newItemName.getText().toString();
+                String listID = currentFridge.getID()+"_"+listName;
+
+                mService.createNewShoppingList(currentFridge.getID(),listName);
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.show();
     }
 }
