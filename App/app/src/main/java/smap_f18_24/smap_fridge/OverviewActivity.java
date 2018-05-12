@@ -196,6 +196,7 @@ public class OverviewActivity extends AppCompatActivity {
                         String existingFridgeID = et_uniqueCodeUserInput.getText().toString();
 
                         mService.addFridgeIDtoListOfSubscribedFridges(mService.getCurrentUserEmail(),existingFridgeID);
+
                         mService.SubscribeToFridge(existingFridgeID);
 
                         Fridge existingFridge = mService.getFridge(existingFridgeID);
@@ -318,8 +319,6 @@ public class OverviewActivity extends AppCompatActivity {
             mService.setContext(getApplicationContext());
             localList=mService.getAllFridges();
             UpdateUI();
-
-
 
             //mService.SubscribeToFridge("TestFridgeID");
 
