@@ -51,7 +51,7 @@ public class IngredientsListActivity extends AppCompatActivity {
         btn_addToShoppingList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //fridge.getInventory().UpdateShoppingListFromIngredientList(); //TODO insert updateIngredients method
+                mService.UpdateShoppingListFromIngredientList(mService.)); //TODO insert updateIngredients method
             }
         });
 
