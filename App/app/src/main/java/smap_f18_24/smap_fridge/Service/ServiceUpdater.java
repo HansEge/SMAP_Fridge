@@ -903,6 +903,18 @@ public class ServiceUpdater extends Service {
         }
     }
 
+    public void UnsubscribeFromFridge(String fridge_ID, String userEmail)
+    {
+        //Unsubscribe eventListeners.
+        dbComm.UnSubscribeToFridge(fridge_ID);
+
+        //remove from local list
+        fridges.remove(getFridge(fridge_ID));
+
+        //remove fridge ID from list in database.
+        removeFridgeIDfromListOfSubscribedFridges(userEmail, fridge_ID);
+    }
+
     public void UpdateShoppingListFromIngredientList(ShoppingList shoppingList ,IngredientList ingredientList, InventoryList inventoryList)
     {
         for (Item i: ingredientList.getItems())
