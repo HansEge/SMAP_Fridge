@@ -193,6 +193,7 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
                 String listName = et_newItemName.getText().toString();
                 String listID = currentFridge.getID()+"_"+listName;
 
+                //create new list in Database and Subscribe to it.
                 mService.createNewShoppingList(currentFridge.getID(),listName);
 
             }
