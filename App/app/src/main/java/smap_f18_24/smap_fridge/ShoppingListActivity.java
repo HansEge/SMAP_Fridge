@@ -1,11 +1,14 @@
 package smap_f18_24.smap_fridge;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import smap_f18_24.smap_fridge.Adaptors.InventoryListAdaptor;
 import smap_f18_24.smap_fridge.Adaptors.ShoppingListAdaptor;
 import smap_f18_24.smap_fridge.ModelClasses.Fridge;
 import smap_f18_24.smap_fridge.ModelClasses.Item;
@@ -52,6 +56,10 @@ public class ShoppingListActivity extends AppCompatActivity {
 
         lv_shoppingList = findViewById(R.id.shoppingList_lv_list);
 
+        //register to broadcasts.
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
+        LocalBroadcastManager.getInstance(this).registerReceiver(serviceUpdaterReceiver,filter);
 
     }
 
@@ -80,7 +88,7 @@ public class ShoppingListActivity extends AppCompatActivity {
 
 
             currentFridge=mService.getFridge(fridgeID);
-            currentList=mService.getFridge(fridgeID).getShoppingLists().get(position);
+            currentList=currentFridge.getShoppingLists().get(position);
 
             adaptor = new ShoppingListAdaptor(getApplicationContext(),currentList);
             lv_shoppingList.setAdapter(adaptor);
@@ -223,4 +231,36 @@ public class ShoppingListActivity extends AppCompatActivity {
         });
         builder.show();
     };
+
+    private BroadcastReceiver serviceUpdaterReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("ASDASD", "Broadcast reveiced from ServiceUpdater in tab1");
+            String result = null;
+
+            result = intent.getStringExtra(ServiceUpdater.EXTRA_TASK_RESULT);
+            Log.d("ASDASD", result);
+
+            if (result == null) {
+                Log.d("ASDASD", result);
+            }
+
+            if(result != null) {
+                updateData(result);
+            }
+
+        }
+    };
+
+    //Updates UI by fetching new data from service, and resetting the adaptor.
+    public void updateData(String updateString)
+    {
+        if(updateString.equals("DataUpdated"))
+        {
+            currentFridge = mService.getFridge(currentFridge.getID());
+            currentList = currentFridge.getShoppingLists().get(position);
+            adaptor = new ShoppingListAdaptor(this,currentList);
+            lv_shoppingList.setAdapter(adaptor);
+        }
+    }
 }
