@@ -129,8 +129,9 @@ public class OverviewActivity extends AppCompatActivity {
 
                         //Test with local data fridge
                         mService.createNewFridge(tmp_id,tmp_name);
-
                         mService.SubscribeToFridge(tmp_id);
+                        //TODO: Add fridge to list of subscribed fridges for user.
+                        // mService.addFridgeIDtoListOfSubscribedFridges("USER_EMAIL",tmp_id);
 
                         Fridge tmpFridge = mService.getFridge(tmp_id);
 

@@ -827,7 +827,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void UnSubscribeToFridge(final String fridgeID)
     {
         DocumentReference fridgeRef = db.collection("Fridges").document(fridgeID);
-        Log.d(TAG, "SubscribeToFridge: Subscribing to fridge with ID " + fridgeID);
+        Log.d(TAG, "SubscribeToFridge: UnSubscribing to fridge with ID " + fridgeID);
         CollectionReference fridgeListRef=fridgeRef.collection("Content");
 
 

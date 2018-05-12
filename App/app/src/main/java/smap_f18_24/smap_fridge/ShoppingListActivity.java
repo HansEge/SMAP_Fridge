@@ -114,7 +114,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                     Item i = (Item)adaptor.getItem(position);
-                    openDeleteItemDialogBox(i.getName());
+                    openDeleteItemDialogBox(i);
                     return true;
                 }
             });
@@ -214,8 +214,8 @@ public class ShoppingListActivity extends AppCompatActivity {
         newItemDialog.show();
     }
 
-    private void openDeleteItemDialogBox(String itemName){
-        final String _itemName = itemName;
+    private void openDeleteItemDialogBox(final Item item){
+        final String _itemName = item.getName();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Are you sure you wanna delete this item?");
@@ -233,6 +233,16 @@ public class ShoppingListActivity extends AppCompatActivity {
 
             }
         });
+
+        builder.setNeutralButton("Move to fridge", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //remove from shoppingList and add to inventory.
+                mService.removeItemFromShoppingList(_itemName,currentFridge.getID(),currentList.getID());
+                mService.addItemToInventory(item,fridgeID);
+            }
+        });
+
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
