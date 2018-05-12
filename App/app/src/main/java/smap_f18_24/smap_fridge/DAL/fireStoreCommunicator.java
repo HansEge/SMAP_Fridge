@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -1054,6 +1055,25 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                             Log.d(TAG, "removeFridgeIDFromListOfFridgeSubscriptions - onSuccess: Removing fridge ID " + fridge_ID + " from list of subscribed fridges.");
                             String snapshotID = queryDocumentSnapshots.getDocuments().get(0).getId();
                             listRef.document(snapshotID).delete();
+                        }
+                    }
+                });
+    }
+
+    public void addUserToDatabaseIfNotThereAlready(final FirebaseUser user)
+    {
+        db.collection("Users").document(user.getEmail()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists())
+                        {
+                            Log.d(TAG, "onSuccess:  addUserToDatabaseIfNotThereAlready - User with email " + user.getEmail() + " already exists in database, and this is not created");
+                        }
+                        else
+                        {
+                            createNewUserInDatabase(user.getDisplayName(),user.getEmail());
+                            Log.d(TAG, "onSuccess: addUserToDatabaseIfNotThereAlready - User with email " + user.getEmail() + " created in database.");
                         }
                     }
                 });
