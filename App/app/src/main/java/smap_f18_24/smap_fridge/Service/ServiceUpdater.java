@@ -207,6 +207,7 @@ public class ServiceUpdater extends Service {
                     //if ID matches
                     f.setInventory(list);
                     broadcastResult("DataUpdated");
+                    updateShoppingListToMatchEssentials(fridge_ID);
                     return;
                 }
             }
@@ -218,6 +219,7 @@ public class ServiceUpdater extends Service {
             fridges.add(placeholderFridge);
             //TODO: Broadcast that new data is available.
             broadcastResult("DataUpdated");
+            updateShoppingListToMatchEssentials(fridge_ID);
         }
 
         @Override
@@ -236,6 +238,7 @@ public class ServiceUpdater extends Service {
 
                     Log.d("BROADCASTFROMSERVICE", "BROADCAST!");
                     broadcastResult("DataUpdated");
+                    updateShoppingListToMatchEssentials(fridge_ID);
 
                     return;
                 }
@@ -248,6 +251,7 @@ public class ServiceUpdater extends Service {
             fridges.add(placeholderFridge);
             //TODO: Broadcast that new data is available.
             broadcastResult("DataUpdated");
+            updateShoppingListToMatchEssentials(fridge_ID);
 
         }
 
@@ -405,6 +409,20 @@ public class ServiceUpdater extends Service {
         fridgeSubscribedTo.setID(ID);
         fridges.add(fridgeSubscribedTo);
         dbComm.SubscribeToFridge(ID);
+    }
+
+    //Return item with matching name.
+    public Item getItem(String name, List<Item> listToSearch)
+    {
+        //For each item, check if name matches, and return if so. If no match, null is returned.
+        for (Item i: listToSearch
+             ) {
+            if(i.getName().equals(name))
+            {
+                return i;
+            }
+        }
+        return null;
     }
 
     //Return fridge with ID matching parameter.
@@ -820,9 +838,69 @@ public class ServiceUpdater extends Service {
         Log.d(TAG, "onDestroy: SERVICE DESTROYED");
     }
 
+    //Checks if items in essentials are in inventory or on EssentialsShoppingList.
+    //If not, or if quantity is too low, add items to EssentialsShoppingList.
+    private void updateShoppingListToMatchEssentials(String fridgeID) {
+        //get Inventory, Essenntials and EssentialsShoppingList for fridge.
+        Fridge curFridge = getFridge(fridgeID);
+        if (curFridge != null) {
+            ArrayList<Item> curInventory = null;
+            ArrayList<Item> curEssentials = null;
+            ArrayList<ShoppingList> curShoppingLists = null;
+            ShoppingList curEssShoppingList = null;
+            ArrayList<Item> curEssShoppingListItems = null;
+
+            try {
+                curInventory = (ArrayList<Item>) curFridge.getInventory().getItems();
+                curEssentials = (ArrayList<Item>) curFridge.getEssentials().getItems();
+                curShoppingLists = (ArrayList<ShoppingList>) curFridge.getShoppingLists();
+            } catch (RuntimeException e) {
+                Log.e(TAG, "updateShoppingListToMatchEssentials: Failed to get some list from curFridge", e);
+            }
+
+            if (curShoppingLists != null) {
+                curEssShoppingList = getShoppingList("EssentialsShoppingList", curShoppingLists);
+            }
+
+            if (curInventory != null && curEssentials != null) {
+                try {
+                    curEssShoppingListItems = (ArrayList<Item>) curEssShoppingList.getItems();
+                } catch (RuntimeException e) {
+                    Log.e(TAG, "updateShoppingListToMatchEssentials: curEssShoppingListItems=null", e);
+                }
+
+                //For each item
+                for (Item i : curEssentials
+                        ) {
+
+                    //Check if quantity in Inventory + quantity in EssentialsShoppingList is greater than desired quantity in essentials.
+                    float totalQuantity = 0;
+                    Item itemInInventory = getItem(i.getName(), curInventory);
+                    Item itemInEssShoppingList = null;
+                    if (curEssShoppingListItems != null) {
+                        itemInEssShoppingList = getItem(i.getName(), curEssShoppingListItems);
+                    }
+
+                    if (itemInInventory != null) {
+                        totalQuantity += itemInInventory.getQuantity();
+                    }
+                    if (itemInEssShoppingList != null) {
+                        totalQuantity += itemInEssShoppingList.getQuantity();
+                    }
+                    //If total quantity is less than desired quantity.
+                    if (totalQuantity < i.getQuantity()) {
+                        //Make matching item, whose quantity is the difference of desired quantity and total quantity.
+                        Item itemToAdd = i;
+                        itemToAdd.setQuantity(i.getQuantity() - totalQuantity);
+                        addItemToShoppingList(itemToAdd, fridgeID, "Essentials Shopping List", "EssentialsShoppingList");
+                    }
+                }
+            }
+        }
+    }
+
     public void UpdateShoppingListFromIngredientList(ShoppingList shoppingList ,IngredientList ingredientList, InventoryList inventoryList)
     {
-
         for (Item i: ingredientList.getItems())
         {
             for (Item k: inventoryList.getItems())

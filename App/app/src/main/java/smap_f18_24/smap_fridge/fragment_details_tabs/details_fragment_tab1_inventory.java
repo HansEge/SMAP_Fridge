@@ -225,7 +225,7 @@ public class details_fragment_tab1_inventory extends Fragment {
                 float quantity = Float.parseFloat(et_qty.getText().toString());
                 Item overwriteItem = i;
                 overwriteItem.setQuantity(quantity);
-                ((DetailsActivity)getActivity()).mService.overwriteItemInEssentials(overwriteItem,currentFridge.getID());
+                ((DetailsActivity)getActivity()).mService.overwriteItemInInventory(overwriteItem,currentFridge.getID());
             }
         });
 
