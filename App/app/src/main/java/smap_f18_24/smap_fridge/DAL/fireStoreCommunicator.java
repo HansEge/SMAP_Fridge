@@ -869,7 +869,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         listRef.document("Info").update(newInfo);
     }
 
-    //TODO: NOT TESTED!
+    //Tested and working
     public void createNewUserInDatabase(String Name, String email)
     {
         Map<String, Object>  UserInfo = new HashMap<>();
@@ -879,7 +879,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         db.collection("Users").document(email).set(UserInfo);
     }
 
-    //TODO: NOT TESTED!
+    //Tested and working
     public void addFridgeID2listOfFridgeSubscriptions(String fridge_ID, String userEmail)
     {
         Map<String, Object> info = new HashMap<>();
