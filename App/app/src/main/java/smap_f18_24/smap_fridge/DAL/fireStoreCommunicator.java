@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import smap_f18_24.smap_fridge.DebugActivity;
+
 import smap_f18_24.smap_fridge.ModelClasses.EssentialsList;
 import smap_f18_24.smap_fridge.ModelClasses.Fridge;
 import smap_f18_24.smap_fridge.ModelClasses.IngredientList;

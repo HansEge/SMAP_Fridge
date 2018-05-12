@@ -17,72 +17,18 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/signin_btn_debug"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="debug 1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/service_btn_service"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="128dp"
-        android:text="ServiceTester"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/signin_btn_toOverviewActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="228dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="200dp"
         android:text="GUI"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.166"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/signing_btn_debugTwo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="debug 2"
-        app:layout_constraintStart_toEndOf="@+id/signin_btn_debug"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/signing_btn_debugShoppingList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Shoppinglist"
-        app:layout_constraintBottom_toBottomOf="@+id/signing_btn_debugTwo"
-        app:layout_constraintStart_toEndOf="@+id/signing_btn_debugTwo"
-        app:layout_constraintTop_toTopOf="@+id/signing_btn_debugTwo"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/signin_btn_debugUser"
-        android:layout_width="89dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="debug user"
-        app:layout_constraintEnd_toEndOf="@+id/signing_btn_debugShoppingList"
-        app:layout_constraintStart_toStartOf="@+id/signing_btn_debugShoppingList"
-        app:layout_constraintTop_toBottomOf="@+id/signing_btn_debugShoppingList" />
 </android.support.constraint.ConstraintLayout>

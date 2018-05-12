@@ -44,10 +44,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        btn_service = findViewById(R.id.service_btn_service);
         btn_toOverViewActivity = findViewById(R.id.signin_btn_toOverviewActivity);
-        btn_debugUser = findViewById(R.id.signin_btn_debugUser);
-
 
         btn_logout = findViewById(R.id.signin_btn_logout);
 
@@ -67,56 +64,12 @@ public class SignInActivity extends AppCompatActivity {
                         .build(),
                 RC_SIGN_IN);
 
-        btn_debug=findViewById(R.id.signin_btn_debug);
-        btn_debug.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(SignInActivity.this,DebugActivity.class);
-                startActivity(i);
-            }
-        });
 
-        btn_debugTwo=findViewById(R.id.signing_btn_debugTwo);
-        btn_debugTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(SignInActivity.this,DebugActivityTwo.class);
-                startActivity(i);
-            }
-        });
-        btn_shoppingList=findViewById(R.id.signing_btn_debugShoppingList);
-        btn_shoppingList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(SignInActivity.this,DebugShoppingListActivity.class);
-                startActivity(i);
-            }
-        });
-
-        btn_service.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(SignInActivity.this,ServiceTester.class);
-                startActivity(i);
-            }
-
-
-            
-
-        });
 
         btn_toOverViewActivity.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 Intent i = new Intent(SignInActivity.this,OverviewActivity.class);
-                startActivity(i);
-            }
-        });
-
-        btn_debugUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(SignInActivity.this,Debug_User.class);
                 startActivity(i);
             }
         });
