@@ -646,7 +646,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
     }
 
-    //TODO: NOT TESTED!
+
     //Gets a list of fridges subscribed to by the user, and makes sure that updates in the subscribed fridges triggers callbacks to the provided callback interface.
     public void SubscribeToSavedFridges(String userEmail)
     {

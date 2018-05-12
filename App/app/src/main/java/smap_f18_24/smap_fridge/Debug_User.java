@@ -19,7 +19,7 @@ public class Debug_User extends AppCompatActivity {
     private boolean mBound = false;
     ServiceUpdater mService;
 
-    Button btn_newUser, btn_subscribe, btn_unsubscribe, btn_getFridge;
+    Button btn_newUser, btn_subscribe, btn_unsubscribe, btn_getFridge,btn_subscribeAllFridges;
     EditText et_userName, et_userEmail, et_fridgeID;
 
 
@@ -41,6 +41,7 @@ public class Debug_User extends AppCompatActivity {
         btn_subscribe=findViewById(R.id.debug_user_btn_subscribe);
         btn_unsubscribe=findViewById(R.id.debug_user_btn_unsubscribe);
         btn_getFridge=findViewById(R.id.debug_user_btn_getFridge);
+        btn_subscribeAllFridges=findViewById(R.id.debug_user_btn_subscribeAllFridges);
 
         btn_newUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +81,18 @@ public class Debug_User extends AppCompatActivity {
                 //Creating fridge to debug its values
             }
         });
+
+        btn_subscribeAllFridges.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
+                String userEmail = et_userEmail.getText().toString();
+                mService.getUserSubscribedFridges(userEmail);
+
+            }
+        });
+
+
     }
 
     @Override

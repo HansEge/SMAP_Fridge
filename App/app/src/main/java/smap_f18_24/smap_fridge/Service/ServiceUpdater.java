@@ -191,7 +191,7 @@ public class ServiceUpdater extends Service {
     }
 
     public void getUserSubscribedFridges(String userEmail){
-
+            dbComm.SubscribeToSavedFridges(userEmail);
     }
 
 
