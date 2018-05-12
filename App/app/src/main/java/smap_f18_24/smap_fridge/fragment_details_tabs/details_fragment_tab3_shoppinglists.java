@@ -37,6 +37,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +80,7 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
         //subscribe to broadcasts.
         IntentFilter filter = new IntentFilter();
         filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
-        LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).registerReceiver(serviceUpdaterReceiver,filter);
+        LocalBroadcastManager.getInstance(getActivity().getBaseContext()).registerReceiver(serviceUpdaterReceiver,filter);
 
         mService = ((DetailsActivity)getActivity()).mService;
         lv_shoppingListList = v.findViewById(R.id.lv_shoppingListList_tab3);
@@ -92,7 +94,7 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
             }
         });
 
-        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
         clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
 
 
@@ -100,7 +102,7 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Intent intent = new Intent(getActivity().getApplicationContext(), ShoppingListActivity.class);
+                Intent intent = new Intent(getActivity().getBaseContext(), ShoppingListActivity.class);
 
                 String tmpID = ((DetailsActivity)getActivity()).currentFridge.getID();
 
@@ -122,7 +124,7 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
 
 
 
-        adaptor = new ShoppingListListAdaptor(getActivity().getApplicationContext(),(ArrayList<ShoppingList>)((DetailsActivity)getActivity()).currentFridge.getShoppingLists());
+        adaptor = new ShoppingListListAdaptor(getActivity().getBaseContext(),(ArrayList<ShoppingList>)((DetailsActivity)getActivity()).currentFridge.getShoppingLists());
         lv_shoppingListList.setAdapter(adaptor);
 
         return v;
@@ -141,7 +143,7 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mService.setResponsibilityForShoppingList(currentFridge.getID(),shoppingList.getID(),"user_email");
+                mService.setResponsibilityForShoppingList(currentFridge.getID(),shoppingList.getID(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
             }
         });
 
@@ -179,7 +181,7 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
             //get new data
             ((DetailsActivity) getActivity()).currentFridge = ((DetailsActivity) getActivity()).mService.getFridge("TestFridgeID");
             //reset adaptor
-            adaptor = new ShoppingListListAdaptor(getActivity().getApplicationContext(), (ArrayList<ShoppingList>) ((DetailsActivity) getActivity()).currentFridge.getShoppingLists());
+            adaptor = new ShoppingListListAdaptor(getActivity().getBaseContext(), (ArrayList<ShoppingList>) ((DetailsActivity) getActivity()).currentFridge.getShoppingLists());
             lv_shoppingListList.setAdapter(adaptor);
         }
     }

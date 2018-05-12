@@ -58,7 +58,7 @@ public class details_fragment_tab4_ingredients extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Intent intent = new Intent(getActivity().getApplicationContext(), IngredientsListActivity.class);
+                Intent intent = new Intent(getActivity().getBaseContext(), IngredientsListActivity.class);
 
                 String tmpID = ((DetailsActivity)getActivity()).currentFridge.getID();
 
@@ -78,7 +78,7 @@ public class details_fragment_tab4_ingredients extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        adaptor = new IngredientsListListAdaptor(getActivity().getApplicationContext(), (ArrayList<IngredientList>)((DetailsActivity)getActivity()).currentFridge.getIngredientLists());
+        adaptor = new IngredientsListListAdaptor(getActivity().getBaseContext(), (ArrayList<IngredientList>)((DetailsActivity)getActivity()).currentFridge.getIngredientLists());
 
         lv_ingredientsList.setAdapter(adaptor);
 

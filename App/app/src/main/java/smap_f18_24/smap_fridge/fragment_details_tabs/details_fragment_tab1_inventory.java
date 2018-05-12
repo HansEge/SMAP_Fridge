@@ -63,13 +63,13 @@ public class details_fragment_tab1_inventory extends Fragment {
         IntentFilter filter = new IntentFilter();
         filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
 
-        LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).registerReceiver(serviceUpdaterReceiver,filter);
+        LocalBroadcastManager.getInstance(getActivity().getBaseContext()).registerReceiver(serviceUpdaterReceiver,filter);
 
         // INITIALIZING
         lv_inventoryList = v.findViewById(R.id.lv_inventoryList_tap1);
 
 
-        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
         clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
 
         btn_addItem = v.findViewById(R.id.details_tap1_inventory_btn_addItem);
@@ -114,7 +114,7 @@ public class details_fragment_tab1_inventory extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         currentFridge = ((DetailsActivity)getActivity()).currentFridge;
         inventoryList = currentFridge.getInventory();
-        inventoryListAdaptor = new InventoryListAdaptor(getActivity().getApplicationContext(),inventoryList);
+        inventoryListAdaptor = new InventoryListAdaptor(getActivity().getBaseContext(),inventoryList);
 
         lv_inventoryList.setAdapter(inventoryListAdaptor);
     }
@@ -260,7 +260,7 @@ public class details_fragment_tab1_inventory extends Fragment {
         {
             ((DetailsActivity)getActivity()).currentFridge = ((DetailsActivity)getActivity()).mService.getFridge(currentFridge.getID());
             inventoryList = ((DetailsActivity)getActivity()).currentFridge.getInventory();
-            inventoryListAdaptor = new InventoryListAdaptor(getActivity().getApplicationContext(),inventoryList);
+            inventoryListAdaptor = new InventoryListAdaptor(getActivity().getBaseContext(),inventoryList);
             lv_inventoryList.setAdapter(inventoryListAdaptor);
         }
     }

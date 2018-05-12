@@ -59,6 +59,7 @@ public class ServiceUpdater extends Service {
 
     //context shit
     Context context;
+    FirebaseUser currentUser;
 
     fireStoreCommunicator dbComm;
 
@@ -70,7 +71,8 @@ public class ServiceUpdater extends Service {
         Log.d(TAG, "onCreate: Service created");
 
         dbComm=new fireStoreCommunicator(getApplicationContext(),callbackInterface);
-        SubscribeToFridge("TestFridgeID");
+        currentUser = getCurrentUserInformation();
+        dbComm.SubscribeToSavedFridges(getCurrentUserEmail());
     }
 
     public void setContext(Context c)
