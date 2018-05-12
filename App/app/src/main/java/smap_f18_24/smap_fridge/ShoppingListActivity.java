@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Button;
 
 import smap_f18_24.smap_fridge.Adaptors.InventoryListAdaptor;
 import smap_f18_24.smap_fridge.Adaptors.ShoppingListAdaptor;
@@ -34,6 +35,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     private ListView lv_shoppingList;
     private Fridge currentFridge;
     private ShoppingList currentList;
+    private Button btn_newItem;
 
     String fridgeID;
     int position;
@@ -55,11 +57,19 @@ public class ShoppingListActivity extends AppCompatActivity {
         position = i.getIntExtra("PositionOfShoppingList",0);
 
         lv_shoppingList = findViewById(R.id.shoppingList_lv_list);
+        btn_newItem=findViewById(R.id.shoppingList_btn_newItem);
 
         //register to broadcasts.
         IntentFilter filter = new IntentFilter();
         filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
         LocalBroadcastManager.getInstance(this).registerReceiver(serviceUpdaterReceiver,filter);
+
+        btn_newItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNewItemDialogBox();
+            }
+        });
 
     }
 
@@ -104,7 +114,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                     Item i = (Item)adaptor.getItem(position);
-                    openDeleteItemDialogBox(i.getName());
+                    openDeleteItemDialogBox(i);
                     return true;
                 }
             });
@@ -190,7 +200,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                 float Quantity = Float.parseFloat(et_qty.getText().toString());
                 String unit = et_Unit.getText().toString();
 
-                Item i = new Item(itemName,unit,Quantity,"N/A","N/A");
+                Item i = new Item(itemName,unit,Quantity,"None","Needed");
                 mService.addItemToShoppingList(i,currentFridge.getID(),currentList.getName(),currentList.getID());
             }
         });
@@ -204,8 +214,8 @@ public class ShoppingListActivity extends AppCompatActivity {
         newItemDialog.show();
     }
 
-    private void openDeleteItemDialogBox(String itemName){
-        final String _itemName = itemName;
+    private void openDeleteItemDialogBox(final Item item){
+        final String _itemName = item.getName();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Are you sure you wanna delete this item?");
@@ -223,6 +233,16 @@ public class ShoppingListActivity extends AppCompatActivity {
 
             }
         });
+
+        builder.setNeutralButton("Move to fridge", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //remove from shoppingList and add to inventory.
+                mService.removeItemFromShoppingList(_itemName,currentFridge.getID(),currentList.getID());
+                mService.addItemToInventory(item,fridgeID);
+            }
+        });
+
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
