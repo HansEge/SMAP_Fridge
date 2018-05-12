@@ -190,6 +190,10 @@ public class ServiceUpdater extends Service {
         return mBinder;
     }
 
+    public void getUserSubscribedFridges(String userEmail){
+            dbComm.SubscribeToSavedFridges(userEmail);
+    }
+
 
     //Used for communicating back results from database queries.
     FridgeCallbackInterface callbackInterface = new FridgeCallbackInterface() {
