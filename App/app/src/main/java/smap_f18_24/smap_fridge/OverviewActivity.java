@@ -55,19 +55,6 @@ public class OverviewActivity extends AppCompatActivity {
     private ArrayList<Fridge> localList = new ArrayList<>();
     public FridgeListAdaptor adaptor1 = new FridgeListAdaptor(this, localList);
 
-    List<String> connectedUserEmailss;
-    final public InventoryList inventoryList = new InventoryList();
-    final public EssentialsList essentialList = new EssentialsList();
-
-    List<ShoppingList> myShoppingLists = new ArrayList<ShoppingList>();
-    List<IngredientList> myIngredientsLists = new ArrayList<IngredientList>();
-
-    IngredientList myIngredientsList1 = new IngredientList("ingredientsListName","ingredientsListID");
-    ShoppingList myShoppingList1 = new ShoppingList("shoppingListName","shoppingListID");
-
-
-    public Fridge testFridge = new Fridge("Tester", "testID", connectedUserEmailss, inventoryList, essentialList, myShoppingLists, myIngredientsLists);
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +63,6 @@ public class OverviewActivity extends AppCompatActivity {
 
         // INITIALIZING
         final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(this);
-
-
-        //ShoppingList s = new ShoppingList("hh","123");
-
-        //myShoppingLists.add(s);
-
 
         //Start service
         Intent ServiceIntent = new Intent(OverviewActivity.this, ServiceUpdater.class);
@@ -136,21 +117,14 @@ public class OverviewActivity extends AppCompatActivity {
                         String tmp_name = et_newFridgeName.getText().toString();
                         String tmp_id = et_newFridgeID.getText().toString();
 
-                        //Test with local data fridge
                         mService.createNewFridge(tmp_id,tmp_name);
                         mService.SubscribeToFridge(tmp_id);
-                        //TODO: Add fridge to list of subscribed fridges for user.
-                         mService.addFridgeIDtoListOfSubscribedFridges(mService.getCurrentUserEmail(),tmp_id);
+
+                        mService.addFridgeIDtoListOfSubscribedFridges(mService.getCurrentUserEmail(),tmp_id);
 
                         Fridge tmpFridge = mService.getFridge(tmp_id);
 
-                        //localList.add(tmpFridge);
-
                         lv_fridgesListView.setAdapter(adaptor1);
-
-
-                        //TODO - get data from database to Fridge listview - in other words --> global to local
-
 
                     }
                 });
@@ -275,9 +249,6 @@ public class OverviewActivity extends AppCompatActivity {
 
                         //Deleting the fridge from eventlisteners, locally and userID from database to the correspondant fridge
                         mService.UnsubscribeFromFridge(tmpFridgeID,tmpUserEmail);
-
-                        //TODO
-                        //Viewing current added fridges
 
                         lv_fridgesListView.setAdapter(adaptor1);
 
