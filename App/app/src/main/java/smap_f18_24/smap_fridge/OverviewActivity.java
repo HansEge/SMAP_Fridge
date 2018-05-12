@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -230,24 +232,50 @@ public class OverviewActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                final AlertDialog.Builder addExistingFridgeDialogBox = new AlertDialog.Builder(OverviewActivity.this);
-                addExistingFridgeDialogBox.setTitle("Do you want to delete the fridge?");
+                final String tmpID = debugList.get(i).getID();
 
-                addExistingFridgeDialogBox.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                AlertDialog.Builder dialogB = new AlertDialog.Builder(OverviewActivity.this);
+                dialogB.setTitle("Do you want to Share or Delete the fridge?");
+
+                LinearLayout layout = new LinearLayout(OverviewActivity.this);
+                layout.setOrientation(LinearLayout.VERTICAL);
+
+                dialogB.setView(layout);
+
+                dialogB.setPositiveButton("Share", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //TODO - unsubscribe the fridge from the users connected fridge list
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Show user the fridgeID in order so the user can share it to his/hers friend/family
+
+
+                        //Current way of displaying the user the fridgeID - should we do this in another way?
+                            //User should properly be aple to copy that ID - to make it easy to send
+                        Toast toast = Toast.makeText(OverviewActivity.this,"Fridge ID: " + tmpID, Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER,0,0);
+                        toast.show();
                     }
                 });
 
-                addExistingFridgeDialogBox.setPositiveButton("No", new DialogInterface.OnClickListener() {
+                dialogB.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Deleting the fridge from eventlisteners, locally and userID from database to the correspondant fridge
+                        
+
                     }
                 });
 
-                return false;
+                dialogB.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+
+                dialogB.show();
+
+                return true;
             }
         });
     }
