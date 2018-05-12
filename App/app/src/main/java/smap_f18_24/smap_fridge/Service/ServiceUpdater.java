@@ -645,6 +645,8 @@ public class ServiceUpdater extends Service {
         emptySL.setID(list_ID);
         emptySL.setName(list_name);
         dbComm.addShoppingList(fridgeRef,emptySL,list_name,list_ID);
+        CollectionReference IDs_ref=fridgeRef.document("ShoppingList_IDs").collection("IDs");
+        dbComm.addListInfo(IDs_ref,list_name,list_ID,"None");
         dbComm.addID2listofShoppingListIDs(fridgeRef,list_ID);
         dbComm.SubscribeToShoppingList(fridgeRef,list_ID,fridge_ID);
     }
@@ -757,7 +759,7 @@ public class ServiceUpdater extends Service {
         CollectionReference IDs_ref=fridgeRef.document("IngredientList_IDs").collection("IDs");
         dbComm.addListInfo(IDs_ref,list_name,list_ID,"None");
         dbComm.addID2listofIngredientListIDs(fridgeRef,list_ID);
-
+        dbComm.SubscribeToIngredientList(fridgeRef,list_ID,fridge_ID);
     }
 
     //add Item to Ingredient List. Increments quantity, if item with matching name exists.
