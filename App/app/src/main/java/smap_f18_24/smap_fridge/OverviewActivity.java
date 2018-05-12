@@ -186,6 +186,10 @@ public class OverviewActivity extends AppCompatActivity {
                         //Trying to find the database fridge and put it into the adaptor which presents it to the user
                         String existingFridgeID = et_uniqueCodeUserInput.getText().toString();
 
+                        String tmpUserEmail = mService.getCurrentUserEmail();
+
+                        mService.addFridgeIDtoListOfSubscribedFridges(tmpUserEmail,existingFridgeID);
+
                         mService.SubscribeToFridge(existingFridgeID);
 
                         Fridge existingFridge = mService.getFridge(existingFridgeID);
