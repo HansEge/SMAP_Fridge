@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -66,6 +67,11 @@ public class DetailsActivity extends AppCompatActivity {
         // Bind to LocalService
         Intent intent = new Intent(this, ServiceUpdater.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+        Bundle Extras = getIntent().getExtras();
+
+        String bob = getIntent().getStringExtra("clickedFridgeID");
+        Toast.makeText(this, bob, Toast.LENGTH_SHORT).show();
 
         //clickedFridgeID is the ID of the correspondant clicked fridge in OverviewActivity
         String clickedFridgeID = fetchFridgeID();
