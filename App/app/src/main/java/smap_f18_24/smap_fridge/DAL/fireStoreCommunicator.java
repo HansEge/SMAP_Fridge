@@ -58,40 +58,53 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                    //If old data exists, remove it.
+                    //If old data exists, overwrite it.
                     if(!queryDocumentSnapshots.isEmpty())
                     {
+                        Map<String, Object>  item = new HashMap<>();
+                        item.put("Name",itemToAdd.getName());
+                        item.put("Unit",itemToAdd.getUnit());
+                        item.put("Quantity", itemToAdd.getQuantity());
+                        item.put("ResponsibleUserEmail",itemToAdd.getResponsibleUserEmail());
+                        item.put("itemStatus",itemToAdd.getResponsibleUserEmail());
+
+                        String snapshotID = queryDocumentSnapshots.getDocuments().get(0).getId();
+                        destination.document(snapshotID).update(item);
+                        /*
                         Log.d(TAG, "onSuccess: Removing old data for item with name: " + itemToAdd.getName());
                         //removing old data.
                         String snapshotID = queryDocumentSnapshots.getDocuments().get(0).getId();
                         Log.d(TAG, "SNapshotID: " + snapshotID);
                         destination.document(snapshotID).delete();
+                        */
                     }
+                    else
+                    {
+                        Log.d(TAG, "onSuccess: Adding new data for item with name: " + itemToAdd.getName());
+                        //Add new data to list.
+                        Map<String, Object>  item = new HashMap<>();
+                        item.put("Name",itemToAdd.getName());
+                        item.put("Unit",itemToAdd.getUnit());
+                        item.put("Quantity", itemToAdd.getQuantity());
+                        item.put("ResponsibleUserEmail",itemToAdd.getResponsibleUserEmail());
+                        item.put("itemStatus",itemToAdd.getResponsibleUserEmail());
 
-                    Log.d(TAG, "onSuccess: Adding new data for item with name: " + itemToAdd.getName());
-                    //Add new data to list.
-                    Map<String, Object>  item = new HashMap<>();
-                    item.put("Name",itemToAdd.getName());
-                    item.put("Unit",itemToAdd.getUnit());
-                    item.put("Quantity", itemToAdd.getQuantity());
-                    item.put("ResponsibleUserEmail",itemToAdd.getResponsibleUserEmail());
-                    item.put("itemStatus",itemToAdd.getResponsibleUserEmail());
+                        destination
+                                .add(item)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
 
-                    destination
-                            .add(item)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-
-                                    Log.w(TAG, "Error adding document", e);
-                                }
-                            });
+                                        Log.w(TAG, "Error adding document", e);
+                                    }
+                                });
+                    }
                 }
             });
 

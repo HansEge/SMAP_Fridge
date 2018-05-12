@@ -8,11 +8,17 @@ import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
+
+import java.util.ArrayList;
 
 import smap_f18_24.smap_fridge.Adaptors.IngredientsListAdaptor;
 import smap_f18_24.smap_fridge.Adaptors.IngredientsListListAdaptor;
 import smap_f18_24.smap_fridge.Adaptors.ShoppingListAdaptor;
+import smap_f18_24.smap_fridge.ModelClasses.Fridge;
+import smap_f18_24.smap_fridge.ModelClasses.Item;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 
 public class IngredientsListActivity extends AppCompatActivity {
@@ -21,7 +27,10 @@ public class IngredientsListActivity extends AppCompatActivity {
     public ServiceUpdater mService;
 
     private ListView lv_ingredientsList;
+    private Button btn_addToShoppingList;
     private IngredientsListAdaptor adaptor;
+
+    Fridge fridge;
 
     public String fridgeID;
     public int position;
@@ -37,6 +46,15 @@ public class IngredientsListActivity extends AppCompatActivity {
         position = i.getIntExtra("PositionOfShoppingList",0);
 
         lv_ingredientsList = findViewById(R.id.ingredientsList_lv_list);
+        btn_addToShoppingList = findViewById(R.id.ingredientsListActivty_btn_addIngredients);
+
+        btn_addToShoppingList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //fridge.getInventory().UpdateShoppingListFromIngredientList(); //TODO insert updateIngredients method
+            }
+        });
+
 
     }
 
@@ -66,6 +84,8 @@ public class IngredientsListActivity extends AppCompatActivity {
 
             adaptor = new IngredientsListAdaptor(getApplicationContext(),mService.getFridge(fridgeID).getIngredientLists().get(position));
             lv_ingredientsList.setAdapter(adaptor);
+
+            fridge = mService.getFridge(fridgeID);
         }
 
         @Override
@@ -73,5 +93,6 @@ public class IngredientsListActivity extends AppCompatActivity {
             mBound = false;
         }
     };
+
 
 }

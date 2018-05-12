@@ -46,6 +46,7 @@ public class ServiceUpdater extends Service {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private static final String TAG = "ServiceUpdater";
+    private static final String ON_CHANGE_DEBUG_TAG = "onChangeDebug";
     
     //Used for binding service to activity
     private final IBinder mBinder = new ServiceBinder();
@@ -195,6 +196,7 @@ public class ServiceUpdater extends Service {
         @Override
         public void onInventoryChange(String fridge_ID, InventoryList list) {
             Log.d(TAG, "Inventory of fridge " + fridge_ID + " updated.");
+            Log.d(ON_CHANGE_DEBUG_TAG, "onInventoryChange called ");
             //Update list for fridge with matching fridge ID
 
             //check for fridge with matching ID.
@@ -221,6 +223,7 @@ public class ServiceUpdater extends Service {
         @Override
         public void onEssentialsChange(String fridge_ID, EssentialsList list) {
             Log.d(TAG, "Essential of fridge " + fridge_ID + " updated.");
+            Log.d(ON_CHANGE_DEBUG_TAG, "onEssentialsChange called ");
             //Update list for fridge with matching fridge ID
 
             //check for fridge with matching ID.
@@ -251,6 +254,7 @@ public class ServiceUpdater extends Service {
         @Override
         public void onShoppingListsChange(String fridge_ID, ShoppingList list) {
             Log.d(TAG, "Shopping list " + list.getID() + " of fridge " + fridge_ID + " updated.");
+            Log.d(ON_CHANGE_DEBUG_TAG, "onShoppingListsChange called ");
 
             ArrayList<ShoppingList> shoppingLists = null;
 
@@ -323,7 +327,7 @@ public class ServiceUpdater extends Service {
         @Override
         public void onIngredientListsChange(String fridge_ID, IngredientList list) {
             Log.d(TAG, "Ingredient list " + list.getID() + " of fridge " + fridge_ID + " updated.");
-
+            Log.d(ON_CHANGE_DEBUG_TAG, "onIngredientListsChange called ");
             ArrayList<IngredientList> ingredientLists = null;
 
             //Update list for fridge with matching fridge IDF and matching list ID.
@@ -814,6 +818,31 @@ public class ServiceUpdater extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy: SERVICE DESTROYED");
+    }
+
+    public void UpdateShoppingListFromIngredientList(ShoppingList shoppingList ,IngredientList ingredientList, InventoryList inventoryList)
+    {
+
+        for (Item i: ingredientList.getItems())
+        {
+            for (Item k: inventoryList.getItems())
+            {
+                if(i.getName().equals(k.getName()))
+                {
+                    if(i.getQuantity() > k.getQuantity())
+                    {
+                        float tmp = i.getQuantity()-k.getQuantity();
+                        tmp += k.getQuantity();
+                        shoppingList.EditItemQuantity(i.getName(),tmp);
+                    }
+                }
+                else
+                {
+                    shoppingList.AddItem(i);
+                    shoppingList.EditItemQuantity(i.getName(),i.getQuantity());
+                }
+            }
+        }
     }
 }
 
