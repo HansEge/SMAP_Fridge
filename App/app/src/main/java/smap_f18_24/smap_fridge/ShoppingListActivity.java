@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Button;
 
 import smap_f18_24.smap_fridge.Adaptors.InventoryListAdaptor;
 import smap_f18_24.smap_fridge.Adaptors.ShoppingListAdaptor;
@@ -34,6 +35,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     private ListView lv_shoppingList;
     private Fridge currentFridge;
     private ShoppingList currentList;
+    private Button btn_newItem;
 
     String fridgeID;
     int position;
@@ -55,11 +57,19 @@ public class ShoppingListActivity extends AppCompatActivity {
         position = i.getIntExtra("PositionOfShoppingList",0);
 
         lv_shoppingList = findViewById(R.id.shoppingList_lv_list);
+        btn_newItem=findViewById(R.id.shoppingList_btn_newItem);
 
         //register to broadcasts.
         IntentFilter filter = new IntentFilter();
         filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
         LocalBroadcastManager.getInstance(this).registerReceiver(serviceUpdaterReceiver,filter);
+
+        btn_newItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNewItemDialogBox();
+            }
+        });
 
     }
 
@@ -190,7 +200,7 @@ public class ShoppingListActivity extends AppCompatActivity {
                 float Quantity = Float.parseFloat(et_qty.getText().toString());
                 String unit = et_Unit.getText().toString();
 
-                Item i = new Item(itemName,unit,Quantity,"N/A","N/A");
+                Item i = new Item(itemName,unit,Quantity,"None","Needed");
                 mService.addItemToShoppingList(i,currentFridge.getID(),currentList.getName(),currentList.getID());
             }
         });

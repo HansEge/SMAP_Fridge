@@ -821,6 +821,143 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
     }
 
+
+
+    //UNSUBSCRIBE FROM FRIDGE
+    public void UnSubscribeToFridge(final String fridgeID)
+    {
+        DocumentReference fridgeRef = db.collection("Fridges").document(fridgeID);
+        Log.d(TAG, "SubscribeToFridge: Subscribing to fridge with ID " + fridgeID);
+        CollectionReference fridgeListRef=fridgeRef.collection("Content");
+
+
+
+
+        fridgeListRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+                //Do nothing
+            }
+        });
+
+        getFridgeName(fridgeID);
+
+        UnSubscribeToInventory(fridgeRef, fridgeID);
+        UnSubscribeToEssentials(fridgeRef, fridgeID);
+        UnSubscribeToShoppingLists(fridgeRef, fridgeID);
+        UnSubscribeToIngredientLists(fridgeRef, fridgeID);
+    }
+
+
+    private void UnSubscribeToInventory(final DocumentReference fridge, final String fridgeID)
+    {
+        final CollectionReference fridgeListRef=fridge.collection("Content");
+        //Subscribe to receive notifications every time there's a change in the Essentials list.
+        fridgeListRef.document("Inventory").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+                //Do nothing.
+            }
+        });
+    }
+
+    private void UnSubscribeToEssentials(final DocumentReference fridge, final String fridgeID)
+    {
+        final CollectionReference fridgeListRef=fridge.collection("Content");
+        //Subscribe to receive notifications every time there's a change in the Essentials list.
+        fridgeListRef.document("Essentials").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+                //Do nothing.
+            }
+        });
+    }
+
+    private void UnSubscribeToShoppingLists(final DocumentReference fridge, final String fridgeID)
+    {
+        final CollectionReference fridgeListRef=fridge.collection("Content");
+        //get IDs for all shopping lists.
+        fridgeListRef.document("ShoppingList_IDs").collection("IDs").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.isEmpty())
+                        {
+                            Log.d(TAG, "onSuccess: No items on list of ShoppinList_IDs");
+                        }
+                        else
+                        {
+                            //Convert dataSnapshot to list of List_IDs(yes these only contain a string, but a model class is necessary for Firebase to create objects from datasnapshots).
+                            ArrayList<List_ID> IDs = (ArrayList<List_ID>) queryDocumentSnapshots.toObjects(List_ID.class);
+
+                            //Subscribe to each shopping list.
+                            for (final List_ID id: IDs
+                                    ) {
+                                UnSubscribeToShoppingList(fridgeListRef, id.getID(), fridgeID);
+                            }
+                        }
+                    }
+                });
+    }
+
+    public void UnSubscribeToShoppingList(final CollectionReference fridgeListRef, final String listID, final String fridgeID)
+    {
+        Log.d(TAG, "getShoppingListIDs: Subscribing to shopping list: " + listID);
+
+        //Subscribe to receive notifications every time there's a change in the Shopping list.
+        fridgeListRef.document("ShoppingLists").collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+                //Do nothing
+            }
+        });
+    }
+
+    private void UnSubscribeToIngredientLists(final DocumentReference fridge, final String fridgeID)
+    {
+        final CollectionReference fridgeListRef=fridge.collection("Content");
+        //get IDs for all shopping lists.
+        fridgeListRef.document("IngredientList_IDs").collection("IDs").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.isEmpty())
+                        {
+                            Log.d(TAG, "onSuccess: No items on list of IngredientList_IDs");
+                        }
+                        else
+                        {
+                            //Convert dataSnapshot to list of List_IDs(yes these only contain a string, but a model class is necessary for Firebase to create objects from datasnapshots).
+                            ArrayList<List_ID> IDs = (ArrayList<List_ID>) queryDocumentSnapshots.toObjects(List_ID.class);
+
+                            //Subscribe to each shopping list.
+                            for (final List_ID id: IDs
+                                    ) {
+                                UnSubscribeToIngredientList(fridgeListRef, id.getID(), fridgeID);
+                            }
+                        }
+                    }
+                });
+
+    }
+
+    public void UnSubscribeToIngredientList(final CollectionReference fridgeListRef, final String listID, final String fridgeID)
+    {
+        Log.d(TAG, "getIngredientListIDs: Subscribing to ingredient list: " + listID);
+
+        //Subscribe to receive notifications every time there's a change in the Shopping list.
+        fridgeListRef.document("IngredientLists").collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+                //Do nothing
+            }
+        });
+    }
+
+
+
+
+
     public void createNewFridge(final String ID, final String Name) {
         final DocumentReference fridgesRef = db.collection("Fridges").document(ID);
         //Check whether fridge exists already or not.
