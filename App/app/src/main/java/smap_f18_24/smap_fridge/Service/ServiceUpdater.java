@@ -815,6 +815,31 @@ public class ServiceUpdater extends Service {
         super.onDestroy();
         Log.d(TAG, "onDestroy: SERVICE DESTROYED");
     }
+
+    public void UpdateShoppingListFromIngredientList(ShoppingList shoppingList ,IngredientList ingredientList, InventoryList inventoryList)
+    {
+
+        for (Item i: ingredientList.getItems())
+        {
+            for (Item k: inventoryList.getItems())
+            {
+                if(i.getName().equals(k.getName()))
+                {
+                    if(i.getQuantity() > k.getQuantity())
+                    {
+                        float tmp = i.getQuantity()-k.getQuantity();
+                        tmp += k.getQuantity();
+                        shoppingList.EditItemQuantity(i.getName(),tmp);
+                    }
+                }
+                else
+                {
+                    shoppingList.AddItem(i);
+                    shoppingList.EditItemQuantity(i.getName(),i.getQuantity());
+                }
+            }
+        }
+    }
 }
 
 
