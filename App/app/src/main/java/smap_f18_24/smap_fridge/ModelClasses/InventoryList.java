@@ -6,6 +6,7 @@ import java.util.List;
 public class InventoryList extends ItemList {
 
     //methods
+
     public void AddItemToInventoryList(Item toAdd, float Quantity)
     {
         //TODO
