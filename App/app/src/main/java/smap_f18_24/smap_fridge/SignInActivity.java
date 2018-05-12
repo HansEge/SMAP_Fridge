@@ -21,6 +21,7 @@ import android.widget.Button;
 import java.util.Arrays;
 import java.util.List;
 
+import smap_f18_24.smap_fridge.DAL.fireStoreCommunicator;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 
 //Sign in implemented with FirebaseUI
@@ -28,6 +29,7 @@ import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 public class SignInActivity extends AppCompatActivity {
 
     Button btn_logout, btn_debug, btn_debugTwo, btn_service, btn_toOverViewActivity, btn_shoppingList, btn_debugUser;
+    fireStoreCommunicator dbComm = new fireStoreCommunicator(this,null);
 
     private static final int RC_SIGN_IN = 123;
 
@@ -130,8 +132,10 @@ public class SignInActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
                 Toast.makeText(this, "Successfully signed in as " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onActivityResult: Successfully signed in as " + user.getDisplayName());
+                dbComm.addUserToDatabaseIfNotThereAlready(user);
                 // ...
             } else {
                 Toast.makeText(this, "Sign in failed.", Toast.LENGTH_SHORT).show();

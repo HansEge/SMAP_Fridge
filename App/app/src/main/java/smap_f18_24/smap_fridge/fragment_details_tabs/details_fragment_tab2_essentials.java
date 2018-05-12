@@ -79,9 +79,9 @@ public class details_fragment_tab2_essentials extends Fragment {
 
         mService = ((DetailsActivity)getActivity()).mService;
 
+        //subscribe to broadcasts.
         IntentFilter filter = new IntentFilter();
         filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
-
         LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).registerReceiver(serviceUpdaterReceiver,filter);
 
         View v = inflater.inflate(R.layout.fragment_details_tab2_essentials, container, false);

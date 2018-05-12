@@ -430,9 +430,12 @@ public class ServiceUpdater extends Service {
 
     public void SubscribeToFridge(String ID)
     {
+        //create Local placeholder fridge
         Fridge fridgeSubscribedTo = new Fridge();
         fridgeSubscribedTo.setID(ID);
         fridges.add(fridgeSubscribedTo);
+
+        //add eventListeners.
         dbComm.SubscribeToFridge(ID);
     }
 
