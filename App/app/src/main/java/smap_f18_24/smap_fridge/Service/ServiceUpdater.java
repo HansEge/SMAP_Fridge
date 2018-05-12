@@ -883,7 +883,7 @@ public class ServiceUpdater extends Service {
 
     //Checks if items in essentials are in inventory or on EssentialsShoppingList.
     //If not, or if quantity is too low, add items to EssentialsShoppingList.
-    private void updateShoppingListToMatchEssentials(String fridgeID) {
+    public void updateShoppingListToMatchEssentials(String fridgeID) {
         //get Inventory, Essenntials and EssentialsShoppingList for fridge.
         Fridge curFridge = getFridge(fridgeID);
         if (curFridge != null) {

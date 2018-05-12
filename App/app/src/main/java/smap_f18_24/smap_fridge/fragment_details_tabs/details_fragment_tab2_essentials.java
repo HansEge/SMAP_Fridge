@@ -120,7 +120,14 @@ public class details_fragment_tab2_essentials extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        EList = ((DetailsActivity)getActivity()).currentFridge.getEssentials();
+        try
+        {
+            EList = ((DetailsActivity)getActivity()).currentFridge.getEssentials();
+        }
+        catch (RuntimeException e)
+        {
+            EList = new EssentialsList();
+        }
         adaptor = new EssentialsListAdaptor(getActivity().getBaseContext(),EList);
 
         essentialList.setAdapter(adaptor);
@@ -159,7 +166,7 @@ public class details_fragment_tab2_essentials extends Fragment {
    {
        if(updateString.equals("DataUpdated"))
        {
-           ((DetailsActivity)getActivity()).currentFridge = ((DetailsActivity)getActivity()).mService.getFridge("TestFridgeID");
+           ((DetailsActivity)getActivity()).currentFridge = ((DetailsActivity)getActivity()).mService.getFridge(currentFridge.getID());
            EList = ((DetailsActivity)getActivity()).currentFridge.getEssentials();
            adaptor = new EssentialsListAdaptor(getActivity().getBaseContext(),EList);
            essentialList.setAdapter(adaptor);
@@ -241,6 +248,7 @@ public class details_fragment_tab2_essentials extends Fragment {
 
                Item i = new Item(itemName,unit,Quantity,"N/A","N/A");
                mService.addItemToEssentials(i,currentFridge.getID());
+               mService.updateShoppingListToMatchEssentials(currentFridge.getID());
            }
        });
 

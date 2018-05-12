@@ -140,7 +140,7 @@ public class OverviewActivity extends AppCompatActivity {
                         mService.createNewFridge(tmp_id,tmp_name);
                         mService.SubscribeToFridge(tmp_id);
                         //TODO: Add fridge to list of subscribed fridges for user.
-                        // mService.addFridgeIDtoListOfSubscribedFridges("USER_EMAIL",tmp_id);
+                         mService.addFridgeIDtoListOfSubscribedFridges(mService.getCurrentUserEmail(),tmp_id);
 
                         Fridge tmpFridge = mService.getFridge(tmp_id);
 

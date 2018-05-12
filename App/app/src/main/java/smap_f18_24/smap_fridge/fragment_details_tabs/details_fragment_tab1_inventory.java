@@ -113,7 +113,14 @@ public class details_fragment_tab1_inventory extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         currentFridge = ((DetailsActivity)getActivity()).currentFridge;
-        inventoryList = currentFridge.getInventory();
+        if(currentFridge==null)
+        {
+            inventoryList=new InventoryList();
+        }
+        else
+        {
+            inventoryList = currentFridge.getInventory();
+        }
         inventoryListAdaptor = new InventoryListAdaptor(getActivity().getBaseContext(),inventoryList);
 
         lv_inventoryList.setAdapter(inventoryListAdaptor);
@@ -182,7 +189,7 @@ public class details_fragment_tab1_inventory extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                ((DetailsActivity)getActivity()).mService.removeItemFromInventory(_itemName,"TestFridgeID");
+                ((DetailsActivity)getActivity()).mService.removeItemFromInventory(_itemName,currentFridge.getID());
                 Log.d("Broadcast Receiver", "Error in broadcast receiver");
 
             }

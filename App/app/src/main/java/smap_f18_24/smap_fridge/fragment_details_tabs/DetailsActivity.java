@@ -63,6 +63,9 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.activity_details);
 
+        // Bind to LocalService
+        Intent intent = new Intent(this, ServiceUpdater.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
         //clickedFridgeID is the ID of the correspondant clicked fridge in OverviewActivity
         String clickedFridgeID = fetchFridgeID();
@@ -165,9 +168,7 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Bind to LocalService
-        Intent intent = new Intent(this, ServiceUpdater.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
 
     }
 
@@ -179,8 +180,8 @@ public class DetailsActivity extends AppCompatActivity {
             mService = binder.getService();
             mBound = true;
 
-
-            currentFridge = mService.getFridge("TestFridgeID"); //TODO Get the correct ID from overviewActivity
+            clickedFridgeID=fetchFridgeID();
+            currentFridge = mService.getFridge(clickedFridgeID); //TODO Get the correct ID from overviewActivity
 
         }
 
@@ -193,6 +194,11 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onStop(){
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         Log.d("SYSTEM","Shutting down - onStop() in MainActivity");
         unbindService(mConnection);
     }

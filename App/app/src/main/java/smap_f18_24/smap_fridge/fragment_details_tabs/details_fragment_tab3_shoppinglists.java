@@ -179,7 +179,7 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
     public void updateData(String updateString) {
         if (updateString.equals("DataUpdated")) {
             //get new data
-            ((DetailsActivity) getActivity()).currentFridge = ((DetailsActivity) getActivity()).mService.getFridge("TestFridgeID");
+            ((DetailsActivity) getActivity()).currentFridge = ((DetailsActivity) getActivity()).mService.getFridge(currentFridge.getID());
             //reset adaptor
             adaptor = new ShoppingListListAdaptor(getActivity().getBaseContext(), (ArrayList<ShoppingList>) ((DetailsActivity) getActivity()).currentFridge.getShoppingLists());
             lv_shoppingListList.setAdapter(adaptor);
