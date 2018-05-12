@@ -18,6 +18,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.data.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -192,6 +195,24 @@ public class ServiceUpdater extends Service {
 
     public void getUserSubscribedFridges(String userEmail){
             dbComm.SubscribeToSavedFridges(userEmail);
+    }
+
+
+    public FirebaseUser getCurrentUserInformation(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        return user;
+    }
+
+    public String getCurrentUserName(){
+
+        String userName = getCurrentUserInformation().getDisplayName();
+        return userName;
+
+    }
+
+    public String getCurrentUserEmail(){
+        String userEmail = getCurrentUserInformation().getEmail();
+        return userEmail;
     }
 
 
