@@ -25,6 +25,8 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +73,6 @@ public class OverviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_overview);
 
         // INITIALIZING
-
         final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(this);
 
 
@@ -90,6 +91,7 @@ public class OverviewActivity extends AppCompatActivity {
         lv_fridgesListView = findViewById(R.id.overview_lv_fridgesListView);
 
         tv_welcomeUser = findViewById(R.id.overview_tv_welcomeUser);
+        tv_welcomeUser.setText("Welcome, " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
 
         debugList.add(testFridge);
 
@@ -310,6 +312,7 @@ public class OverviewActivity extends AppCompatActivity {
             mBound = true;
 
             mService.setContext(getApplicationContext());
+
 
             //mService.SubscribeToFridge("TestFridgeID");
 

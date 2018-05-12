@@ -100,7 +100,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             currentFridge=mService.getFridge(fridgeID);
             currentList=currentFridge.getShoppingLists().get(position);
 
-            adaptor = new ShoppingListAdaptor(getApplicationContext(),currentList);
+            adaptor = new ShoppingListAdaptor(getBaseContext(),currentList);
             lv_shoppingList.setAdapter(adaptor);
             lv_shoppingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
