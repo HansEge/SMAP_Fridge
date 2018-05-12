@@ -899,7 +899,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
-    //TODO: NOT TESTED!
+    //Tested and working
     //Removes fridge id from the list of subscribed fridges for the user with the given userEmail.
     public void removeFridgeIDFromListOfFridgeSubscriptions(final String fridge_ID, String userEmail)
     {
