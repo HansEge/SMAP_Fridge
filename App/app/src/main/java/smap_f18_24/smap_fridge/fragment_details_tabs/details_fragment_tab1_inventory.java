@@ -103,10 +103,7 @@ public class details_fragment_tab1_inventory extends Fragment {
         //fridge = ((DetailsActivity)getActivity()).mService.getFridge(((DetailsActivity)getActivity()).clickedFridgeID); //TODO fix ID
         //fridge = new Fridge("Tester", "testID", connectedUserEmailss, inventoryList, essentialList, myShoppingLists, myIngredientsLists);
 
-        inventoryList = ((DetailsActivity)getActivity()).currentFridge.getInventory();
-        inventoryListAdaptor = new InventoryListAdaptor(getActivity().getApplicationContext(),inventoryList);
 
-        lv_inventoryList.setAdapter(inventoryListAdaptor);
 
 
         return v;
@@ -116,6 +113,10 @@ public class details_fragment_tab1_inventory extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         currentFridge = ((DetailsActivity)getActivity()).currentFridge;
+        inventoryList = currentFridge.getInventory();
+        inventoryListAdaptor = new InventoryListAdaptor(getActivity().getApplicationContext(),inventoryList);
+
+        lv_inventoryList.setAdapter(inventoryListAdaptor);
     }
 
     private void addItemDialog(){

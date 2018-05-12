@@ -702,7 +702,7 @@ public class ServiceUpdater extends Service {
         emptyIL.setID(list_ID);
         emptyIL.setName(list_name);
         dbComm.addIngredientList(fridgeRef,emptyIL,list_name,list_ID);
-        CollectionReference IDs_ref=fridgeRef.document("ShoppingList_IDs").collection("IDs");
+        CollectionReference IDs_ref=fridgeRef.document("IngredientList_IDs").collection("IDs");
         dbComm.addListInfo(IDs_ref,list_name,list_ID,"None");
         dbComm.addID2listofIngredientListIDs(fridgeRef,list_ID);
 
