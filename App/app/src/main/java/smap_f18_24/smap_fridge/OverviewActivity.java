@@ -87,9 +87,7 @@ public class OverviewActivity extends AppCompatActivity {
         btn_addNewFridge = findViewById(R.id.overview_btn_addNewFridge);
         btn_addExistingFridge = findViewById(R.id.overview_btn_addExistingFridge);
 
-
         lv_fridgesListView = findViewById(R.id.overview_lv_fridgesListView);
-
 
         tv_welcomeUser = findViewById(R.id.overview_tv_welcomeUser);
 
@@ -266,6 +264,12 @@ public class OverviewActivity extends AppCompatActivity {
 
                         //Deleting the fridge from eventlisteners, locally and userID from database to the correspondant fridge
                         mService.UnsubscribeFromFridge(tmpFridgeID,tmpUserEmail);
+
+                        //TODO
+                        //Viewing current added fridges
+
+                        lv_fridgesListView.setAdapter(adaptor1);
+
 
 
                     }
