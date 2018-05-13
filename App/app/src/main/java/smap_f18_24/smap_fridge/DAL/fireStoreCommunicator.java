@@ -32,6 +32,7 @@ import smap_f18_24.smap_fridge.ModelClasses.Item;
 import smap_f18_24.smap_fridge.ModelClasses.List_ID;
 import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
 import smap_f18_24.smap_fridge.ModelClasses.User;
+import smap_f18_24.smap_fridge.R;
 
 //This class is responsible for the lowest layer of communication with the database. It reads and writes objects and lists.
 //In general, the functionality is based on the FireStore documentation on how to read and write data (https://firebase.google.com/docs/firestore/manage-data/add-data) and ()https://firebase.google.com/docs/firestore/query-data/get-data).
@@ -416,21 +417,12 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                         shoppingList.AddItem(i);
                                     }
                                 }
-                                //If only item in list was the Info-object, delete the list, both in database and locally.
-                                if(itemList.size()<2)
-                                {
-                                    /*
-                                    deleteShoppingListFromDatabase(fridge_ID,ID);
-                                    //delete list locally.
-                                    callbackInterface.onShoppingListDelete(fridge.getParent().getId(),shoppingList);
-                                    */
-                                }
                                 //If list name has not been set yet, don't do anything.
                                 if(shoppingList.getName().equals("NO_NAME_YET"))
                                 {
                                     Log.d(TAG, "onSuccess: List name has not been set yet, and thus list is not returned yet.");
                                 }
-                                //Else, notyfi through callback interface.
+                                //Else, notify through callback interface.
                                 else
                                 {
                                     callbackInterface.onShoppingListsChange(fridge.getParent().getId(),shoppingList);
@@ -470,16 +462,8 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                             shoppingList.setID(ID);
                             shoppingList.setResponsibility(responsibleUser);
 
-                            //If items have not been added to list yet, do nothing.
-                            if(shoppingList.getItems().size()==0)
-                            {
-                                Log.d(TAG, "onSuccess: List items have not been added yet, and thus list is not returned yet.");
-                            }
-                            //If items have been added to list, notify through callback interface.
-                            else
-                            {
-                                callbackInterface.onShoppingListsChange(fridge.getParent().getId(),shoppingList);
-                            }
+                            //Notify through callback interface.
+                            callbackInterface.onShoppingListsChange(fridge.getParent().getId(),shoppingList);
                         }
                     }
                 })
@@ -534,17 +518,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                         ingredientList.AddItem(i);
                                     }
                                 }
-                                //If only item in list was the Info-object, delete the list, both in database and locally.
-                                if(itemList.size()<2)
-                                {
-                                    /*
-                                    //TODO:delete list in database.
-                                    deleteIngredientListFromDatabase(fridge_ID,ID);
-
-                                    //delete list locally.
-                                    callbackInterface.onIngredientListDelete(fridge.getParent().getId(),ingredientList);
-                                    */
-                                }
+                               
                                 //If list name has not been set yet, don't do anything.
                                 if(ingredientList.getName().equals("NO_NAME_YET"))
                                 {
@@ -589,16 +563,8 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                             ingredientList.setName(name);
                             ingredientList.setID(ID);
 
-                            //If items have not been added yet, do nothing.
-                            if(ingredientList.getItems().size()==0)
-                            {
-                                Log.d(TAG, "onSuccess: List items have not been added yet, and thus list is not returned yet.");
-                            }
-                            //Else, notify through callback interface.
-                            else
-                            {
-                                callbackInterface.onIngredientListsChange(fridge.getParent().getId(),ingredientList);
-                            }
+                            //Notify through callback interface
+                            callbackInterface.onIngredientListsChange(fridge.getParent().getId(),ingredientList);
                         }
                     }
                 })
@@ -700,7 +666,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void SubscribeToSavedFridges(String userEmail, final FridgeCallbackInterface callbackInterface)
     {
         //get list from database.
-        db.collection("Users").document(userEmail).collection("FridgeSubscribtions").get()
+        db.collection(context.getString(R.string.USERS)).document(userEmail).collection("FridgeSubscribtions").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -1070,7 +1036,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         UserInfo.put("Name",Name);
         UserInfo.put("email",email);
 
-        db.collection("Users").document(email).set(UserInfo);
+        db.collection(context.getString(R.string.USERS)).document(email).set(UserInfo);
     }
 
     //Add fridge ID to list of Fridge subscribtions for the given user.
@@ -1081,7 +1047,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         info.put("ID", fridge_ID);
 
         //Push hashmap to database
-        db.collection("Users").document(userEmail).collection("FridgeSubscribtions").document(fridge_ID).set(info)
+        db.collection(context.getString(R.string.USERS)).document(userEmail).collection("FridgeSubscribtions").document(fridge_ID).set(info)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -1100,7 +1066,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void removeFridgeIDFromListOfFridgeSubscriptions(final String fridge_ID, String userEmail)
     {
         //Reference to list of fridgeSubscribtions.
-        final CollectionReference listRef = db.collection("Users").document(userEmail).collection("FridgeSubscribtions");
+        final CollectionReference listRef = db.collection(context.getString(R.string.USERS)).document(userEmail).collection("FridgeSubscribtions");
 
         //Check if ID is on list.
         listRef.whereEqualTo("ID",fridge_ID).get()
@@ -1127,7 +1093,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void addUserToDatabaseIfNotThereAlready(final FirebaseUser user)
     {
         //Query for user with matching email-adress.
-        db.collection("Users").document(user.getEmail()).get()
+        db.collection(context.getString(R.string.USERS)).document(user.getEmail()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
