@@ -86,10 +86,10 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         //create hashmap with new item.
                         Map<String, Object>  item = new HashMap<>();
                         item.put(context.getString(R.string.DB_NAME),itemToAdd.getName());
-                        item.put(context.getString(R.string.UNIT),itemToAdd.getUnit());
-                        item.put(context.getString(R.string.QUANTITY), itemToAdd.getQuantity());
-                        item.put(context.getString(R.string.RESPONSIBLE_USER_EMAIL),itemToAdd.getResponsibleUserEmail());
-                        item.put(context.getString(R.string.ITEM_STATUS),itemToAdd.getItemStatus());
+                        item.put(context.getString(R.string.DB_UNIT),itemToAdd.getUnit());
+                        item.put(context.getString(R.string.DB_QUANTITY), itemToAdd.getQuantity());
+                        item.put(context.getString(R.string.DB_RESPONSIBLE_USER_EMAIL),itemToAdd.getResponsibleUserEmail());
+                        item.put(context.getString(R.string.DB_ITEM_STATUS),itemToAdd.getItemStatus());
 
                         //push to database.
                         destination

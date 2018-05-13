@@ -99,7 +99,11 @@
     <string name="areYouSureYouWantToDeleteThisItem">Are you sure you wanna delete this item?</string>
     <string name="moveToFridge">Move to fridge</string>
     <string name="dataUpdated" translatable="false">DataUpdated</string>
-    <string name="DB_NAME">Name</string>
+    <string name="DB_NAME" translatable="false">Name</string>
     <string name="areYouSureYouWantToMoveAllItemsToInventory">Are you sure you want to move all items to inventory?</string>
-    <string name="DB_USERS">Users</string>
+    <string name="DB_USERS" translatable="false">Users</string>
+    <string name="DB_UNIT" translatable="false">Unit</string>
+    <string name="DB_QUANTITY" translatable="false">Quantity</string>
+    <string name="DB_RESPONSIBLE_USER_EMAIL" translatable="false">ResponsibleUserEmail</string>
+    <string name="DB_ITEM_STATUS" translatable="false">itemStatus</string>
 </resources>
