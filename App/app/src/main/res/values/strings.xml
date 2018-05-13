@@ -84,4 +84,5 @@
     <string name="DELETE_LIST">Delete List</string>
     <string name="DATA_UPDATED">DataUpdated</string>
     <string name="ADD_NEW_LIST">Add new List</string>
+    <string name="NEW_INGREDIENT_LIST">New ingredient list</string>
 </resources>
