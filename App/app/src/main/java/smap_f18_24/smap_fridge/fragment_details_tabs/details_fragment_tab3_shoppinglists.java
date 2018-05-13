@@ -136,6 +136,20 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
                 dialogInterface.cancel();
             }
         });
+
+        builder.setNeutralButton("Delete List", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //remove list locally
+                ((DetailsActivity)getActivity()).currentFridge.getShoppingLists().remove(shoppingList);
+
+                //remove in database.
+                mService.deleteShoppingList(currentFridge.getID(),shoppingList.getID());
+
+                updateData("DataUpdated");
+            }
+        });
+
         builder.show();
     };
 

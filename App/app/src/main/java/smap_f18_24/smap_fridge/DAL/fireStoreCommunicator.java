@@ -571,7 +571,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     }
 
     //Deletes a shopping list in the database with the given list ID from the fridge with the given fridge ID
-    private void deleteShoppingListFromDatabase(String fridge_id, final String list_ID)
+    public void deleteShoppingListFromDatabase(final String fridge_id, final String list_ID)
     {
         //reference to the fridge in the database.
         DocumentReference fridgeRef = db.collection(context.getString(R.string.FRIDGES)).document(fridge_id);
