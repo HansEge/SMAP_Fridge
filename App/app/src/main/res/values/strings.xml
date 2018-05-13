@@ -86,4 +86,12 @@
     <string name="DELETE_LIST">Delete List</string>
     <string name="ADD_NEW_LIST">Add new List</string>
     <string name="responsebility">responsebility</string>
+    <string name="add_item">Add item</string>
+    <string name="APPLY">Apply</string>
+    <string name="newItem">New Item</string>
+    <string name="NEEDED">Needed</string>
+    <string name="areYouSureYouWantToDeleteThisItem">Are you sure you wanna delete this item?</string>
+    <string name="moveToFridge">Move to fridge</string>
+    <string name="dataUpdated">DataUpdated</string>
+    <string name="areYouSureYouWantToMoveAllItemsToInventory">Are you sure you wanna all items to inventory?</string>
 </resources>
