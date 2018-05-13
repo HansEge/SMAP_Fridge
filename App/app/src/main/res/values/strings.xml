@@ -11,4 +11,5 @@
     <string name="details_tap1_inventory_btn_addItem">Add Item</string>
     <string name="shoppinglist_tab3_shoppinglistListName">Name</string>
     <string name="shoppinglist_tab3_shoppinglistListResponsible">Responsible</string>
+    <string name="USERS">Users</string>
 </resources>
