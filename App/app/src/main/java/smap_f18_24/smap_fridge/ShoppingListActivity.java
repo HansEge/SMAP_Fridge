@@ -36,6 +36,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     private Fridge currentFridge;
     private ShoppingList currentList;
     private Button btn_newItem;
+    private Button btn_allBought;
 
     String fridgeID;
     int position;
@@ -58,6 +59,7 @@ public class ShoppingListActivity extends AppCompatActivity {
 
         lv_shoppingList = findViewById(R.id.shoppingList_lv_list);
         btn_newItem=findViewById(R.id.shoppingList_btn_newItem);
+        btn_allBought=findViewById(R.id.shoppinglist_btn_allBought);
 
         //register to broadcasts.
         IntentFilter filter = new IntentFilter();
@@ -70,6 +72,15 @@ public class ShoppingListActivity extends AppCompatActivity {
                 openNewItemDialogBox();
             }
         });
+
+        btn_allBought.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                moveAllItemsToInventoryDialogBox(currentList);
+            }
+        });
+
+
 
     }
 
@@ -283,4 +294,39 @@ public class ShoppingListActivity extends AppCompatActivity {
             lv_shoppingList.setAdapter(adaptor);
         }
     }
+
+    private void moveAllItemsToInventoryDialogBox(final ShoppingList shoppingList){
+        //final String _shoppinglistName = shoppingList.getName();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure you wanna all items to inventory?");
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+               // mService.removeItemFromShoppingList(_itemName,currentFridge.getID(),currentList.getID());
+                //shoppingList.MoveFromShoppingListToFridge(shoppingList, currentFridge.getInventory());
+                for (Item k: currentList.getItems()) {
+                    mService.removeItemFromShoppingList(k.getName(),currentFridge.getID(),currentList.getID());
+                    mService.addItemToInventory(k,fridgeID);
+                }
+                Log.d("Broadcast Receiver", "Error in broadcast receiver");
+
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.show();
+    };
+
 }
