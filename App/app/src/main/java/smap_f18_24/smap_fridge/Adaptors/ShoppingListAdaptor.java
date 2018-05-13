@@ -14,9 +14,6 @@ import smap_f18_24.smap_fridge.ModelClasses.Item;
 import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
 import smap_f18_24.smap_fridge.R;
 
-/**
- * Created by Liver on 01-05-2018.
- */
 
 public class ShoppingListAdaptor extends BaseAdapter {
     private Context context;
@@ -63,13 +60,13 @@ public class ShoppingListAdaptor extends BaseAdapter {
         }
         item = shoppingList.getItems().get(position);
         if(item != null){
-            //set name of the fridge
+            //set name of item
             TextView tv_ShoppingListItemName = (TextView) convertView.findViewById(R.id.shoppingListAdaptor_tv_itemName);
             tv_ShoppingListItemName.setText(String.valueOf(item.getName()));
-
+            //set quantity of item
             TextView tv_ShoppingListItemQuantity = (TextView) convertView.findViewById(R.id.shoppingListAdaptor_tv_itemQuantity);
             tv_ShoppingListItemQuantity.setText(String.valueOf(item.getQuantity()));
-
+            //set unit of item
             TextView tv_ShoppingListItemUnit = (TextView) convertView.findViewById(R.id.shoppingListAdaptor_tv_itemUnit);
             tv_ShoppingListItemUnit.setText(String.valueOf(item.getUnit()));
         }

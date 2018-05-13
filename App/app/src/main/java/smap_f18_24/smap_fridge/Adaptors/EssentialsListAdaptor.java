@@ -59,13 +59,13 @@ public class EssentialsListAdaptor extends BaseAdapter {
         }
         item = essentialList.getItems().get(position);
         if(item != null){
-            //set name of the fridge
+            //set name of essential
             TextView tv_EssentialListItemName = (TextView) convertView.findViewById(R.id.EssentialList_adaptor_itemName);
             tv_EssentialListItemName.setText(String.valueOf(item.getName()));
-
+            //set quantity of essentials
             TextView tv_EssentialListItemQuantity = (TextView) convertView.findViewById(R.id.EssentialList_adaptor_qty);
             tv_EssentialListItemQuantity.setText(String.valueOf(item.getQuantity()));
-
+            //set unit of essentials
             TextView tv_EssentialListItemUnit = (TextView) convertView.findViewById(R.id.EssentialList_adaptor_unit);
             tv_EssentialListItemUnit.setText(String.valueOf(item.getUnit()));
         }
