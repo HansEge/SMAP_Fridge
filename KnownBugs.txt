@@ -1,0 +1,1 @@
+Hvis man prøver at lave et nyt fridge med et allerede eksisterende ID, bliver der bare subscribet til et gammelt fridge, og man får ingen fejl.

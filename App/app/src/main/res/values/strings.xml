@@ -36,6 +36,10 @@
     <string name="ITEMS">Items</string>
     <string name="ESSENTIALS">Essentials</string>
     <string name="FRIDGE_SUBS">FridgeSubscribtions</string>
+    <string name="ingredientsTab4_tv_ingredienslistName">Name of ingredientslist</string>
+    <string name="ingredientslistActivity_tv_name">Name</string>
+    <string name="ingredientslistActivity_tv_unit">Unit</string>
+    <string name="ingredientslistActivity_tv_quantity">Quantity</string>
     <string name="DATA_UPDATED">DataUpdated</string>
     <string name="ESSENTIALS_SHOPPING_LIST">EssentialsShoppingList</string>
     <string name="ESSENTIALS_SHOPPING_LIST_NAME">Essentials Shopping List</string>
@@ -54,5 +58,23 @@
     <string name="DIALOG_cancel_button">Cancel</string>
     <string name="DIALOG_apply_button">Apply</string>
     <string name="DIALOG_yes_button">Yes</string>
+    <string name="ADD_NEW_FRIDGE">Add new Fridge</string>
+    <string name="ADD_EXISTING_FRIDGE">Add existing fridge</string>
+    <string name="WELCOME">Welcome</string>
+    <string name="CREATE_NEW_FRIDGE">Create new fridge</string>
+    <string name="ADD">Add</string>
+    <string name="CANCEL">Cancel</string>
+    <string name="ENTER_UNIQUE_ID">Enter unique ID of fridge you want to subscribe to</string>
+    <string name="CLICKED_FRIDGE_ID">clickedFridgeID</string>
+    <string name="SHARE_OR_DELETE_FRIDGE">Do you want to Share or Delete the fridge?</string>
+    <string name="SHARE">Share</string>
+    <string name="FRIDGE_ID">Fridge ID</string>
+    <string name="DELETE">Delete</string>
+    <string name="PAGE_TITLE_INVENTORY">Inventory</string>
+    <string name="PAGE_TITLE_ESSENTIALS">Essentials</string>
+    <string name="PAGE_TITLE_SHOPPING_LISTS">Shopping lists</string>
+    <string name="PAGE_TITLE_INGREDIENTS">Ingredients</string>
+
+
 
 </resources>

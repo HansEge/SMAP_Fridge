@@ -7,24 +7,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -33,24 +23,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import com.firebase.ui.auth.data.model.Resource;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 import smap_f18_24.smap_fridge.Adaptors.IngredientsListListAdaptor;
-import smap_f18_24.smap_fridge.Adaptors.InventoryListAdaptor;
-import smap_f18_24.smap_fridge.Adaptors.ShoppingListListAdaptor;
 import smap_f18_24.smap_fridge.IngredientsListActivity;
 import smap_f18_24.smap_fridge.ModelClasses.Fridge;
 import smap_f18_24.smap_fridge.ModelClasses.IngredientList;
-import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
 import smap_f18_24.smap_fridge.R;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
-import smap_f18_24.smap_fridge.ShoppingListActivity;
 
 
 public class details_fragment_tab4_ingredients extends Fragment {
@@ -84,7 +65,7 @@ public class details_fragment_tab4_ingredients extends Fragment {
             }
         });
 
-        lv_ingredientsList = v.findViewById(R.id.lv_ingredients_tab4);
+        lv_ingredientsList = v.findViewById(R.id.sdfds);
 
         lv_ingredientsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
