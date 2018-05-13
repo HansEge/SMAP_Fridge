@@ -79,16 +79,16 @@ public class details_fragment_tab2_essentials extends Fragment {
 
         mService = ((DetailsActivity)getActivity()).mService;
 
+        //subscribe to broadcasts.
         IntentFilter filter = new IntentFilter();
         filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
-
-        LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).registerReceiver(serviceUpdaterReceiver,filter);
+        LocalBroadcastManager.getInstance(getActivity().getBaseContext()).registerReceiver(serviceUpdaterReceiver,filter);
 
         View v = inflater.inflate(R.layout.fragment_details_tab2_essentials, container, false);
 
         //fridge = ((DetailsActivity)getActivity()).mService.getFridge("TestFridgeID"); //TODO fix ID
 
-        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
         clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
 
         essentialList = v.findViewById(R.id.lv_essential_tab2);
@@ -120,8 +120,15 @@ public class details_fragment_tab2_essentials extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        EList = ((DetailsActivity)getActivity()).currentFridge.getEssentials();
-        adaptor = new EssentialsListAdaptor(getActivity().getApplicationContext(),EList);
+        try
+        {
+            EList = ((DetailsActivity)getActivity()).currentFridge.getEssentials();
+        }
+        catch (RuntimeException e)
+        {
+            EList = new EssentialsList();
+        }
+        adaptor = new EssentialsListAdaptor(getActivity().getBaseContext(),EList);
 
         essentialList.setAdapter(adaptor);
 
@@ -159,9 +166,9 @@ public class details_fragment_tab2_essentials extends Fragment {
    {
        if(updateString.equals("DataUpdated"))
        {
-           ((DetailsActivity)getActivity()).currentFridge = ((DetailsActivity)getActivity()).mService.getFridge("TestFridgeID");
+           ((DetailsActivity)getActivity()).currentFridge = ((DetailsActivity)getActivity()).mService.getFridge(currentFridge.getID());
            EList = ((DetailsActivity)getActivity()).currentFridge.getEssentials();
-           adaptor = new EssentialsListAdaptor(getActivity().getApplicationContext(),EList);
+           adaptor = new EssentialsListAdaptor(getActivity().getBaseContext(),EList);
            essentialList.setAdapter(adaptor);
        }
    }
@@ -241,6 +248,7 @@ public class details_fragment_tab2_essentials extends Fragment {
 
                Item i = new Item(itemName,unit,Quantity,"N/A","N/A");
                mService.addItemToEssentials(i,currentFridge.getID());
+               mService.updateShoppingListToMatchEssentials(currentFridge.getID());
            }
        });
 

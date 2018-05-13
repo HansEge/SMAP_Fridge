@@ -18,6 +18,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.data.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -56,6 +59,7 @@ public class ServiceUpdater extends Service {
 
     //context shit
     Context context;
+    FirebaseUser currentUser;
 
     fireStoreCommunicator dbComm;
 
@@ -67,7 +71,8 @@ public class ServiceUpdater extends Service {
         Log.d(TAG, "onCreate: Service created");
 
         dbComm=new fireStoreCommunicator(getApplicationContext(),callbackInterface);
-        SubscribeToFridge("TestFridgeID");
+        currentUser = getCurrentUserInformation();
+        dbComm.SubscribeToSavedFridges(getCurrentUserEmail(),callbackInterface);
     }
 
     public void setContext(Context c)
@@ -191,7 +196,25 @@ public class ServiceUpdater extends Service {
     }
 
     public void getUserSubscribedFridges(String userEmail){
+            dbComm.SubscribeToSavedFridges(userEmail,callbackInterface);
+    }
 
+
+    public FirebaseUser getCurrentUserInformation(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        return user;
+    }
+
+    public String getCurrentUserName(){
+
+        String userName = getCurrentUserInformation().getDisplayName();
+        return userName;
+
+    }
+
+    public String getCurrentUserEmail(){
+        String userEmail = getCurrentUserInformation().getEmail();
+        return userEmail;
     }
 
 
@@ -326,10 +349,12 @@ public class ServiceUpdater extends Service {
 
         @Override
         public void onShoppingListDelete(String fridge_ID, ShoppingList list) {
+            /*
             Toast.makeText(context, "Gotta delete the list " + list.getID(), Toast.LENGTH_SHORT).show();
             List<ShoppingList> shoppingLists =  getFridge(fridge_ID).getShoppingLists();
             ShoppingList list2remove = getShoppingList(list.getID(),shoppingLists);
             shoppingLists.remove(list2remove);
+            */
         }
 
         @Override
@@ -392,26 +417,52 @@ public class ServiceUpdater extends Service {
 
         @Override
         public void onIngredientListDelete(String fridge_ID, IngredientList list) {
+            /*
             Toast.makeText(context, "Gotta delete the list " + list.getID(), Toast.LENGTH_SHORT).show();
             List<IngredientList> ingredientLists =  getFridge(fridge_ID).getIngredientLists();
             IngredientList list2remove = getIngredientList(list.getID(),ingredientLists);
             ingredientLists.remove(list2remove);
+            */
 
         }
 
         @Override
         public void onFridgeName(String id, String name) {
             Log.d(TAG, "onFridgeName: ID="+id + ", name="+name);
-            getFridge(id).setName(name);
+            try
+            {
+                getFridge(id).setName(name);
+            }
+            catch (RuntimeException e)
+            {
+                Log.d(TAG, "onFridgeName: fridge does not exist on list.");
+            }
+            
             //TODO: Broadcast that there's new data.
+        }
+
+        @Override
+        public void onSubscribingToFridge(String id) {
+            //Add new placeholder fridge.
+            Fridge fridgeToAdd = new Fridge();
+            fridgeToAdd.setID(id);
+            fridges.add(fridgeToAdd);
         }
     };
 
+    public ArrayList<Fridge> getAllFridges()
+    {
+        return fridges;
+    }
+
     public void SubscribeToFridge(String ID)
     {
+        //create Local placeholder fridge
         Fridge fridgeSubscribedTo = new Fridge();
         fridgeSubscribedTo.setID(ID);
         fridges.add(fridgeSubscribedTo);
+
+        //add eventListeners.
         dbComm.SubscribeToFridge(ID);
     }
 
@@ -594,7 +645,10 @@ public class ServiceUpdater extends Service {
         emptySL.setID(list_ID);
         emptySL.setName(list_name);
         dbComm.addShoppingList(fridgeRef,emptySL,list_name,list_ID);
+        CollectionReference IDs_ref=fridgeRef.document("ShoppingList_IDs").collection("IDs");
+        dbComm.addListInfo(IDs_ref,list_name,list_ID,"None");
         dbComm.addID2listofShoppingListIDs(fridgeRef,list_ID);
+        dbComm.SubscribeToShoppingList(fridgeRef,list_ID,fridge_ID);
     }
 
     //add Item to Shopping List. Increments quantity, if item with matching name exists.
@@ -705,7 +759,7 @@ public class ServiceUpdater extends Service {
         CollectionReference IDs_ref=fridgeRef.document("IngredientList_IDs").collection("IDs");
         dbComm.addListInfo(IDs_ref,list_name,list_ID,"None");
         dbComm.addID2listofIngredientListIDs(fridgeRef,list_ID);
-
+        dbComm.SubscribeToIngredientList(fridgeRef,list_ID,fridge_ID);
     }
 
     //add Item to Ingredient List. Increments quantity, if item with matching name exists.
@@ -844,7 +898,7 @@ public class ServiceUpdater extends Service {
 
     //Checks if items in essentials are in inventory or on EssentialsShoppingList.
     //If not, or if quantity is too low, add items to EssentialsShoppingList.
-    private void updateShoppingListToMatchEssentials(String fridgeID) {
+    public void updateShoppingListToMatchEssentials(String fridgeID) {
         //get Inventory, Essenntials and EssentialsShoppingList for fridge.
         Fridge curFridge = getFridge(fridgeID);
         if (curFridge != null) {
@@ -901,6 +955,18 @@ public class ServiceUpdater extends Service {
                 }
             }
         }
+    }
+
+    public void UnsubscribeFromFridge(String fridge_ID, String userEmail)
+    {
+        //Unsubscribe eventListeners.
+        dbComm.UnSubscribeToFridge(fridge_ID);
+
+        //remove from local list
+        fridges.remove(getFridge(fridge_ID));
+
+        //remove fridge ID from list in database.
+        removeFridgeIDfromListOfSubscribedFridges(userEmail, fridge_ID);
     }
 
     public void UpdateShoppingListFromIngredientList(ShoppingList shoppingList ,IngredientList ingredientList, InventoryList inventoryList)

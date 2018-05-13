@@ -8,7 +8,7 @@
     tools:context=".fragment_details_tabs.details_fragment_tab3_shoppinglists">
 
     <Button
-        android:id="@+id/details_tap3_shoppinglists_btn_backToOverView"
+        android:id="@+id/details_tab3_shoppinglists_btn_newList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="72dp"
@@ -16,7 +16,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="16dp"
-        android:text="Back to Overview"
+        android:text="New Shopping List..."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
@@ -33,7 +33,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/details_tap3_shoppinglists_btn_backToOverView"
+        app:layout_constraintBottom_toTopOf="@+id/details_tab3_shoppinglists_btn_newList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

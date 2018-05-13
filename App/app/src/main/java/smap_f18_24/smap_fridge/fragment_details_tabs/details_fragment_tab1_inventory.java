@@ -63,13 +63,13 @@ public class details_fragment_tab1_inventory extends Fragment {
         IntentFilter filter = new IntentFilter();
         filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
 
-        LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).registerReceiver(serviceUpdaterReceiver,filter);
+        LocalBroadcastManager.getInstance(getActivity().getBaseContext()).registerReceiver(serviceUpdaterReceiver,filter);
 
         // INITIALIZING
         lv_inventoryList = v.findViewById(R.id.lv_inventoryList_tap1);
 
 
-        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
         clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
 
         btn_addItem = v.findViewById(R.id.details_tap1_inventory_btn_addItem);
@@ -103,10 +103,7 @@ public class details_fragment_tab1_inventory extends Fragment {
         //fridge = ((DetailsActivity)getActivity()).mService.getFridge(((DetailsActivity)getActivity()).clickedFridgeID); //TODO fix ID
         //fridge = new Fridge("Tester", "testID", connectedUserEmailss, inventoryList, essentialList, myShoppingLists, myIngredientsLists);
 
-        inventoryList = ((DetailsActivity)getActivity()).currentFridge.getInventory();
-        inventoryListAdaptor = new InventoryListAdaptor(getActivity().getApplicationContext(),inventoryList);
 
-        lv_inventoryList.setAdapter(inventoryListAdaptor);
 
 
         return v;
@@ -116,6 +113,17 @@ public class details_fragment_tab1_inventory extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         currentFridge = ((DetailsActivity)getActivity()).currentFridge;
+        if(currentFridge==null)
+        {
+            inventoryList=new InventoryList();
+        }
+        else
+        {
+            inventoryList = currentFridge.getInventory();
+        }
+        inventoryListAdaptor = new InventoryListAdaptor(getActivity().getBaseContext(),inventoryList);
+
+        lv_inventoryList.setAdapter(inventoryListAdaptor);
     }
 
     private void addItemDialog(){
@@ -181,7 +189,7 @@ public class details_fragment_tab1_inventory extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                ((DetailsActivity)getActivity()).mService.removeItemFromInventory(_itemName,"TestFridgeID");
+                ((DetailsActivity)getActivity()).mService.removeItemFromInventory(_itemName,currentFridge.getID());
                 Log.d("Broadcast Receiver", "Error in broadcast receiver");
 
             }
@@ -259,7 +267,7 @@ public class details_fragment_tab1_inventory extends Fragment {
         {
             ((DetailsActivity)getActivity()).currentFridge = ((DetailsActivity)getActivity()).mService.getFridge(currentFridge.getID());
             inventoryList = ((DetailsActivity)getActivity()).currentFridge.getInventory();
-            inventoryListAdaptor = new InventoryListAdaptor(getActivity().getApplicationContext(),inventoryList);
+            inventoryListAdaptor = new InventoryListAdaptor(getActivity().getBaseContext(),inventoryList);
             lv_inventoryList.setAdapter(inventoryListAdaptor);
         }
     }

@@ -21,6 +21,7 @@ import android.widget.Button;
 import java.util.Arrays;
 import java.util.List;
 
+import smap_f18_24.smap_fridge.DAL.fireStoreCommunicator;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 
 //Sign in implemented with FirebaseUI
@@ -28,6 +29,7 @@ import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 public class SignInActivity extends AppCompatActivity {
 
     Button btn_logout, btn_debug, btn_debugTwo, btn_service, btn_toOverViewActivity, btn_shoppingList, btn_debugUser;
+    fireStoreCommunicator dbComm = new fireStoreCommunicator(this,null);
 
     private static final int RC_SIGN_IN = 123;
 
@@ -42,10 +44,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        btn_service = findViewById(R.id.service_btn_service);
         btn_toOverViewActivity = findViewById(R.id.signin_btn_toOverviewActivity);
-        btn_debugUser = findViewById(R.id.signin_btn_debugUser);
-
 
         btn_logout = findViewById(R.id.signin_btn_logout);
 
@@ -57,9 +56,6 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         // Create and launch sign-in intent
-
-        // Crashed if this wasn't commented on API 25
-        /*
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -67,57 +63,13 @@ public class SignInActivity extends AppCompatActivity {
                         .setLogo(R.drawable.stinus_face)      // Set logo drawable
                         .build(),
                 RC_SIGN_IN);
-*/
-        btn_debug=findViewById(R.id.signin_btn_debug);
-        btn_debug.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(SignInActivity.this,DebugActivity.class);
-                startActivity(i);
-            }
-        });
-
-        btn_debugTwo=findViewById(R.id.signing_btn_debugTwo);
-        btn_debugTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(SignInActivity.this,DebugActivityTwo.class);
-                startActivity(i);
-            }
-        });
-        btn_shoppingList=findViewById(R.id.signing_btn_debugShoppingList);
-        btn_shoppingList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(SignInActivity.this,DebugShoppingListActivity.class);
-                startActivity(i);
-            }
-        });
-
-        btn_service.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(SignInActivity.this,ServiceTester.class);
-                startActivity(i);
-            }
 
 
-            
-
-        });
 
         btn_toOverViewActivity.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 Intent i = new Intent(SignInActivity.this,OverviewActivity.class);
-                startActivity(i);
-            }
-        });
-
-        btn_debugUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(SignInActivity.this,Debug_User.class);
                 startActivity(i);
             }
         });
@@ -133,8 +85,10 @@ public class SignInActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
                 Toast.makeText(this, "Successfully signed in as " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onActivityResult: Successfully signed in as " + user.getDisplayName());
+                dbComm.addUserToDatabaseIfNotThereAlready(user);
                 // ...
             } else {
                 Toast.makeText(this, "Sign in failed.", Toast.LENGTH_SHORT).show();
