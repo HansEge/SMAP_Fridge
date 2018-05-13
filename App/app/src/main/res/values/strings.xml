@@ -36,5 +36,9 @@
     <string name="ITEMS">Items</string>
     <string name="ESSENTIALS">Essentials</string>
     <string name="FRIDGE_SUBS">FridgeSubscribtions</string>
+    <string name="ingredientsTab4_tv_ingredienslistName">Name of ingredientslist</string>
+    <string name="ingredientslistActivity_tv_name">Name</string>
+    <string name="ingredientslistActivity_tv_unit">Unit</string>
+    <string name="ingredientslistActivity_tv_quantity">Quantity</string>
 
 </resources>
