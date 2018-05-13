@@ -56,6 +56,10 @@
     <string name="CANCEL">Cancel</string>
     <string name="ENTER_UNIQUE_ID">Enter unique ID of fridge you want to subscribe to</string>
     <string name="CLICKED_FRIDGE_ID">clickedFridgeID</string>
+    <string name="SHARE_OR_DELETE_FRIDGE">Do you want to Share or Delete the fridge?</string>
+    <string name="SHARE">Share</string>
+    <string name="FRIDGE_ID">Fridge ID</string>
+    <string name="DELETE">Delete</string>
     <string name="PAGE_TITLE_INVENTORY">Inventory</string>
     <string name="PAGE_TITLE_ESSENTIALS">Essentials</string>
     <string name="PAGE_TITLE_SHOPPING_LISTS">Shopping lists</string>
@@ -64,5 +68,6 @@
     <string name="textview">TextView</string>
     <string name="textview">TextView</string>
 
+>>>>>>> 6a4402a4a4f3fb2d59127c12cedc33d2ce03c8e1
 
 </resources>
