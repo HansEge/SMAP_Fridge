@@ -95,7 +95,7 @@ public class details_fragment_tab4_ingredients extends Fragment {
                 String tmpID = ((DetailsActivity)getActivity()).currentFridge.getID();
 
                 intent.putExtra("CurrentFridgeID",tmpID);
-                intent.putExtra("PositionOfShoppingList",i);
+                intent.putExtra("PositionOfIngredientsList",i);
 
                 startActivity(intent);
 

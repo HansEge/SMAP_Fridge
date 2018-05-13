@@ -2,12 +2,15 @@ package smap_f18_24.smap_fridge;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,17 +23,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import smap_f18_24.smap_fridge.Adaptors.IngredientsListAdaptor;
 import smap_f18_24.smap_fridge.Adaptors.IngredientsListListAdaptor;
+import smap_f18_24.smap_fridge.Adaptors.InventoryListAdaptor;
 import smap_f18_24.smap_fridge.Adaptors.ShoppingListAdaptor;
 import smap_f18_24.smap_fridge.Adaptors.ShoppingListListAdaptor;
 import smap_f18_24.smap_fridge.ModelClasses.Fridge;
 import smap_f18_24.smap_fridge.ModelClasses.Item;
 import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
+import smap_f18_24.smap_fridge.fragment_details_tabs.DetailsActivity;
 
 public class IngredientsListActivity extends AppCompatActivity {
 
@@ -53,10 +59,15 @@ public class IngredientsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredients_list);
 
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(serviceUpdaterReceiver,filter);
+
         Intent i = getIntent();
 
         fridgeID = i.getStringExtra("CurrentFridgeID");
-        position = i.getIntExtra("PositionOfShoppingList",0);
+        position = i.getIntExtra("PositionOfIngredientsList",0);
 
         lv_ingredientsList = findViewById(R.id.ingredientsList_lv_list);
         btn_addToShoppingList = findViewById(R.id.ingredientsListActivty_btn_addIngredients);
@@ -65,8 +76,6 @@ public class IngredientsListActivity extends AppCompatActivity {
         btn_addToShoppingList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //mService.UpdateShoppingListFromIngredientList()); //TODO insert updateIngredients method
-                //openSelectShoppingListDialogBox();
                 openDialog(view);
             }
         });
@@ -74,8 +83,7 @@ public class IngredientsListActivity extends AppCompatActivity {
         btn_addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Item i = new Item("Sukker", "g", 1000, "hejmeddig123@dibidut.au", "Status");
-                mService.addItemToIngredientList(i,fridgeID,"kage","Math_ID_kage");
+                addItemDialog();
             }
         });
 
@@ -131,11 +139,92 @@ public class IngredientsListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mService.UpdateShoppingListFromIngredientList(fridgeID,fridge.getIngredientLists().get(position),fridge.getShoppingLists().get(i));
+                Toast toast = Toast.makeText(getApplicationContext(), "Ingredients added to: " + (String)fridge.getShoppingLists().get(i).getName(), Toast.LENGTH_LONG);
+                toast.show();
             }
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void addItemDialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add new Item");
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        final EditText et_newItemName = new EditText(this);
+        et_newItemName.setHint("Name:");
+        et_newItemName.setInputType(InputType.TYPE_CLASS_TEXT);
+        layout.addView(et_newItemName);
+
+        final EditText et_newItemQuantity = new EditText(this);
+        et_newItemQuantity.setHint("Quantity:");
+        et_newItemQuantity.setInputType(InputType.TYPE_CLASS_NUMBER);
+        layout.addView(et_newItemQuantity);
+
+        final EditText et_newItemUnit = new EditText(this);
+        et_newItemUnit.setHint("Unit:");
+        et_newItemUnit.setInputType(InputType.TYPE_CLASS_TEXT);
+        layout.addView(et_newItemUnit);
+
+        builder.setView(layout);
+
+
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                String inputName = et_newItemName.getText().toString();
+                float inputQuantity = Float.parseFloat(et_newItemQuantity.getText().toString());
+                String inputUnit = et_newItemUnit.getText().toString();
+
+                Item newItem = new Item(inputName, inputUnit,inputQuantity , "hejmeddig123@dibidut.au", "Status");
+                mService.addItemToIngredientList(newItem,fridgeID,fridge.getIngredientLists().get(position).getName(),fridge.getIngredientLists().get(position).getID());
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.show();
+
+    }
+
+    private BroadcastReceiver serviceUpdaterReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("ASDASD", "Broadcast reveiced from ServiceUpdater in tab2");
+            String result = null;
+
+            result = intent.getStringExtra(ServiceUpdater.EXTRA_TASK_RESULT);
+            Log.d("ASDASD", result);
+
+            if (result == null) {
+                Log.d("ASDASD", result);
+            }
+
+            if(result != null) {
+                updateData(result);
+            }
+
+        }
+    };
+
+    public void updateData(String updateString)
+    {
+        if(updateString.equals("DataUpdated"))
+        {
+            fridge = mService.getFridge(fridgeID);
+            ingredientsListAdaptor = new IngredientsListAdaptor(getApplicationContext(),mService.getFridge(fridgeID).getIngredientLists().get(position));
+            lv_ingredientsList.setAdapter(ingredientsListAdaptor);
+        }
     }
 
 }
