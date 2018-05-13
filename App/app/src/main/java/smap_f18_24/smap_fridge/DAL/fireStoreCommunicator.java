@@ -660,7 +660,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void SubscribeToSavedFridges(String userEmail, final FridgeCallbackInterface callbackInterface)
     {
         //get list from database.
-        db.collection(context.getString(R.string.USERS)).document(userEmail).collection(context.getString(R.string.FRIDGE_SUBS)).get()
+        db.collection(context.getString(R.string.DB_USERS)).document(userEmail).collection(context.getString(R.string.FRIDGE_SUBS)).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -1030,7 +1030,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         UserInfo.put(context.getString(R.string.DB_NAME),Name);
         UserInfo.put(context.getString(R.string.EMAIL),email);
 
-        db.collection(context.getString(R.string.USERS)).document(email).set(UserInfo);
+        db.collection(context.getString(R.string.DB_USERS)).document(email).set(UserInfo);
     }
 
     //Add fridge ID to list of Fridge subscribtions for the given user.
@@ -1041,7 +1041,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         info.put(context.getString(R.string.ID), fridge_ID);
 
         //Push hashmap to database
-        db.collection(context.getString(R.string.USERS)).document(userEmail).collection(context.getString(R.string.FRIDGE_SUBS)).document(fridge_ID).set(info)
+        db.collection(context.getString(R.string.DB_USERS)).document(userEmail).collection(context.getString(R.string.FRIDGE_SUBS)).document(fridge_ID).set(info)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -1060,7 +1060,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void removeFridgeIDFromListOfFridgeSubscriptions(final String fridge_ID, String userEmail)
     {
         //Reference to list of fridgeSubscribtions.
-        final CollectionReference listRef = db.collection(context.getString(R.string.USERS)).document(userEmail).collection(context.getString(R.string.FRIDGE_SUBS));
+        final CollectionReference listRef = db.collection(context.getString(R.string.DB_USERS)).document(userEmail).collection(context.getString(R.string.FRIDGE_SUBS));
 
         //Check if ID is on list.
         listRef.whereEqualTo(context.getString(R.string.ID),fridge_ID).get()
@@ -1087,7 +1087,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void addUserToDatabaseIfNotThereAlready(final FirebaseUser user)
     {
         //Query for user with matching email-adress.
-        db.collection(context.getString(R.string.USERS)).document(user.getEmail()).get()
+        db.collection(context.getString(R.string.DB_USERS)).document(user.getEmail()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {

@@ -4,7 +4,6 @@
     <string name="NAME">Navn</string>
     <string name="UNIT">Enhed</string>
     <string name="QUANTITY">Mængde</string>
-    <string name="ID">ID</string>
     <string name="overviewActivityListItem_tv_frigeName">Køleskabs navn</string>
     <string name="fridgeListAdaptor_tv_fridgeName">Køleskabs navn</string>
     <string name="action_settings">Indstillinger</string>
@@ -69,4 +68,5 @@
     <string name="areYouSureYouWantToDeleteThisItem">Er du sikker på at du vil slette denne vare?</string>
     <string name="moveToFridge">Flyt til køleskab</string>
     <string name="responsebility">Ansvar</string>
+    <string name="areYouSureYouWantToMoveAllItemsToInventory">Er du sikker på at du vil flytte alle varer til beholdning?</string>
 </resources>

@@ -100,4 +100,6 @@
     <string name="moveToFridge">Move to fridge</string>
     <string name="dataUpdated" translatable="false">DataUpdated</string>
     <string name="DB_NAME">Name</string>
+    <string name="areYouSureYouWantToMoveAllItemsToInventory">Are you sure you want to move all items to inventory?</string>
+    <string name="DB_USERS">Users</string>
 </resources>
