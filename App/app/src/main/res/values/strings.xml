@@ -36,6 +36,10 @@
     <string name="ITEMS">Items</string>
     <string name="ESSENTIALS">Essentials</string>
     <string name="FRIDGE_SUBS">FridgeSubscribtions</string>
+    <string name="ingredientsTab4_tv_ingredienslistName">Name of ingredientslist</string>
+    <string name="ingredientslistActivity_tv_name">Name</string>
+    <string name="ingredientslistActivity_tv_unit">Unit</string>
+    <string name="ingredientslistActivity_tv_quantity">Quantity</string>
     <string name="DATA_UPDATED">DataUpdated</string>
     <string name="ESSENTIALS_SHOPPING_LIST">EssentialsShoppingList</string>
     <string name="ESSENTIALS_SHOPPING_LIST_NAME">Essentials Shopping List</string>
@@ -56,6 +60,12 @@
     <string name="SHARE">Share</string>
     <string name="FRIDGE_ID">Fridge ID</string>
     <string name="DELETE">Delete</string>
-    <string name="CANCEL">Cancel</string>
+    <string name="PAGE_TITLE_INVENTORY">Inventory</string>
+    <string name="PAGE_TITLE_ESSENTIALS">Essentials</string>
+    <string name="PAGE_TITLE_SHOPPING_LISTS">Shopping lists</string>
+    <string name="PAGE_TITLE_INGREDIENTS">Ingredients</string>
+
+
+>>>>>>> 6a4402a4a4f3fb2d59127c12cedc33d2ce03c8e1
 
 </resources>
