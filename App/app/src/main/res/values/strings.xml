@@ -36,5 +36,8 @@
     <string name="ITEMS">Items</string>
     <string name="ESSENTIALS">Essentials</string>
     <string name="FRIDGE_SUBS">FridgeSubscribtions</string>
+    <string name="DATA_UPDATED">DataUpdated</string>
+    <string name="ESSENTIALS_SHOPPING_LIST">EssentialsShoppingList</string>
+    <string name="ESSENTIALS_SHOPPING_LIST_NAME">Essentials Shopping List</string>
 
 </resources>
