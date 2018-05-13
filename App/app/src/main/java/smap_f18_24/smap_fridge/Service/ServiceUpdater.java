@@ -971,23 +971,21 @@ public class ServiceUpdater extends Service {
 
     public void UpdateShoppingListFromIngredientList(ShoppingList shoppingList ,IngredientList ingredientList, InventoryList inventoryList)
     {
-        for (Item i: ingredientList.getItems())
-        {
-            for (Item k: inventoryList.getItems())
-            {
-                if(i.getName().equals(k.getName()))
-                {
-                    if(i.getQuantity() > k.getQuantity())
-                    {
-                        float tmp = i.getQuantity()-k.getQuantity();
-                        tmp += k.getQuantity();
-                        shoppingList.EditItemQuantity(i.getName(),tmp);
+
+        if(shoppingList != null && ingredientList != null && inventoryList != null) {
+
+            for (Item i : ingredientList.getItems()) {
+                for (Item k : inventoryList.getItems()) {
+                    if (i.getName().equals(k.getName())) {
+                        if (i.getQuantity() > k.getQuantity()) {
+                            float tmp = i.getQuantity() - k.getQuantity();
+                            tmp += k.getQuantity();
+                            shoppingList.EditItemQuantity(i.getName(), tmp);
+                        }
+                    } else {
+                        shoppingList.AddItem(i);
+                        shoppingList.EditItemQuantity(i.getName(), i.getQuantity());
                     }
-                }
-                else
-                {
-                    shoppingList.AddItem(i);
-                    shoppingList.EditItemQuantity(i.getName(),i.getQuantity());
                 }
             }
         }
