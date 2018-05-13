@@ -13,10 +13,6 @@ import smap_f18_24.smap_fridge.ModelClasses.IngredientList;
 import smap_f18_24.smap_fridge.ModelClasses.Item;
 import smap_f18_24.smap_fridge.R;
 
-/**
- * Created by Liver on 05-05-2018.
- */
-
 public class IngredientsListAdaptor extends BaseAdapter {
     private Context context;
     private IngredientList ingredientList;
@@ -61,28 +57,15 @@ public class IngredientsListAdaptor extends BaseAdapter {
         }
         item = ingredientList.getItems().get(position);
         if(item != null){
-            //set name of the fridge
+            //set name of item name
             TextView tv_IngredientsListItemName = (TextView) convertView.findViewById(R.id.ingredientsListAdaptor_tv_itemName);
             tv_IngredientsListItemName.setText(String.valueOf(item.getName()));
-
+            //set quantaty of item
             TextView tv_IngredientsListItemQuantity = (TextView) convertView.findViewById(R.id.ingredientsListAdaptor_tv_itemQuantity);
             tv_IngredientsListItemQuantity.setText(String.valueOf(item.getQuantity()));
-
+            //set unit of item
             TextView tv_IngredientsListItemUnit = (TextView) convertView.findViewById(R.id.ingredientsListAdaptor_tv_itemUnit);
             tv_IngredientsListItemUnit.setText(String.valueOf(item.getUnit()));
-
-
-
-
-            //Lille forsøg med dropdown box
-            /*Spinner dropdown = (Spinner) convertView.findViewById(R.id.spinner1);
-            List<String> dropdownItems = new ArrayList<>();
-            dropdownItems.add("1");
-            dropdownItems.add("2");
-            dropdownItems.add("3");
-            dropdownItems.add("4");
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, dropdownItems);
-            dropdown.setAdapter(arrayAdapter);*/
 
         }
 

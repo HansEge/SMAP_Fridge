@@ -169,30 +169,30 @@ public class IngredientsListActivity extends AppCompatActivity {
 
     private void addItemDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.DIALOG_addNewItem);
+        builder.setTitle(getString(R.string.DIALOG_addNewItem));
 
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
 
         final EditText et_newItemName = new EditText(this);
-        et_newItemName.setHint(R.string.DIALOG_HINT_name);
+        et_newItemName.setHint(getString(R.string.DIALOG_HINT_name));
         et_newItemName.setInputType(InputType.TYPE_CLASS_TEXT);
         layout.addView(et_newItemName);
 
         final EditText et_newItemQuantity = new EditText(this);
-        et_newItemQuantity.setHint(R.string.DIALOG_HINT_quantity);
+        et_newItemQuantity.setHint(getString(R.string.DIALOG_HINT_quantity));
         et_newItemQuantity.setInputType(InputType.TYPE_CLASS_NUMBER);
         layout.addView(et_newItemQuantity);
 
         final EditText et_newItemUnit = new EditText(this);
-        et_newItemUnit.setHint(R.string.DIALOG_HINT_unit);
+        et_newItemUnit.setHint(getString(R.string.DIALOG_HINT_unit));
         et_newItemUnit.setInputType(InputType.TYPE_CLASS_TEXT);
         layout.addView(et_newItemUnit);
 
         builder.setView(layout);
 
 
-        builder.setPositiveButton(R.string.DIALOG_add_button, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.DIALOG_add_button), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -205,7 +205,7 @@ public class IngredientsListActivity extends AppCompatActivity {
 
             }
         });
-        builder.setNegativeButton(R.string.DIALOG_cancel_button, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.DIALOG_cancel_button), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
@@ -225,21 +225,21 @@ public class IngredientsListActivity extends AppCompatActivity {
 
         //Quantity
         final EditText et_qty = new EditText(this);
-        et_qty.setHint(R.string.DIALOG_HINT_quantity);
+        et_qty.setHint(getString(R.string.DIALOG_HINT_quantity));
         et_qty.setInputType(InputType.TYPE_CLASS_NUMBER);
         et_qty.setText(String.valueOf((i.getQuantity())));
         layout.addView(et_qty);
 
         ItemClickedDialog.setView(layout);
 
-        ItemClickedDialog.setNegativeButton(R.string.DIALOG_cancel_button, new DialogInterface.OnClickListener() {
+        ItemClickedDialog.setNegativeButton(getString(R.string.DIALOG_cancel_button), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
 
-        ItemClickedDialog.setPositiveButton(R.string.DIALOG_apply_button, new DialogInterface.OnClickListener() {
+        ItemClickedDialog.setPositiveButton(getString(R.string.DIALOG_apply_button), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 float quantity = Float.parseFloat(et_qty.getText().toString());
@@ -263,7 +263,7 @@ public class IngredientsListActivity extends AppCompatActivity {
 
         builder.setView(layout);
 
-        builder.setPositiveButton(R.string.DIALOG_yes_button, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.DIALOG_yes_button), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mService.removeItemFromIngredientList(_itemName,fridge.getID(),fridge.getIngredientLists().get(position).getID());
@@ -271,7 +271,7 @@ public class IngredientsListActivity extends AppCompatActivity {
 
             }
         });
-        builder.setNegativeButton(R.string.DIALOG_cancel_button, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.DIALOG_cancel_button), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
@@ -302,7 +302,7 @@ public class IngredientsListActivity extends AppCompatActivity {
 
     public void updateData(String updateString)
     {
-        if(updateString.equals("DataUpdated"))
+        if(updateString.equals(getString(R.string.DATA_UPDATED)))
         {
             fridge = mService.getFridge(fridgeID);
             ingredientsListAdaptor = new IngredientsListAdaptor(getBaseContext(),mService.getFridge(fridgeID).getIngredientLists().get(position));

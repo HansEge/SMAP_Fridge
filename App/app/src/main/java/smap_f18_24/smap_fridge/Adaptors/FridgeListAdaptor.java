@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import smap_f18_24.smap_fridge.ModelClasses.Fridge;
 import smap_f18_24.smap_fridge.R;
 
-/**
- * Created by Liver on 27-04-2018.
- */
-
 public class FridgeListAdaptor extends BaseAdapter {
 
     private Context context;
