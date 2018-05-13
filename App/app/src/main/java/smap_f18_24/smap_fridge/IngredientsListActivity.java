@@ -1,5 +1,6 @@
 package smap_f18_24.smap_fridge;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -35,11 +37,10 @@ public class IngredientsListActivity extends AppCompatActivity {
     private boolean mBound = false;
     public ServiceUpdater mService;
 
-    private ListView lv_ingredientsList;
-    private Button btn_addToShoppingList;
+    private ListView lv_ingredientsList, lv_shoppingLists;
+    private Button btn_addToShoppingList, btn_addItem;
     private IngredientsListAdaptor ingredientsListAdaptor;
 
-    public ListView lv_shoppingLists;
     public ShoppingListListAdaptor shoppingListListAdaptor;
 
     Fridge fridge;
@@ -59,15 +60,24 @@ public class IngredientsListActivity extends AppCompatActivity {
 
         lv_ingredientsList = findViewById(R.id.ingredientsList_lv_list);
         btn_addToShoppingList = findViewById(R.id.ingredientsListActivty_btn_addIngredients);
+        btn_addItem = findViewById(R.id.btn_addItem_ingredients);
 
         btn_addToShoppingList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //mService.UpdateShoppingListFromIngredientList()); //TODO insert updateIngredients method
-                OpenSelectShoppingListDialogBox();
+                //openSelectShoppingListDialogBox();
+                openDialog(view);
             }
         });
 
+        btn_addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Item i = new Item("Sukker", "g", 1000, "hejmeddig123@dibidut.au", "Status");
+                mService.addItemToIngredientList(i,fridgeID,"kage","Math_ID_kage");
+            }
+        });
 
     }
 
@@ -107,36 +117,24 @@ public class IngredientsListActivity extends AppCompatActivity {
         }
     };
 
-    //inspired by https://stackoverflow.com/questions/24769733/android-listview-in-alertdialog-setting-adapter
-    private void OpenSelectShoppingListDialogBox()
+    public void openDialog(View v)
     {
-        LayoutInflater shoppingListInflator = LayoutInflater.from(this);
-        final View addToShoppingListView = shoppingListInflator.inflate(R.layout.shopping_list_dialog, null);
-        //final AlertDialog AddToShoppingList = new AlertDialog.Builder(this).create();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row = inflater.inflate(R.layout.shopping_list_dialog,null);
 
-        lv_shoppingLists = addToShoppingListView.findViewById(R.id.lv_dialog_shoppingList);
+        lv_shoppingLists = row.findViewById(R.id.lv_dialog_shoppingList);
+        lv_shoppingLists.setAdapter(new ShoppingListListAdaptor(this,(ArrayList<ShoppingList>) mService.getFridge(fridgeID).getShoppingLists()));
+        builder.setView(row);
 
-        shoppingListListAdaptor = new ShoppingListListAdaptor(getApplicationContext(),(ArrayList<ShoppingList>)fridge.getShoppingLists());
+        lv_shoppingLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            }
+        });
 
-        lv_shoppingLists.setAdapter(shoppingListListAdaptor);
-
-        AlertDialog.Builder listsDialog = new AlertDialog.Builder(this);
-
-        listsDialog.setView(addToShoppingListView);
-
-        listsDialog.setCancelable(false)
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-        AlertDialog alertD = listsDialog.create();
-
-        alertD.show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
-
-
-
 
 }
