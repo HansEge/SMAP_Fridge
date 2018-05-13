@@ -10,4 +10,24 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="details_tap1_inventory_btn_addItem">Add Item</string>
     <string name="USERS">Users</string>
+    <string name="NAME">Name</string>
+    <string name="UNIT">Unit</string>
+    <string name="QUANTITY">Quantity</string>
+    <string name="RESPONSIBLE_USER_EMAIL">ResponsibleUserEmail</string>
+    <string name="ITEM_STATUS">itemStatus</string>
+    <string name="ID">ID</string>
+    <string name="INFO">Info</string>
+    <string name="SHOPPING_LISTS">ShoppingLists</string>
+    <string name="NONE">None</string>
+    <string name="INGREDIENT_LISTS">IngredientLists</string>
+    <string name="SHOPPING_LIST_IDS">ShoppingList_IDs</string>
+    <string name="IDS">IDs</string>
+    <string name="INGREDIENT_LIST_IDS">IngredientList_IDs</string>
+    <string name="FRIDGES">Fridges</string>
+    <string name="CONTENT">Content</string>
+    <string name="EMAIL">email</string>
+    <string name="INVENTORY">Inventory</string>
+    <string name="ITEMS">Items</string>
+    <string name="ESSENTIALS">Essentials</string>
+    <string name="FRIDGE_SUBS">FridgeSubscribtions</string>
 </resources>

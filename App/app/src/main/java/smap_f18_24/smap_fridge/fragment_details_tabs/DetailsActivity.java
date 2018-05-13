@@ -203,8 +203,8 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("SYSTEM","Shutting down - onStop() in MainActivity");
-        unbindService(mConnection);
+        //Log.d("SYSTEM","Shutting down - onStop() in MainActivity");
+        //unbindService(mConnection);
     }
 
     public String fetchFridgeID(){
