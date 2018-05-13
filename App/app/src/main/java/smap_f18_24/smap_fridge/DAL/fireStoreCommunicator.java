@@ -33,12 +33,15 @@ import smap_f18_24.smap_fridge.ModelClasses.List_ID;
 import smap_f18_24.smap_fridge.ModelClasses.ShoppingList;
 import smap_f18_24.smap_fridge.ModelClasses.User;
 
+//This class is responsible for the lowest layer of communication with the database. It reads and writes objects and lists.
+//In general, the functionality is based on the FireStore documentation on how to read and write data (https://firebase.google.com/docs/firestore/manage-data/add-data) and ()https://firebase.google.com/docs/firestore/query-data/get-data).
+//Furthermore, the firestore functinlaity snapshotListener is being useed to get updates from the database in real time. (https://firebase.google.com/docs/firestore/query-data/queries)
+
 public class fireStoreCommunicator {
     //database reference
     FirebaseFirestore db;
 
-
-
+    //Constructor that takes a callback interface in order to make changes upon completion of asynchronous tasks in firestore.
     public fireStoreCommunicator(Context context, FridgeCallbackInterface callbackInterface)
     {
         this.context=context;
@@ -46,7 +49,7 @@ public class fireStoreCommunicator {
         db = FirebaseFirestore.getInstance();
     }
 
-    FridgeCallbackInterface callbackInterface;
+    FridgeCallbackInterface callbackInterface; //For making changes in the service upon completion of asynchronous tasks in firestore.
     Context context;
     private static final String TAG = "fireStoreCommunicator";
 
@@ -62,6 +65,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                     //If old data exists, overwrite it.
                     if(!queryDocumentSnapshots.isEmpty())
                     {
+                        //create hashmap with new item.
                         Map<String, Object>  item = new HashMap<>();
                         item.put("Name",itemToAdd.getName());
                         item.put("Unit",itemToAdd.getUnit());
@@ -70,6 +74,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         item.put("itemStatus",itemToAdd.getResponsibleUserEmail());
 
                         String snapshotID = queryDocumentSnapshots.getDocuments().get(0).getId();
+                        //Update item in database
                         destination.document(snapshotID).update(item);
                         /*
                         Log.d(TAG, "onSuccess: Removing old data for item with name: " + itemToAdd.getName());
@@ -79,10 +84,11 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         destination.document(snapshotID).delete();
                         */
                     }
+                    //If item didn't exist already, add it to database.
                     else
                     {
                         Log.d(TAG, "onSuccess: Adding new data for item with name: " + itemToAdd.getName());
-                        //Add new data to list.
+                        //create hashmap with new item.
                         Map<String, Object>  item = new HashMap<>();
                         item.put("Name",itemToAdd.getName());
                         item.put("Unit",itemToAdd.getUnit());
@@ -90,6 +96,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         item.put("ResponsibleUserEmail",itemToAdd.getResponsibleUserEmail());
                         item.put("itemStatus",itemToAdd.getResponsibleUserEmail());
 
+                        //push to database.
                         destination
                                 .add(item)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -113,9 +120,10 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
     }
 
+    //Removes an item at destination with a given name.
     public void removeItem(final CollectionReference destination, final String itemName)
     {
-        //Check whether item exists on list already or not.
+        //Check whether item exists on list or not.
         destination.whereEqualTo("Name",itemName).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -133,6 +141,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                 Log.d(TAG, "onSuccess: DELETE SHOPPING LIST!");
                             }
                         }
+                        //If item doesn't exist on list, don't do anything
                         else
                         {
                             Log.d(TAG, "onSuccess: Item: " + itemName + " was not on list, and thus cannot be removed");
@@ -141,13 +150,17 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
+    //Adds an pseudo-item to the given destination (an IngredientList or ShoppingList) with Name, ID and the email of the responsible user.
+    //This is used in order to identify lists and retrieve this info later
     public void addListInfo(CollectionReference destination, String name, String ID, String responsibleUserEmail)
     {
+        //Create new hashmap with info.
         Map<String, Object> info = new HashMap<>();
         info.put("Name", name);
         info.put("ID", ID);
         info.put("ResponsibleUserEmail",responsibleUserEmail);
 
+        //Push hashmap to database.
         destination.document("Info").set(info)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -163,6 +176,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
+    /*
     public void addInventoryList(CollectionReference fridge, final InventoryList listToAdd)
     {
         Map<String, Object>  InventoryList = new HashMap<>();
@@ -172,26 +186,37 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
             addItem(listRef,i);
         }
     }
+    */
 
+    //Adds a new shopping list based on the passed ShoppingList to the fridge destination referenced in the parameters.
     public void addShoppingList(CollectionReference fridge, final ShoppingList listToAdd, String listName, String listID)
     {
+        //Create new Hashmap.
         Map<String, Object>  ShoppingList = new HashMap<>();
+        //Get database reference to where the list should be pushed to.
         CollectionReference listRef = fridge.document("ShoppingLists").collection(listID);
+        //Add pseudo-item containing list information including name and ID.
         addListInfo(listRef,listName,listID,"None");
+        //Add all items from passed list.
         for (Item i:listToAdd.getItems()
                 ) {
             addItem(listRef,i);
         }
-
+        //Add list ID to list of IDs in database.
         addID2listofShoppingListIDs(fridge,listID);
     }
 
+    //Adds the passed list ID to a list in the fridge that keeps track of which shopping Lists must be subscribed to.
+    //This was a necessary workaround to keep track of lists.
     public void addID2listofShoppingListIDs(CollectionReference fridge, String listID)
     {
-        //Add list ID to ShoppingList_IDs
+        //Get database reference to list of ShoppingList IDs.
         CollectionReference ID_Ref = fridge.document("ShoppingList_IDs").collection("IDs");
+       //Create a new hashmap containing the ID.
         Map<String, Object> info = new HashMap<>();
         info.put("ID", listID);
+
+        //Push hashmap to database.
         ID_Ref.document(listID).set(info)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -207,25 +232,35 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
+    //Adds a new ingredient list based on the passed IngredientList to the fridge destination referenced in the parameters.
     public void addIngredientList(CollectionReference fridge, final IngredientList listToAdd, String listName, String listID)
     {
+        //Create new Hashmap.
         Map<String, Object>  IngredientList = new HashMap<>();
+        //Get database reference to where the list should be pushed to.
         CollectionReference listRef = fridge.document("IngredientLists").collection(listID);
+        //Add pseudo-item containing list information including name and ID.
         addListInfo(listRef,listName,listID,"None");
+        //Add all items from passed list.
         for (Item i:listToAdd.getItems()
                 ) {
             addItem(listRef,i);
         }
-
+        //Add list ID to list of IDs in database.
         addID2listofShoppingListIDs(fridge,listID);
     }
 
+    //Adds the passed list ID to a list in the fridge that keeps track of which ingredient Lists must be subscribed to.
+    //This was a necessary workaround to keep track of lists.
     public void addID2listofIngredientListIDs(CollectionReference fridge, String listID)
     {
-        //Add list ID to ShoppingList_IDs
+        //Get database reference to list of ShoppingList IDs.
         CollectionReference ID_Ref = fridge.document("IngredientList_IDs").collection("IDs");
+        //Get database reference to where the list should be pushed to.
         Map<String, Object> info = new HashMap<>();
         info.put("ID", listID);
+
+        //Push hashmap to database.
         ID_Ref.document(listID).set(info)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -241,6 +276,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
+    /*
     public void addEssentialsList(CollectionReference fridge, final EssentialsList listToAdd)
     {
         Map<String, Object>  EssentialsList = new HashMap<>();
@@ -249,8 +285,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 ) {
             addItem(listRef,i);
         }
-    }
+    }*/
 
+    //Gets information from database and creates InventoryList object from this, which is passed back through callback interface.
     public void getInventoryList(final CollectionReference fridge)
     {
         //Fridge reference.
@@ -269,15 +306,18 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 } else {
                     //Convert documentShapshots to list of items.
                     List<Item> itemList = documentSnapshots.toObjects(Item.class);
+
+                    //create new InventoryList object.
                     InventoryList inventoryList = new InventoryList();
 
-                    Log.d(TAG, "Broadcasting Inventory list");
+                    //Add all items from database to InventoryList object.
                     for (Item i: itemList
                          ) {
                         inventoryList.AddItem(i);
                         Log.d(TAG, "Item in inventory list: " + i.getName());
                     }
 
+                    //Notify through callback interface.
                     callbackInterface.onInventoryChange(fridge.getParent().getId(),inventoryList);
 
                 }
@@ -290,7 +330,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     }
 
 
-
+    //Gets information from database and creates InventoryList object from this, which is passed back through callback interface.
     public void getEssentialsList(final CollectionReference fridge)
     {
         //Fridge reference.
@@ -310,9 +350,11 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
                             //Convert documentShapshots to list of items.
                             List<Item> itemList = documentSnapshots.toObjects(Item.class);
+
+                            //create new EssentialsList object.
                             EssentialsList essentialsList = new EssentialsList();
 
-                            Log.d(TAG, "Broadcasting Essentials list");
+                            //Add all items from database to InventoryList object.
                             for (Item i: itemList
                                     ) {
                                 //Do something with items.
@@ -320,6 +362,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                 Log.d(TAG, "Item on Essentials list: " + i.getName());
                             }
 
+                            //Notify through callback interface.
                             callbackInterface.onEssentialsChange(fridge.getParent().getId(),essentialsList);
 
                         }
@@ -331,13 +374,16 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
     }
 
+    //Gets information from database and creates ShoppingList object from this, which is passed back through callback interface.
     public void getShoppingList(final CollectionReference fridge, final String ID)
     {
-
+        //Create placeholder list.
         final ShoppingList shoppingList = new ShoppingList("NO_NAME_YET",ID);
+
+        //get ID for fridge.
         final String fridge_ID=fridge.getParent().getId();
 
-        //reference to fridge
+        //reference to place in database where ShoppingLists for the given fridge is.
         final CollectionReference shoppingListReference = fridge.document("ShoppingLists").collection(ID);
 
         //make a query for all documents in collection
@@ -357,16 +403,15 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                 List<Item> itemList = documentSnapshots.toObjects(Item.class);
                                 for (Item i: itemList
                                         ) {
-
                                     //hack to find the "INFO"-document, that we don't want to make into an Item-object.
                                     if(i.getUnit().equals("THIS_IS_NOT_AN_ITEM"))
                                     {
                                         Log.d(TAG, "getShoppingList: Item " + i.getName() + " is not an item.");
-                                        shoppingList.setName(i.getName());
+                                        //shoppingList.setName(i.getName());
                                     }
                                     else
                                     {
-                                        //Do something with Item.
+                                        //Add item to list.
                                         Log.d(TAG, "onSuccess: Item: " + i.getName());
                                         shoppingList.AddItem(i);
                                     }
@@ -374,20 +419,20 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                 //If only item in list was the Info-object, delete the list, both in database and locally.
                                 if(itemList.size()<2)
                                 {
-                                    //TODO:delete list in database.
+                                    /*
                                     deleteShoppingListFromDatabase(fridge_ID,ID);
-
                                     //delete list locally.
                                     callbackInterface.onShoppingListDelete(fridge.getParent().getId(),shoppingList);
+                                    */
                                 }
+                                //If list name has not been set yet, don't do anything.
                                 if(shoppingList.getName().equals("NO_NAME_YET"))
                                 {
                                     Log.d(TAG, "onSuccess: List name has not been set yet, and thus list is not returned yet.");
                                 }
+                                //Else, notyfi through callback interface.
                                 else
                                 {
-                                    //TODO: Return list through callback interface/broadcast new list.
-                                    Log.d(TAG, "Broadcasting Shopping list: " + shoppingList.getName());
                                     callbackInterface.onShoppingListsChange(fridge.getParent().getId(),shoppingList);
                                 }
                             }
@@ -404,6 +449,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
             }
         });
 
+        //Search for "Info"-document to set name, ID and responsible user for list.
         shoppingListReference.document("Info")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -419,26 +465,22 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
                             Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
 
+                            //Set info for list.
                             shoppingList.setName(name);
                             shoppingList.setID(ID);
                             shoppingList.setResponsibility(responsibleUser);
 
+                            //If items have not been added to list yet, do nothing.
                             if(shoppingList.getItems().size()==0)
                             {
                                 Log.d(TAG, "onSuccess: List items have not been added yet, and thus list is not returned yet.");
                             }
+                            //If items have been added to list, notify through callback interface.
                             else
                             {
-                                //TODO: Return list through callback interface/broadcast new list.
-                                Log.d(TAG, "Broadcasting Shopping list: " + shoppingList.getName());
-                                for (Item i: shoppingList.getItems()
-                                        ) {
-                                    Log.d(TAG, "Item on Shopping list: " + i.getName());
-                                    callbackInterface.onShoppingListsChange(fridge.getParent().getId(),shoppingList);
-                                }
+                                callbackInterface.onShoppingListsChange(fridge.getParent().getId(),shoppingList);
                             }
                         }
-                        //TODO: else - check if local copy of list exists. If it does, delete it. Do the same for Ingredient list.
                     }
                 })
         .addOnFailureListener(new OnFailureListener() {
@@ -449,13 +491,16 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
     }
 
+    //Gets information from database and creates ShoppingList object from this, which is passed back through callback interface.
     public void getIngredientList(final CollectionReference fridge, final String ID)
     {
-
+        //Create placeholder list.
         final IngredientList ingredientList = new IngredientList("NO_NAME_YET",ID);
+
+        //get ID for fridge.
         final String fridge_ID=fridge.getParent().getId();
 
-        //reference to fridge
+        //reference to place in database where ShoppingLists for the given fridge is.
         final CollectionReference ingredientListReference = fridge.document("IngredientLists").collection(ID);
 
         //make a query for all documents in collection
@@ -480,11 +525,11 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                     if(i.getUnit().equals("THIS_IS_NOT_AN_ITEM"))
                                     {
                                         Log.d(TAG, "getIngredientList: Item " + i.getName() + " is not an item.");
-                                        ingredientList.setName(i.getName());
+                                        //ingredientList.setName(i.getName());
                                     }
                                     else
                                     {
-                                        //Do something with Item.
+                                        //Add item to list.
                                         Log.d(TAG, "onSuccess: Item: " + i.getName());
                                         ingredientList.AddItem(i);
                                     }
@@ -492,20 +537,22 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                 //If only item in list was the Info-object, delete the list, both in database and locally.
                                 if(itemList.size()<2)
                                 {
+                                    /*
                                     //TODO:delete list in database.
                                     deleteIngredientListFromDatabase(fridge_ID,ID);
 
                                     //delete list locally.
                                     callbackInterface.onIngredientListDelete(fridge.getParent().getId(),ingredientList);
+                                    */
                                 }
+                                //If list name has not been set yet, don't do anything.
                                 if(ingredientList.getName().equals("NO_NAME_YET"))
                                 {
                                     Log.d(TAG, "onSuccess: List name has not been set yet, and thus list is not returned yet.");
                                 }
+                                ///Else, notify through callback interface.
                                 else
                                 {
-                                    //TODO: Return list through callback interface/broadcast new list.
-                                    Log.d(TAG, "Broadcasting Shopping list: " + ingredientList.getName());
                                     callbackInterface.onIngredientListsChange(fridge.getParent().getId(),ingredientList);
                                 }
                             }
@@ -522,6 +569,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
             }
         });
 
+        //Search for "Info"-document to set name, ID and responsible user for list.
         ingredientListReference.document("Info")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -531,27 +579,25 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
                         if(documentSnapshot.exists())
                         {
+                            //Get info from document
                             String name = documentSnapshot.get("Name").toString();
                             String ID = documentSnapshot.get("ID").toString();
 
                             Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
 
+                            //Set info for list.
                             ingredientList.setName(name);
                             ingredientList.setID(ID);
 
+                            //If items have not been added yet, do nothing.
                             if(ingredientList.getItems().size()==0)
                             {
                                 Log.d(TAG, "onSuccess: List items have not been added yet, and thus list is not returned yet.");
                             }
+                            //Else, notify through callback interface.
                             else
                             {
-                                //TODO: Return list through callback interface/broadcast new list.
-                                Log.d(TAG, "Broadcasting Ingredient list: " + ingredientList.getName());
-                                for (Item i: ingredientList.getItems()
-                                        ) {
-                                    Log.d(TAG, "Item on Ingredient list: " + i.getName());
-                                    callbackInterface.onIngredientListsChange(fridge.getParent().getId(),ingredientList);
-                                }
+                                callbackInterface.onIngredientListsChange(fridge.getParent().getId(),ingredientList);
                             }
                         }
                     }
@@ -564,18 +610,19 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
+    //Deletes a shopping list in the database with the given list ID from the fridge with the given fridge ID
     private void deleteShoppingListFromDatabase(String fridge_id, final String list_ID)
     {
+        //reference to the fridge in the database.
         DocumentReference fridgeRef = db.collection("Fridges").document(fridge_id);
+        //Reference to the list of ShoppingList IDs for the given fridge.
         final CollectionReference IDsRef = fridgeRef.collection("Content").document("ShoppingList_IDs").collection("IDs");
-        DocumentReference ListsRef = fridgeRef.collection("Content").document("ShoppingLists");
 
         //Remove List ID from ID-list.
         IDsRef.whereEqualTo("ID",list_ID).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
                         //If data exists, remove it.
                         if(!queryDocumentSnapshots.isEmpty())
                         {
@@ -589,15 +636,15 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         }
                     }
                 });
-
-
     }
 
+    //Deletes an ingredient list in the database with the given list ID from the fridge with the given fridge ID
     private void deleteIngredientListFromDatabase(String fridge_id, final String list_ID)
     {
+        //reference to the fridge in the database.
         DocumentReference fridgeRef = db.collection("Fridges").document(fridge_id);
+        //Reference to the list of IngredientList IDs for the given fridge.
         final CollectionReference IDsRef = fridgeRef.collection("Content").document("IngredientList_IDs").collection("IDs");
-        DocumentReference ListsRef = fridgeRef.collection("Content").document("IngredientLists");
 
         //Remove List ID from ID-list.
         IDsRef.whereEqualTo("ID",list_ID).get()
@@ -622,10 +669,13 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
     }
 
+    //get name for fridge with given ID.
     public void getFridgeName(final String fridgeID){
 
+        //reference to fridge in database.
         DocumentReference docRef = db.collection("Fridges").document(fridgeID);
 
+        //get document for given fridge.
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -634,17 +684,15 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         if (document != null){
                             String name = document.getString("Name");
                             Log.d(TAG, "The name of fridgeID: " + fridgeID + " is: " + name);
+                            //notify through callback interface.
                             callbackInterface.onFridgeName(fridgeID,name);
                         }
                         else{
                             Log.d(TAG, "Error in finding fridgeID name");
                         }
-
                 }
             }
         });
-
-
     }
 
 
@@ -677,15 +725,16 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
+    //Subscribe to be notified through callback interface when there are changes in fridge with given ID.
     public void SubscribeToFridge(final String fridgeID)
     {
+        //Reference to fridge in database.
         DocumentReference fridgeRef = db.collection("Fridges").document(fridgeID);
         Log.d(TAG, "SubscribeToFridge: Subscribing to fridge with ID " + fridgeID);
+        //Reference to lists in fridge.
         CollectionReference fridgeListRef=fridgeRef.collection("Content");
 
-
-
-
+        //Add snapshotListener to lists.
         fridgeListRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
@@ -696,13 +745,14 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
         getFridgeName(fridgeID);
 
+        //Subscribe to all lists of fridge.
         SubscribeToInventory(fridgeRef, fridgeID);
         SubscribeToEssentials(fridgeRef, fridgeID);
         SubscribeToShoppingLists(fridgeRef, fridgeID);
         SubscribeToIngredientLists(fridgeRef, fridgeID);
     }
 
-
+    //Subscribe to be notified through callback interface whenever there are changes in the inventory in database for given fridge.
     private void SubscribeToInventory(final DocumentReference fridge, final String fridgeID)
     {
         final CollectionReference fridgeListRef=fridge.collection("Content");
@@ -710,7 +760,6 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         fridgeListRef.document("Inventory").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-                //Toast.makeText(context, "Essentials of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "SubscribeToFridge - Inventory of Fridge: " + fridgeID + " updated.");
 
                 //get new data and broadcast changes
@@ -719,6 +768,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
     }
 
+    //Subscribe to be notified through callback interface whenever there are changes in the essentials in database for given fridge.
     private void SubscribeToEssentials(final DocumentReference fridge, final String fridgeID)
     {
         final CollectionReference fridgeListRef=fridge.collection("Content");
@@ -735,6 +785,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
     }
 
+    //Subscribe to be notified through callback interface whenever there are changes in the any of the shopping lists in database for given fridge.
     private void SubscribeToShoppingLists(final DocumentReference fridge, final String fridgeID)
     {
         final CollectionReference fridgeListRef=fridge.collection("Content");
@@ -762,6 +813,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
+    //Subscribe to be notified through callback interface whenever there are changes to the given list.
     public void SubscribeToShoppingList(final CollectionReference fridgeListRef, final String listID, final String fridgeID)
     {
         Log.d(TAG, "getShoppingListIDs: Subscribing to shopping list: " + listID);
@@ -770,7 +822,6 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         fridgeListRef.document("ShoppingLists").collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-//                Toast.makeText(context, "Ingredient list " + listID + " of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "SubscribefToFridge - Shopping List " +listID + " of Fridge: " + fridgeID + " updated.");
 
                 //get new data and broadcast changes
@@ -779,6 +830,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
     }
 
+    //Subscribe to be notified through callback interface whenever there are changes in the any of the ingredient lists in database for given fridge.
     private void SubscribeToIngredientLists(final DocumentReference fridge, final String fridgeID)
     {
         final CollectionReference fridgeListRef=fridge.collection("Content");
@@ -807,6 +859,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
     }
 
+    //Subscribe to be notified through callback interface whenever there are changes to the given list.
     public void SubscribeToIngredientList(final CollectionReference fridgeListRef, final String listID, final String fridgeID)
     {
         Log.d(TAG, "getIngredientListIDs: Subscribing to ingredient list: " + listID);
@@ -815,7 +868,6 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         fridgeListRef.document("IngredientLists").collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-//                Toast.makeText(context, "Ingredient list " + listID + " of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "SubscribefToFridge - Ingredient List " +listID + " of Fridge: " + fridgeID + " updated.");
 
                 //get new data and broadcast changes
@@ -826,16 +878,14 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
 
 
-    //UNSUBSCRIBE FROM FRIDGE
+    //Unsubscribe from a fridge to stop getting new data when there are changes in database.
     public void UnSubscribeToFridge(final String fridgeID)
     {
         DocumentReference fridgeRef = db.collection("Fridges").document(fridgeID);
         Log.d(TAG, "SubscribeToFridge: UnSubscribing to fridge with ID " + fridgeID);
         CollectionReference fridgeListRef=fridgeRef.collection("Content");
 
-
-
-
+        //Add new empty snapshotlistener.
         fridgeListRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
@@ -845,13 +895,14 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
         getFridgeName(fridgeID);
 
+        //Unsubscribe from all lists.
         UnSubscribeToInventory(fridgeRef, fridgeID);
         UnSubscribeToEssentials(fridgeRef, fridgeID);
         UnSubscribeToShoppingLists(fridgeRef, fridgeID);
         UnSubscribeToIngredientLists(fridgeRef, fridgeID);
     }
 
-
+    //Unsubscribe from inventory to stop receiving new data on change in database for the given fridge.
     private void UnSubscribeToInventory(final DocumentReference fridge, final String fridgeID)
     {
         final CollectionReference fridgeListRef=fridge.collection("Content");
@@ -864,6 +915,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
     }
 
+    //Unsubscribe from inventory to stop receiving new data on change in database for the given fridge.
     private void UnSubscribeToEssentials(final DocumentReference fridge, final String fridgeID)
     {
         final CollectionReference fridgeListRef=fridge.collection("Content");
@@ -876,6 +928,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
     }
 
+    //Unsubscribe from shopping lists to stop receiving new data on change in database for the given fridge.
     private void UnSubscribeToShoppingLists(final DocumentReference fridge, final String fridgeID)
     {
         final CollectionReference fridgeListRef=fridge.collection("Content");
@@ -903,6 +956,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
+    //Unsubscribe from shopping list to stop receiving new data on change in database for the given fridge.
     public void UnSubscribeToShoppingList(final CollectionReference fridgeListRef, final String listID, final String fridgeID)
     {
         Log.d(TAG, "getShoppingListIDs: Subscribing to shopping list: " + listID);
@@ -916,6 +970,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
     }
 
+    //Unsubscribe from ingredient lists to stop receiving new data on change in database for the given fridge.
     private void UnSubscribeToIngredientLists(final DocumentReference fridge, final String fridgeID)
     {
         final CollectionReference fridgeListRef=fridge.collection("Content");
@@ -944,6 +999,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
     }
 
+    //Unsubscribe from ingredient lsit to stop receiving new data on change in database for the given fridge.
     public void UnSubscribeToIngredientList(final CollectionReference fridgeListRef, final String listID, final String fridgeID)
     {
         Log.d(TAG, "getIngredientListIDs: Subscribing to ingredient list: " + listID);
@@ -957,10 +1013,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
     }
 
-
-
-
-
+    //Create a new fridge in database.
     public void createNewFridge(final String ID, final String Name) {
         final DocumentReference fridgesRef = db.collection("Fridges").document(ID);
         //Check whether fridge exists already or not.
@@ -999,6 +1052,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
+    //Sets the responsibility for a shopping list in the database.
     public void setResponsibilityForListShoppingList(String fridge_ID, String list_ID, String ResponsibleUser)
     {
         final DocumentReference fridgesRef = db.collection("Fridges").document(fridge_ID);
@@ -1009,7 +1063,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         listRef.document("Info").update(newInfo);
     }
 
-    //Tested and working
+    //Create a new user in the database.
     public void createNewUserInDatabase(String Name, String email)
     {
         Map<String, Object>  UserInfo = new HashMap<>();
@@ -1019,11 +1073,14 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         db.collection("Users").document(email).set(UserInfo);
     }
 
-    //Tested and working
+    //Add fridge ID to list of Fridge subscribtions for the given user.
     public void addFridgeID2listOfFridgeSubscriptions(String fridge_ID, String userEmail)
     {
+        //Create new hashmap with ID.
         Map<String, Object> info = new HashMap<>();
         info.put("ID", fridge_ID);
+
+        //Push hashmap to database
         db.collection("Users").document(userEmail).collection("FridgeSubscribtions").document(fridge_ID).set(info)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -1039,19 +1096,23 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
-    //Tested and working
     //Removes fridge id from the list of subscribed fridges for the user with the given userEmail.
     public void removeFridgeIDFromListOfFridgeSubscriptions(final String fridge_ID, String userEmail)
     {
+        //Reference to list of fridgeSubscribtions.
         final CollectionReference listRef = db.collection("Users").document(userEmail).collection("FridgeSubscribtions");
+
+        //Check if ID is on list.
         listRef.whereEqualTo("ID",fridge_ID).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        //If not on list, do nothing.
                         if(queryDocumentSnapshots.isEmpty())
                         {
                             Log.d(TAG, "removeFridgeIDFromListOfFridgeSubscriptions - onSuccess: fridge with ID " + fridge_ID + " was not subscribed to in the first place");
                         }
+                        //If on list, remove it.
                         else
                         {
                             Log.d(TAG, "removeFridgeIDFromListOfFridgeSubscriptions - onSuccess: Removing fridge ID " + fridge_ID + " from list of subscribed fridges.");
@@ -1062,16 +1123,20 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
+    //Adds a user to the database, if a user with the given email adress does not exist yet.
     public void addUserToDatabaseIfNotThereAlready(final FirebaseUser user)
     {
+        //Query for user with matching email-adress.
         db.collection("Users").document(user.getEmail()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        //If there is already a user with the given email, do nothing.
                         if (documentSnapshot.exists())
                         {
                             Log.d(TAG, "onSuccess:  addUserToDatabaseIfNotThereAlready - User with email " + user.getEmail() + " already exists in database, and this is not created");
                         }
+                        //If no user with given email exists, create a new user.
                         else
                         {
                             createNewUserInDatabase(user.getDisplayName(),user.getEmail());
