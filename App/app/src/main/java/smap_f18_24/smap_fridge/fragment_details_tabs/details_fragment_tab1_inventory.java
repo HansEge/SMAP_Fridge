@@ -100,12 +100,6 @@ public class details_fragment_tab1_inventory extends Fragment {
             }
         });
 
-        //fridge = ((DetailsActivity)getActivity()).mService.getFridge(((DetailsActivity)getActivity()).clickedFridgeID); //TODO fix ID
-        //fridge = new Fridge("Tester", "testID", connectedUserEmailss, inventoryList, essentialList, myShoppingLists, myIngredientsLists);
-
-
-
-
         return v;
     }
 

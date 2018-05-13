@@ -45,7 +45,7 @@ import smap_f18_24.smap_fridge.fragment_details_tabs.DetailsActivity;
 
 public class OverviewActivity extends AppCompatActivity {
 
-    Button btn_addNewFridge, btn_addExistingFridge;
+    Button btn_addNewFridge, btn_addExistingFridge, btn_updateUI;
     ListView lv_fridgesListView;
     TextView tv_welcomeUser;
 
@@ -75,6 +75,7 @@ public class OverviewActivity extends AppCompatActivity {
 
         btn_addNewFridge = findViewById(R.id.overview_btn_addNewFridge);
         btn_addExistingFridge = findViewById(R.id.overview_btn_addExistingFridge);
+        btn_updateUI = findViewById(R.id.overview_btn_updateUI);
 
         lv_fridgesListView = findViewById(R.id.overview_lv_fridgesListView);
 
@@ -84,6 +85,7 @@ public class OverviewActivity extends AppCompatActivity {
         //localList.add(testFridge);
 
         lv_fridgesListView.setAdapter(adaptor1);
+        UpdateUI();
 
         // POST-INITIALIZATION
 
@@ -266,6 +268,18 @@ public class OverviewActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+
+        btn_updateUI.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+
+            UpdateUI();
+
+            }
+        });
+
+
     }
 
     @Override
@@ -287,10 +301,6 @@ public class OverviewActivity extends AppCompatActivity {
             localList=mService.getAllFridges();
             UpdateUI();
 
-            //mService.SubscribeToFridge("TestFridgeID");
-
-
-            //mService.SubscribeToFridge("TestFridge");
         }
 
 
