@@ -84,6 +84,7 @@ public class OverviewActivity extends AppCompatActivity {
         //localList.add(testFridge);
 
         lv_fridgesListView.setAdapter(adaptor1);
+        UpdateUI();
 
         // POST-INITIALIZATION
 
@@ -287,10 +288,6 @@ public class OverviewActivity extends AppCompatActivity {
             localList=mService.getAllFridges();
             UpdateUI();
 
-            //mService.SubscribeToFridge("TestFridgeID");
-
-
-            //mService.SubscribeToFridge("TestFridge");
         }
 
 
