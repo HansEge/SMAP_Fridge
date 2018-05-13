@@ -58,7 +58,7 @@ public class fireStoreCommunicator {
 public void addItem(final CollectionReference destination, final Item itemToAdd)
 {
     //Check whether item exists on list already or not.
-    destination.whereEqualTo("Name",itemToAdd.getName()).get()
+    destination.whereEqualTo(context.getString(R.string.NAME),itemToAdd.getName()).get()
             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -68,22 +68,16 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                     {
                         //create hashmap with new item.
                         Map<String, Object>  item = new HashMap<>();
-                        item.put("Name",itemToAdd.getName());
-                        item.put("Unit",itemToAdd.getUnit());
-                        item.put("Quantity", itemToAdd.getQuantity());
-                        item.put("ResponsibleUserEmail",itemToAdd.getResponsibleUserEmail());
-                        item.put("itemStatus",itemToAdd.getResponsibleUserEmail());
+                        item.put(context.getString(R.string.NAME),itemToAdd.getName());
+                        item.put(context.getString(R.string.UNIT),itemToAdd.getUnit());
+                        item.put(context.getString(R.string.QUANTITY), itemToAdd.getQuantity());
+                        item.put(context.getString(R.string.RESPONSIBLE_USER_EMAIL),itemToAdd.getResponsibleUserEmail());
+                        item.put(context.getString(R.string.ITEM_STATUS),itemToAdd.getItemStatus());
 
                         String snapshotID = queryDocumentSnapshots.getDocuments().get(0).getId();
                         //Update item in database
                         destination.document(snapshotID).update(item);
-                        /*
-                        Log.d(TAG, "onSuccess: Removing old data for item with name: " + itemToAdd.getName());
-                        //removing old data.
-                        String snapshotID = queryDocumentSnapshots.getDocuments().get(0).getId();
-                        Log.d(TAG, "SNapshotID: " + snapshotID);
-                        destination.document(snapshotID).delete();
-                        */
+
                     }
                     //If item didn't exist already, add it to database.
                     else
@@ -91,11 +85,11 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         Log.d(TAG, "onSuccess: Adding new data for item with name: " + itemToAdd.getName());
                         //create hashmap with new item.
                         Map<String, Object>  item = new HashMap<>();
-                        item.put("Name",itemToAdd.getName());
-                        item.put("Unit",itemToAdd.getUnit());
-                        item.put("Quantity", itemToAdd.getQuantity());
-                        item.put("ResponsibleUserEmail",itemToAdd.getResponsibleUserEmail());
-                        item.put("itemStatus",itemToAdd.getResponsibleUserEmail());
+                        item.put(context.getString(R.string.NAME),itemToAdd.getName());
+                        item.put(context.getString(R.string.UNIT),itemToAdd.getUnit());
+                        item.put(context.getString(R.string.QUANTITY), itemToAdd.getQuantity());
+                        item.put(context.getString(R.string.RESPONSIBLE_USER_EMAIL),itemToAdd.getResponsibleUserEmail());
+                        item.put(context.getString(R.string.ITEM_STATUS),itemToAdd.getItemStatus());
 
                         //push to database.
                         destination
@@ -125,7 +119,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void removeItem(final CollectionReference destination, final String itemName)
     {
         //Check whether item exists on list or not.
-        destination.whereEqualTo("Name",itemName).get()
+        destination.whereEqualTo(context.getString(R.string.NAME),itemName).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -157,12 +151,12 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     {
         //Create new hashmap with info.
         Map<String, Object> info = new HashMap<>();
-        info.put("Name", name);
-        info.put("ID", ID);
-        info.put("ResponsibleUserEmail",responsibleUserEmail);
+        info.put(context.getString(R.string.NAME), name);
+        info.put(context.getString(R.string.ID), ID);
+        info.put(context.getString(R.string.RESPONSIBLE_USER_EMAIL),responsibleUserEmail);
 
         //Push hashmap to database.
-        destination.document("Info").set(info)
+        destination.document(context.getString(R.string.INFO)).set(info)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -195,9 +189,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         //Create new Hashmap.
         Map<String, Object>  ShoppingList = new HashMap<>();
         //Get database reference to where the list should be pushed to.
-        CollectionReference listRef = fridge.document("ShoppingLists").collection(listID);
+        CollectionReference listRef = fridge.document(context.getString(R.string.SHOPPING_LISTS)).collection(listID);
         //Add pseudo-item containing list information including name and ID.
-        addListInfo(listRef,listName,listID,"None");
+        addListInfo(listRef,listName,listID,context.getString(R.string.NONE));
         //Add all items from passed list.
         for (Item i:listToAdd.getItems()
                 ) {
@@ -212,10 +206,10 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void addID2listofShoppingListIDs(CollectionReference fridge, String listID)
     {
         //Get database reference to list of ShoppingList IDs.
-        CollectionReference ID_Ref = fridge.document("ShoppingList_IDs").collection("IDs");
+        CollectionReference ID_Ref = fridge.document(context.getString(R.string.SHOPPING_LIST_IDS)).collection(context.getString(R.string.IDS));
        //Create a new hashmap containing the ID.
         Map<String, Object> info = new HashMap<>();
-        info.put("ID", listID);
+        info.put(context.getString(R.string.ID), listID);
 
         //Push hashmap to database.
         ID_Ref.document(listID).set(info)
@@ -239,9 +233,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         //Create new Hashmap.
         Map<String, Object>  IngredientList = new HashMap<>();
         //Get database reference to where the list should be pushed to.
-        CollectionReference listRef = fridge.document("IngredientLists").collection(listID);
+        CollectionReference listRef = fridge.document(context.getString(R.string.INGREDIENT_LISTS)).collection(listID);
         //Add pseudo-item containing list information including name and ID.
-        addListInfo(listRef,listName,listID,"None");
+        addListInfo(listRef,listName,listID,context.getString(R.string.NONE));
         //Add all items from passed list.
         for (Item i:listToAdd.getItems()
                 ) {
@@ -256,10 +250,10 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void addID2listofIngredientListIDs(CollectionReference fridge, String listID)
     {
         //Get database reference to list of ShoppingList IDs.
-        CollectionReference ID_Ref = fridge.document("IngredientList_IDs").collection("IDs");
+        CollectionReference ID_Ref = fridge.document(context.getString(R.string.INGREDIENT_LIST_IDS)).collection(context.getString(R.string.IDS));
         //Get database reference to where the list should be pushed to.
         Map<String, Object> info = new HashMap<>();
-        info.put("ID", listID);
+        info.put(context.getString(R.string.ID), listID);
 
         //Push hashmap to database.
         ID_Ref.document(listID).set(info)
@@ -281,7 +275,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void addEssentialsList(CollectionReference fridge, final EssentialsList listToAdd)
     {
         Map<String, Object>  EssentialsList = new HashMap<>();
-        CollectionReference listRef = fridge.document("Essentials").collection("Items");
+        CollectionReference listRef = fridge.document(context.getString(R.string.ESSENTIALS)).collection("Items");
         for (Item i:listToAdd.getItems()
                 ) {
             addItem(listRef,i);
@@ -292,7 +286,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void getInventoryList(final CollectionReference fridge)
     {
         //Fridge reference.
-        final CollectionReference inventoryReference = fridge.document("Inventory").collection("Items");
+        final CollectionReference inventoryReference = fridge.document(context.getString(R.string.INVENTORY)).collection(context.getString(R.string.ITEMS));
 
         //Query for Items.
        inventoryReference
@@ -335,7 +329,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void getEssentialsList(final CollectionReference fridge)
     {
         //Fridge reference.
-        final CollectionReference inventoryReference = fridge.document("Essentials").collection("Items");
+        final CollectionReference inventoryReference = fridge.document(context.getString(R.string.ESSENTIALS)).collection(context.getString(R.string.ITEMS));
 
         //Query for Items.
         inventoryReference
@@ -385,7 +379,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         final String fridge_ID=fridge.getParent().getId();
 
         //reference to place in database where ShoppingLists for the given fridge is.
-        final CollectionReference shoppingListReference = fridge.document("ShoppingLists").collection(ID);
+        final CollectionReference shoppingListReference = fridge.document(context.getString(R.string.SHOPPING_LISTS)).collection(ID);
 
         //make a query for all documents in collection
         shoppingListReference
@@ -442,7 +436,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
 
         //Search for "Info"-document to set name, ID and responsible user for list.
-        shoppingListReference.document("Info")
+        shoppingListReference.document(context.getString(R.string.INFO))
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -451,9 +445,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
                         if(documentSnapshot.exists())
                         {
-                            String name = documentSnapshot.get("Name").toString();
-                            String ID = documentSnapshot.get("ID").toString();
-                            String responsibleUser = documentSnapshot.get("ResponsibleUserEmail").toString();
+                            String name = documentSnapshot.get(context.getString(R.string.NAME)).toString();
+                            String ID = documentSnapshot.get(context.getString(R.string.ID)).toString();
+                            String responsibleUser = documentSnapshot.get(context.getString(R.string.RESPONSIBLE_USER_EMAIL)).toString();
 
                             Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
 
@@ -485,7 +479,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         final String fridge_ID=fridge.getParent().getId();
 
         //reference to place in database where ShoppingLists for the given fridge is.
-        final CollectionReference ingredientListReference = fridge.document("IngredientLists").collection(ID);
+        final CollectionReference ingredientListReference = fridge.document(context.getString(R.string.INGREDIENT_LISTS)).collection(ID);
 
         //make a query for all documents in collection
         ingredientListReference
@@ -518,7 +512,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                         ingredientList.AddItem(i);
                                     }
                                 }
-                               
+
                                 //If list name has not been set yet, don't do anything.
                                 if(ingredientList.getName().equals("NO_NAME_YET"))
                                 {
@@ -544,7 +538,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
 
         //Search for "Info"-document to set name, ID and responsible user for list.
-        ingredientListReference.document("Info")
+        ingredientListReference.document(context.getString(R.string.INFO))
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -554,8 +548,8 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         if(documentSnapshot.exists())
                         {
                             //Get info from document
-                            String name = documentSnapshot.get("Name").toString();
-                            String ID = documentSnapshot.get("ID").toString();
+                            String name = documentSnapshot.get(context.getString(R.string.NAME)).toString();
+                            String ID = documentSnapshot.get(context.getString(R.string.ID)).toString();
 
                             Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
 
@@ -577,15 +571,15 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     }
 
     //Deletes a shopping list in the database with the given list ID from the fridge with the given fridge ID
-    private void deleteShoppingListFromDatabase(String fridge_id, final String list_ID)
+    public void deleteShoppingListFromDatabase(final String fridge_id, final String list_ID)
     {
         //reference to the fridge in the database.
-        DocumentReference fridgeRef = db.collection("Fridges").document(fridge_id);
+        DocumentReference fridgeRef = db.collection(context.getString(R.string.FRIDGES)).document(fridge_id);
         //Reference to the list of ShoppingList IDs for the given fridge.
-        final CollectionReference IDsRef = fridgeRef.collection("Content").document("ShoppingList_IDs").collection("IDs");
+        final CollectionReference IDsRef = fridgeRef.collection(context.getString(R.string.CONTENT)).document(context.getString(R.string.SHOPPING_LIST_IDS)).collection(context.getString(R.string.IDS));
 
         //Remove List ID from ID-list.
-        IDsRef.whereEqualTo("ID",list_ID).get()
+        IDsRef.whereEqualTo(context.getString(R.string.ID),list_ID).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -608,12 +602,12 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     private void deleteIngredientListFromDatabase(String fridge_id, final String list_ID)
     {
         //reference to the fridge in the database.
-        DocumentReference fridgeRef = db.collection("Fridges").document(fridge_id);
+        DocumentReference fridgeRef = db.collection(context.getString(R.string.FRIDGES)).document(fridge_id);
         //Reference to the list of IngredientList IDs for the given fridge.
-        final CollectionReference IDsRef = fridgeRef.collection("Content").document("IngredientList_IDs").collection("IDs");
+        final CollectionReference IDsRef = fridgeRef.collection(context.getString(R.string.CONTENT)).document(context.getString(R.string.INGREDIENT_LIST_IDS)).collection(context.getString(R.string.IDS));
 
         //Remove List ID from ID-list.
-        IDsRef.whereEqualTo("ID",list_ID).get()
+        IDsRef.whereEqualTo(context.getString(R.string.ID),list_ID).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -639,7 +633,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void getFridgeName(final String fridgeID){
 
         //reference to fridge in database.
-        DocumentReference docRef = db.collection("Fridges").document(fridgeID);
+        DocumentReference docRef = db.collection(context.getString(R.string.FRIDGES)).document(fridgeID);
 
         //get document for given fridge.
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -648,7 +642,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 if(task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
                         if (document != null){
-                            String name = document.getString("Name");
+                            String name = document.getString(context.getString(R.string.NAME));
                             Log.d(TAG, "The name of fridgeID: " + fridgeID + " is: " + name);
                             //notify through callback interface.
                             callbackInterface.onFridgeName(fridgeID,name);
@@ -666,7 +660,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void SubscribeToSavedFridges(String userEmail, final FridgeCallbackInterface callbackInterface)
     {
         //get list from database.
-        db.collection(context.getString(R.string.USERS)).document(userEmail).collection("FridgeSubscribtions").get()
+        db.collection(context.getString(R.string.USERS)).document(userEmail).collection(context.getString(R.string.FRIDGE_SUBS)).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -695,10 +689,10 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void SubscribeToFridge(final String fridgeID)
     {
         //Reference to fridge in database.
-        DocumentReference fridgeRef = db.collection("Fridges").document(fridgeID);
+        DocumentReference fridgeRef = db.collection(context.getString(R.string.FRIDGES)).document(fridgeID);
         Log.d(TAG, "SubscribeToFridge: Subscribing to fridge with ID " + fridgeID);
         //Reference to lists in fridge.
-        CollectionReference fridgeListRef=fridgeRef.collection("Content");
+        CollectionReference fridgeListRef=fridgeRef.collection(context.getString(R.string.CONTENT));
 
         //Add snapshotListener to lists.
         fridgeListRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -721,9 +715,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     //Subscribe to be notified through callback interface whenever there are changes in the inventory in database for given fridge.
     private void SubscribeToInventory(final DocumentReference fridge, final String fridgeID)
     {
-        final CollectionReference fridgeListRef=fridge.collection("Content");
+        final CollectionReference fridgeListRef=fridge.collection(context.getString(R.string.CONTENT));
         //Subscribe to receive notifications every time there's a change in the Essentials list.
-        fridgeListRef.document("Inventory").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        fridgeListRef.document(context.getString(R.string.INVENTORY)).collection(context.getString(R.string.ITEMS)).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                 Log.d(TAG, "SubscribeToFridge - Inventory of Fridge: " + fridgeID + " updated.");
@@ -737,9 +731,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     //Subscribe to be notified through callback interface whenever there are changes in the essentials in database for given fridge.
     private void SubscribeToEssentials(final DocumentReference fridge, final String fridgeID)
     {
-        final CollectionReference fridgeListRef=fridge.collection("Content");
+        final CollectionReference fridgeListRef=fridge.collection(context.getString(R.string.CONTENT));
         //Subscribe to receive notifications every time there's a change in the Essentials list.
-        fridgeListRef.document("Essentials").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        fridgeListRef.document(context.getString(R.string.ESSENTIALS)).collection(context.getString(R.string.ITEMS)).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                 //Toast.makeText(context, "Essentials of Fridge: " + fridgeID + " updated.", Toast.LENGTH_SHORT).show();
@@ -754,9 +748,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     //Subscribe to be notified through callback interface whenever there are changes in the any of the shopping lists in database for given fridge.
     private void SubscribeToShoppingLists(final DocumentReference fridge, final String fridgeID)
     {
-        final CollectionReference fridgeListRef=fridge.collection("Content");
+        final CollectionReference fridgeListRef=fridge.collection(context.getString(R.string.CONTENT));
         //get IDs for all shopping lists.
-        fridgeListRef.document("ShoppingList_IDs").collection("IDs").get()
+        fridgeListRef.document(context.getString(R.string.SHOPPING_LIST_IDS)).collection(context.getString(R.string.IDS)).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -785,7 +779,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         Log.d(TAG, "getShoppingListIDs: Subscribing to shopping list: " + listID);
 
         //Subscribe to receive notifications every time there's a change in the Shopping list.
-        fridgeListRef.document("ShoppingLists").collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        fridgeListRef.document(context.getString(R.string.SHOPPING_LISTS)).collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                 Log.d(TAG, "SubscribefToFridge - Shopping List " +listID + " of Fridge: " + fridgeID + " updated.");
@@ -799,9 +793,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     //Subscribe to be notified through callback interface whenever there are changes in the any of the ingredient lists in database for given fridge.
     private void SubscribeToIngredientLists(final DocumentReference fridge, final String fridgeID)
     {
-        final CollectionReference fridgeListRef=fridge.collection("Content");
+        final CollectionReference fridgeListRef=fridge.collection(context.getString(R.string.CONTENT));
         //get IDs for all shopping lists.
-        fridgeListRef.document("IngredientList_IDs").collection("IDs").get()
+        fridgeListRef.document(context.getString(R.string.INGREDIENT_LIST_IDS)).collection(context.getString(R.string.IDS)).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -831,7 +825,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         Log.d(TAG, "getIngredientListIDs: Subscribing to ingredient list: " + listID);
 
         //Subscribe to receive notifications every time there's a change in the Shopping list.
-        fridgeListRef.document("IngredientLists").collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        fridgeListRef.document(context.getString(R.string.INGREDIENT_LISTS)).collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                 Log.d(TAG, "SubscribefToFridge - Ingredient List " +listID + " of Fridge: " + fridgeID + " updated.");
@@ -847,9 +841,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     //Unsubscribe from a fridge to stop getting new data when there are changes in database.
     public void UnSubscribeToFridge(final String fridgeID)
     {
-        DocumentReference fridgeRef = db.collection("Fridges").document(fridgeID);
+        DocumentReference fridgeRef = db.collection(context.getString(R.string.FRIDGES)).document(fridgeID);
         Log.d(TAG, "SubscribeToFridge: UnSubscribing to fridge with ID " + fridgeID);
-        CollectionReference fridgeListRef=fridgeRef.collection("Content");
+        CollectionReference fridgeListRef=fridgeRef.collection(context.getString(R.string.CONTENT));
 
         //Add new empty snapshotlistener.
         fridgeListRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -871,9 +865,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     //Unsubscribe from inventory to stop receiving new data on change in database for the given fridge.
     private void UnSubscribeToInventory(final DocumentReference fridge, final String fridgeID)
     {
-        final CollectionReference fridgeListRef=fridge.collection("Content");
+        final CollectionReference fridgeListRef=fridge.collection(context.getString(R.string.CONTENT));
         //Subscribe to receive notifications every time there's a change in the Essentials list.
-        fridgeListRef.document("Inventory").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        fridgeListRef.document(context.getString(R.string.INVENTORY)).collection(context.getString(R.string.ITEMS)).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                 //Do nothing.
@@ -884,9 +878,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     //Unsubscribe from inventory to stop receiving new data on change in database for the given fridge.
     private void UnSubscribeToEssentials(final DocumentReference fridge, final String fridgeID)
     {
-        final CollectionReference fridgeListRef=fridge.collection("Content");
+        final CollectionReference fridgeListRef=fridge.collection(context.getString(R.string.CONTENT));
         //Subscribe to receive notifications every time there's a change in the Essentials list.
-        fridgeListRef.document("Essentials").collection("Items").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        fridgeListRef.document(context.getString(R.string.ESSENTIALS)).collection(context.getString(R.string.ITEMS)).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                 //Do nothing.
@@ -897,9 +891,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     //Unsubscribe from shopping lists to stop receiving new data on change in database for the given fridge.
     private void UnSubscribeToShoppingLists(final DocumentReference fridge, final String fridgeID)
     {
-        final CollectionReference fridgeListRef=fridge.collection("Content");
+        final CollectionReference fridgeListRef=fridge.collection(context.getString(R.string.CONTENT));
         //get IDs for all shopping lists.
-        fridgeListRef.document("ShoppingList_IDs").collection("IDs").get()
+        fridgeListRef.document(context.getString(R.string.SHOPPING_LIST_IDS)).collection(context.getString(R.string.IDS)).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -928,7 +922,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         Log.d(TAG, "getShoppingListIDs: Subscribing to shopping list: " + listID);
 
         //Subscribe to receive notifications every time there's a change in the Shopping list.
-        fridgeListRef.document("ShoppingLists").collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        fridgeListRef.document(context.getString(R.string.SHOPPING_LISTS)).collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                 //Do nothing
@@ -939,9 +933,9 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     //Unsubscribe from ingredient lists to stop receiving new data on change in database for the given fridge.
     private void UnSubscribeToIngredientLists(final DocumentReference fridge, final String fridgeID)
     {
-        final CollectionReference fridgeListRef=fridge.collection("Content");
+        final CollectionReference fridgeListRef=fridge.collection(context.getString(R.string.CONTENT));
         //get IDs for all shopping lists.
-        fridgeListRef.document("IngredientList_IDs").collection("IDs").get()
+        fridgeListRef.document(context.getString(R.string.INGREDIENT_LIST_IDS)).collection(context.getString(R.string.IDS)).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -971,7 +965,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         Log.d(TAG, "getIngredientListIDs: Subscribing to ingredient list: " + listID);
 
         //Subscribe to receive notifications every time there's a change in the Shopping list.
-        fridgeListRef.document("IngredientLists").collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        fridgeListRef.document(context.getString(R.string.INGREDIENT_LISTS)).collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
                 //Do nothing
@@ -981,7 +975,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
     //Create a new fridge in database.
     public void createNewFridge(final String ID, final String Name) {
-        final DocumentReference fridgesRef = db.collection("Fridges").document(ID);
+        final DocumentReference fridgesRef = db.collection(context.getString(R.string.FRIDGES)).document(ID);
         //Check whether fridge exists already or not.
         fridgesRef.get()
                 //If it exists, notify user that he/she cannot create a fridge with that id.
@@ -998,8 +992,8 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
                             //Add ID and Name of fridge.
                             Map<String, Object> info = new HashMap<>();
-                            info.put("ID", ID);
-                            info.put("Name",Name);
+                            info.put(context.getString(R.string.ID), ID);
+                            info.put(context.getString(R.string.NAME),Name);
                             fridgesRef.set(info)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
@@ -1021,20 +1015,20 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     //Sets the responsibility for a shopping list in the database.
     public void setResponsibilityForListShoppingList(String fridge_ID, String list_ID, String ResponsibleUser)
     {
-        final DocumentReference fridgesRef = db.collection("Fridges").document(fridge_ID);
-        final CollectionReference listRef = fridgesRef.collection("Content").document("ShoppingLists").collection(list_ID);
+        final DocumentReference fridgesRef = db.collection(context.getString(R.string.FRIDGES)).document(fridge_ID);
+        final CollectionReference listRef = fridgesRef.collection(context.getString(R.string.CONTENT)).document(context.getString(R.string.SHOPPING_LISTS)).collection(list_ID);
 
         Map<String, Object>  newInfo = new HashMap<>();
-        newInfo.put("ResponsibleUserEmail",ResponsibleUser);
-        listRef.document("Info").update(newInfo);
+        newInfo.put(context.getString(R.string.RESPONSIBLE_USER_EMAIL),ResponsibleUser);
+        listRef.document(context.getString(R.string.INFO)).update(newInfo);
     }
 
     //Create a new user in the database.
     public void createNewUserInDatabase(String Name, String email)
     {
         Map<String, Object>  UserInfo = new HashMap<>();
-        UserInfo.put("Name",Name);
-        UserInfo.put("email",email);
+        UserInfo.put(context.getString(R.string.NAME),Name);
+        UserInfo.put(context.getString(R.string.EMAIL),email);
 
         db.collection(context.getString(R.string.USERS)).document(email).set(UserInfo);
     }
@@ -1044,10 +1038,10 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     {
         //Create new hashmap with ID.
         Map<String, Object> info = new HashMap<>();
-        info.put("ID", fridge_ID);
+        info.put(context.getString(R.string.ID), fridge_ID);
 
         //Push hashmap to database
-        db.collection(context.getString(R.string.USERS)).document(userEmail).collection("FridgeSubscribtions").document(fridge_ID).set(info)
+        db.collection(context.getString(R.string.USERS)).document(userEmail).collection(context.getString(R.string.FRIDGE_SUBS)).document(fridge_ID).set(info)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -1066,10 +1060,10 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void removeFridgeIDFromListOfFridgeSubscriptions(final String fridge_ID, String userEmail)
     {
         //Reference to list of fridgeSubscribtions.
-        final CollectionReference listRef = db.collection(context.getString(R.string.USERS)).document(userEmail).collection("FridgeSubscribtions");
+        final CollectionReference listRef = db.collection(context.getString(R.string.USERS)).document(userEmail).collection(context.getString(R.string.FRIDGE_SUBS));
 
         //Check if ID is on list.
-        listRef.whereEqualTo("ID",fridge_ID).get()
+        listRef.whereEqualTo(context.getString(R.string.ID),fridge_ID).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

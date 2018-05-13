@@ -990,6 +990,18 @@ public class ServiceUpdater extends Service {
             }
         }
     }
+
+    //Deletes a shopping list with the given list ID from fridge with the given fridge ID
+    public void deleteShoppingList(String fridge_ID, String list_ID)
+    {
+        //Delete local copy
+        Fridge currentFridge = getFridge(fridge_ID);
+        ShoppingList listToDelete = getShoppingList(list_ID,currentFridge.getShoppingLists());
+        currentFridge.getShoppingLists().remove(listToDelete);
+
+        //Delete from database
+        dbComm.deleteShoppingListFromDatabase(fridge_ID,list_ID);
+    }
 }
 
 
