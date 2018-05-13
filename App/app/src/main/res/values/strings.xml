@@ -75,4 +75,13 @@
     <string name="PAGE_TITLE_SHOPPING_LISTS">Shopping lists</string>
     <string name="PAGE_TITLE_INGREDIENTS">Ingredients</string>
     <string name="textview">TextView</string>
+    <string name="NEW_SHOPPING_LIST">New Shopping List</string>
+    <string name="CURRENT_FRIDGE_ID">CurrentFridgeID</string>
+    <string name="POSITION_OF_SHOPPING_LIST">PositionOfShoppingList</string>
+    <string name="WANT_TO_CLAIM_RESPONSIBILITY">Do you want to claim responsibility for this shopping list?</string>
+    <string name="YES">Yes</string>
+    <string name="CANCEL">Cancel</string>
+    <string name="DELETE_LIST">Delete List</string>
+    <string name="DATA_UPDATED">DataUpdated</string>
+    <string name="ADD_NEW_LIST">Add new List</string>
 </resources>
