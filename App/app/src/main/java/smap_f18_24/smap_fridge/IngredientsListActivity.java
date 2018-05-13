@@ -130,6 +130,7 @@ public class IngredientsListActivity extends AppCompatActivity {
         lv_shoppingLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                mService.UpdateShoppingListFromIngredientList(fridgeID,fridge.getIngredientLists().get(position),fridge.getShoppingLists().get(i));
             }
         });
 
