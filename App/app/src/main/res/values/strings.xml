@@ -44,5 +44,13 @@
     <string name="SUCCESSFULLY_LOGGED_OUT">Successfully logged out.</string>
     <string name="LOG_IN">Log in</string>
     <string name="LOG_OUT">Log out</string>
+    <string name="ADD_NEW_FRIDGE">Add new Fridge</string>
+    <string name="ADD_EXISTING_FRIDGE">Add existing fridge</string>
+    <string name="WELCOME">Welcome</string>
+    <string name="CREATE_NEW_FRIDGE">Create new fridge</string>
+    <string name="ADD">Add</string>
+    <string name="CANCEL">Cancel</string>
+    <string name="ENTER_UNIQUE_ID">Enter unique ID of fridge you want to subscribe to</string>
+    <string name="CLICKED_FRIDGE_ID">clickedFridgeID</string>
 
 </resources>

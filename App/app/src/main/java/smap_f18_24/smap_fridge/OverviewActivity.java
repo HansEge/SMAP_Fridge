@@ -80,7 +80,7 @@ public class OverviewActivity extends AppCompatActivity {
         lv_fridgesListView = findViewById(R.id.overview_lv_fridgesListView);
 
         tv_welcomeUser = findViewById(R.id.overview_tv_welcomeUser);
-        tv_welcomeUser.setText("Welcome, " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        tv_welcomeUser.setText(getString(R.string.WELCOME)+", " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
 
         //localList.add(testFridge);
 
@@ -96,24 +96,24 @@ public class OverviewActivity extends AppCompatActivity {
 
 
                 AlertDialog.Builder addNewFridgeDialogBox = new AlertDialog.Builder(OverviewActivity.this);
-                addNewFridgeDialogBox.setTitle("Creating a new fridge");
+                addNewFridgeDialogBox.setTitle(R.string.CREATE_NEW_FRIDGE);
 
                 LinearLayout layout = new LinearLayout(OverviewActivity.this);
                 layout.setOrientation(LinearLayout.VERTICAL);
 
                 final EditText et_newFridgeName = new EditText(OverviewActivity.this);
-                et_newFridgeName.setHint("Name:");
+                et_newFridgeName.setHint(getString(R.string.NAME)+":");
                 et_newFridgeName.setInputType(InputType.TYPE_CLASS_TEXT);
                 layout.addView(et_newFridgeName);
 
                 final EditText et_newFridgeID = new EditText(OverviewActivity.this);
                 et_newFridgeID.setInputType(InputType.TYPE_CLASS_TEXT);
-                et_newFridgeID.setHint("ID:");
+                et_newFridgeID.setHint(getString(R.string.ID)+":");
                 layout.addView(et_newFridgeID);
 
                 addNewFridgeDialogBox.setView(layout);
 
-                addNewFridgeDialogBox.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                addNewFridgeDialogBox.setPositiveButton(R.string.ADD, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
 
                         String tmp_name = et_newFridgeName.getText().toString();
@@ -131,7 +131,7 @@ public class OverviewActivity extends AppCompatActivity {
                     }
                 });
 
-                addNewFridgeDialogBox.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                addNewFridgeDialogBox.setNegativeButton(R.string.CANCEL, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
 
                     }
@@ -148,7 +148,7 @@ public class OverviewActivity extends AppCompatActivity {
             public void onClick(View view){
 
                 final AlertDialog.Builder addExistingFridgeDialogBox = new AlertDialog.Builder(OverviewActivity.this);
-                addExistingFridgeDialogBox.setTitle("Enter the UNIQUE code for the fridge you want to add");
+                addExistingFridgeDialogBox.setTitle(R.string.ENTER_UNIQUE_ID);
 
                 final EditText et_uniqueCodeUserInput = new EditText(OverviewActivity.this);
 
@@ -156,7 +156,7 @@ public class OverviewActivity extends AppCompatActivity {
                 addExistingFridgeDialogBox.setView(et_uniqueCodeUserInput);
 
                 //Functionality of the right sided button - cancels the dialogbox
-                addExistingFridgeDialogBox.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                addExistingFridgeDialogBox.setNegativeButton(getString(R.string.CANCEL), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -164,7 +164,7 @@ public class OverviewActivity extends AppCompatActivity {
                 });
 
                 //Functionality of the right sided button - cancels the dialogbox
-                addExistingFridgeDialogBox.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                addExistingFridgeDialogBox.setPositiveButton(getString(R.string.ADD), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -193,16 +193,9 @@ public class OverviewActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent DetailsActivityIntent = new Intent(OverviewActivity.this, DetailsActivity.class);
 
+                //Start Details Activity and pass ID og clicked Fridge.
                 String tmpID = localList.get(position).getID();
-
-
-                // Umiddelbart skal dette ikke længere bruges, hvis Intent passer ID videre til detailsActivity, hvorefter det håndteres af fragmentManager
-                SharedPreferences.Editor sharedPrefsEditor = sharedData.edit();
-                sharedPrefsEditor.putString("clickedFridgeID",tmpID);
-                sharedPrefsEditor.apply();
-
-                DetailsActivityIntent.putExtra("clickedFridgeID",tmpID);
-
+                DetailsActivityIntent.putExtra(getString(R.string.CLICKED_FRIDGE_ID),tmpID);
                 startActivity(DetailsActivityIntent);
 
 

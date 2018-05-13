@@ -187,7 +187,7 @@ public class DetailsActivity extends AppCompatActivity {
             mService = binder.getService();
             mBound = true;
 
-            clickedFridgeID=fetchFridgeID();
+            clickedFridgeID=getIntent().getStringExtra(getString(R.string.CLICKED_FRIDGE_ID));
             currentFridge = mService.getFridge(clickedFridgeID); //TODO Get the correct ID from overviewActivity
 
         }
