@@ -12,4 +12,8 @@
     <string name="shoppinglist_tab3_shoppinglistListName">Name</string>
     <string name="shoppinglist_tab3_shoppinglistListResponsible">Responsible</string>
     <string name="USERS">Users</string>
+    <string name="shoppinglistActivity_tv_name">Name</string>
+    <string name="shoppinglistActivity_tv_quantity">Quantity</string>
+    <string name="shoppinglistActivity_tv_unit">Unit</string>
+    <string name="shoppinglist_btn_allBought">All Bought</string>
 </resources>
