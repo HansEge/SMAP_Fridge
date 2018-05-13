@@ -39,5 +39,10 @@
     <string name="DATA_UPDATED">DataUpdated</string>
     <string name="ESSENTIALS_SHOPPING_LIST">EssentialsShoppingList</string>
     <string name="ESSENTIALS_SHOPPING_LIST_NAME">Essentials Shopping List</string>
+    <string name="SUCCSSFULLY_SIGNED_IN_AS">Successfully signed in as</string>
+    <string name="SIGN_IN_FAILED">Sign in failed.</string>
+    <string name="SUCCESSFULLY_LOGGED_OUT">Successfully logged out.</string>
+    <string name="LOG_IN">Log in</string>
+    <string name="LOG_OUT">Log out</string>
 
 </resources>

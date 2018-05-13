@@ -76,14 +76,14 @@ public class SignInActivity extends AppCompatActivity {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                Toast.makeText(this, "Successfully signed in as " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.SUCCSSFULLY_SIGNED_IN_AS) + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onActivityResult: Successfully signed in as " + user.getDisplayName());
                 dbComm.addUserToDatabaseIfNotThereAlready(user);
                 Intent i = new Intent(SignInActivity.this,OverviewActivity.class);
                 startActivity(i);
                 // ...
             } else {
-                Toast.makeText(this, "Sign in failed.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.SIGN_IN_FAILED, Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onActivityResult: Could not sign in.");
             }
         }
@@ -95,7 +95,7 @@ public class SignInActivity extends AppCompatActivity {
                 .signOut(this)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(SignInActivity.this, "Successfully logget out.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignInActivity.this, R.string.SUCCESSFULLY_LOGGED_OUT, Toast.LENGTH_SHORT).show();
                         btn_logout.setVisibility(View.GONE);
                         btn_login.setVisibility(View.VISIBLE);
                     }
