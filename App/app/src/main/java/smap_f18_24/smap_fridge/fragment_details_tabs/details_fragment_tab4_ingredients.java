@@ -52,7 +52,6 @@ import smap_f18_24.smap_fridge.R;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 import smap_f18_24.smap_fridge.ShoppingListActivity;
 
-// TODO - Missing link to context in order to findView by R.id. for example
 
 public class details_fragment_tab4_ingredients extends Fragment {
 

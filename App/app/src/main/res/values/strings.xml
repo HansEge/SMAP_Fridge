@@ -9,6 +9,8 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="details_tap1_inventory_btn_addItem">Add Item</string>
+    <string name="shoppinglist_tab3_shoppinglistListName">Name</string>
+    <string name="shoppinglist_tab3_shoppinglistListResponsible">Responsible</string>
     <string name="USERS">Users</string>
     <string name="NAME">Name</string>
     <string name="UNIT">Unit</string>
