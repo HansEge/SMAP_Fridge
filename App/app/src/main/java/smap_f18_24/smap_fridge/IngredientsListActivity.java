@@ -87,6 +87,24 @@ public class IngredientsListActivity extends AppCompatActivity {
             }
         });
 
+        lv_ingredientsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Item item = (Item)ingredientsListAdaptor.getItem(i);
+                openDeleteItemDialogBox(item.getName());
+                return true;
+            }
+        });
+
+        lv_ingredientsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Item item = (Item)ingredientsListAdaptor.getItem(i);
+                Log.d("Lars", "onClick: clicked Item " + item.getName());
+                openEditItemDialogBox(item);
+            }
+        });
+
     }
 
 
@@ -196,6 +214,71 @@ public class IngredientsListActivity extends AppCompatActivity {
         builder.show();
 
     }
+
+    private void openEditItemDialogBox(final Item i)
+    {
+        AlertDialog.Builder ItemClickedDialog = new AlertDialog.Builder(this);
+        ItemClickedDialog.setTitle(i.getName());
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        //Quantity
+        final EditText et_qty = new EditText(this);
+        et_qty.setHint("Quantity");
+        et_qty.setInputType(InputType.TYPE_CLASS_NUMBER);
+        et_qty.setText(String.valueOf((i.getQuantity())));
+        layout.addView(et_qty);
+
+        ItemClickedDialog.setView(layout);
+
+        ItemClickedDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        ItemClickedDialog.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                float quantity = Float.parseFloat(et_qty.getText().toString());
+                Item overwriteItem = i;
+                overwriteItem.setQuantity(quantity);
+                mService.overWriteItemInIngredientList(overwriteItem,fridgeID,fridge.getIngredientLists().get(position).getName(),fridge.getIngredientLists().get(position).getID());
+            }
+        });
+
+        ItemClickedDialog.show();
+    }
+
+    private void openDeleteItemDialogBox(String itemName){
+        final String _itemName = itemName;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure you wanna delete this item?");
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mService.removeItemFromIngredientList(_itemName,fridge.getID(),fridge.getIngredientLists().get(position).getID());
+                Log.d("Broadcast Receiver", "Error in broadcast receiver");
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.show();
+    };
 
     private BroadcastReceiver serviceUpdaterReceiver = new BroadcastReceiver() {
         @Override
