@@ -172,11 +172,7 @@ public class OverviewActivity extends AppCompatActivity {
                         mService.addFridgeIDtoListOfSubscribedFridges(mService.getCurrentUserEmail(),existingFridgeID);
 
                         mService.SubscribeToFridge(existingFridgeID);
-
-                        Fridge existingFridge = mService.getFridge(existingFridgeID);
-
-                        localList.add(existingFridge);
-
+                        
                         lv_fridgesListView.setAdapter(adaptor1);
 
 
