@@ -983,27 +983,62 @@ public class ServiceUpdater extends Service {
         removeFridgeIDfromListOfSubscribedFridges(userEmail, fridge_ID);
     }
 
+    //TODO: NOT TESTED!
     //Checks if items in given Ingredient List are in inventory or on given ShoppingList.
     //If not, or if quantity is too low, add items to Shopping List.
-    public void UpdateShoppingListFromIngredientList(ShoppingList shoppingList ,IngredientList ingredientList, InventoryList inventoryList)
+    public void UpdateShoppingListFromIngredientList(String fridgeID, IngredientList ingredientList, ShoppingList targetShoppingList)
     {
+        Fridge curFridge = getFridge(fridgeID);
+        if (curFridge != null) {
+            //Placeholders.
+            ArrayList<Item> curInventory = null;
+            ArrayList<ShoppingList> curShoppingLists = null;
+            ArrayList<Item> currentIngredientListItems = (ArrayList<Item>)ingredientList.getItems();
 
-        if(shoppingList != null && ingredientList != null && inventoryList != null) {
+            //get Inventory and Shopping Lists for fridge.
+            try {
+                curInventory = (ArrayList<Item>) curFridge.getInventory().getItems();
+                curShoppingLists = (ArrayList<ShoppingList>) curFridge.getShoppingLists();
+            } catch (RuntimeException e) {
+                Log.e(TAG, "updateShoppingListToMatchEssentials: Failed to get some list from curFridge", e);
+            }
 
-            for (Item i : ingredientList.getItems()) {
-                for (Item k : inventoryList.getItems()) {
-                    if (i.getName().equals(k.getName())) {
-                        if (i.getQuantity() > k.getQuantity()) {
-                            float tmp = i.getQuantity() - k.getQuantity();
-                            tmp += k.getQuantity();
-                            shoppingList.EditItemQuantity(i.getName(), tmp);
-                        }
-                    } else {
-                        shoppingList.AddItem(i);
-                        shoppingList.EditItemQuantity(i.getName(), i.getQuantity());
+            //For each item
+            for (Item i : currentIngredientListItems
+                    ) {
+
+                //Check if quantity in Inventory + quantity in Shopping Lists is greater than desired quantity in essentials.
+                float totalQuantity = 0;
+
+                //Get item with matching name from inventory.
+                Item itemInInventory = getItem(i.getName(), curInventory);
+                if(itemInInventory!=null)
+                {
+                    totalQuantity+=itemInInventory.getQuantity();
+                }
+
+                //For all shoppingLists:
+                for (ShoppingList sl : curShoppingLists
+                     ) {
+                    //Get item with matching name from shopping list.
+                    Item item = getItem(i.getName(),sl.getItems());
+                    if(item!=null)
+                    {
+                        totalQuantity+=item.getQuantity();
                     }
                 }
+
+                //If total quantity is less than desired quantity.
+                if (totalQuantity < i.getQuantity()) {
+                    Log.d(TAG, "UpdateShoppingListFromIngredientList: totalQuantity="+totalQuantity+", desired quantity="+i.getQuantity());
+                    Log.d(TAG, "UpdateShoppingListFromIngredientList: Adding " + (i.getQuantity()-totalQuantity)+" to ShoppingList " + targetShoppingList.getName());
+                    //Make matching item, whose quantity is the difference of desired quantity and total quantity.
+                    Item itemToAdd = i;
+                    itemToAdd.setQuantity(i.getQuantity() - totalQuantity);
+                    addItemToShoppingList(itemToAdd, fridgeID, targetShoppingList.getName(), targetShoppingList.getID());
+                }
             }
+
         }
     }
 
