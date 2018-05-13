@@ -991,8 +991,8 @@ public class ServiceUpdater extends Service {
         Fridge curFridge = getFridge(fridgeID);
         if (curFridge != null) {
             //Placeholders.
-            ArrayList<Item> curInventory = null;
-            ArrayList<ShoppingList> curShoppingLists = null;
+            ArrayList<Item> curInventory = new ArrayList<>();
+            ArrayList<ShoppingList> curShoppingLists = new ArrayList<>();
             ArrayList<Item> currentIngredientListItems = (ArrayList<Item>)ingredientList.getItems();
 
             //get Inventory and Shopping Lists for fridge.
