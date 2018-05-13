@@ -113,7 +113,7 @@ public class IngredientsListActivity extends AppCompatActivity {
             Log.d("ServiceShopping","Service connected");
             mBound = true;
 
-            ingredientsListAdaptor = new IngredientsListAdaptor(getApplicationContext(),mService.getFridge(fridgeID).getIngredientLists().get(position));
+            ingredientsListAdaptor = new IngredientsListAdaptor(getBaseContext(),mService.getFridge(fridgeID).getIngredientLists().get(position));
             lv_ingredientsList.setAdapter(ingredientsListAdaptor);
 
             fridge = mService.getFridge(fridgeID);
@@ -139,7 +139,7 @@ public class IngredientsListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mService.UpdateShoppingListFromIngredientList(fridgeID,fridge.getIngredientLists().get(position),fridge.getShoppingLists().get(i));
-                Toast toast = Toast.makeText(getApplicationContext(), "Ingredients added to: " + (String)fridge.getShoppingLists().get(i).getName(), Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getBaseContext(), "Ingredients added to: " + (String)fridge.getShoppingLists().get(i).getName(), Toast.LENGTH_LONG);
                 toast.show();
             }
         });
@@ -222,7 +222,7 @@ public class IngredientsListActivity extends AppCompatActivity {
         if(updateString.equals("DataUpdated"))
         {
             fridge = mService.getFridge(fridgeID);
-            ingredientsListAdaptor = new IngredientsListAdaptor(getApplicationContext(),mService.getFridge(fridgeID).getIngredientLists().get(position));
+            ingredientsListAdaptor = new IngredientsListAdaptor(getBaseContext(),mService.getFridge(fridgeID).getIngredientLists().get(position));
             lv_ingredientsList.setAdapter(ingredientsListAdaptor);
         }
     }
