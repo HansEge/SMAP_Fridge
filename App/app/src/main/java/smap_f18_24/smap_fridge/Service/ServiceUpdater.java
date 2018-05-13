@@ -1017,15 +1017,11 @@ public class ServiceUpdater extends Service {
                     totalQuantity+=itemInInventory.getQuantity();
                 }
 
-                //For all shoppingLists:
-                for (ShoppingList sl : curShoppingLists
-                     ) {
-                    //Get item with matching name from shopping list.
-                    Item item = getItem(i.getName(),sl.getItems());
-                    if(item!=null)
-                    {
-                        totalQuantity+=item.getQuantity();
-                    }
+                //Get item with matching name from shopping list.
+                Item item = getItem(i.getName(),targetShoppingList.getItems());
+                if(item!=null)
+                {
+                    totalQuantity+=item.getQuantity();
                 }
 
                 //If total quantity is less than desired quantity.
