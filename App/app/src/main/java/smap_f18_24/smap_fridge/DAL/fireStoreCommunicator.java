@@ -58,7 +58,7 @@ public class fireStoreCommunicator {
 public void addItem(final CollectionReference destination, final Item itemToAdd)
 {
     //Check whether item exists on list already or not.
-    destination.whereEqualTo(context.getString(R.string.NAME),itemToAdd.getName()).get()
+    destination.whereEqualTo(context.getString(R.string.DB_NAME),itemToAdd.getName()).get()
             .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -68,7 +68,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                     {
                         //create hashmap with new item.
                         Map<String, Object>  item = new HashMap<>();
-                        item.put(context.getString(R.string.NAME),itemToAdd.getName());
+                        item.put(context.getString(R.string.DB_NAME),itemToAdd.getName());
                         item.put(context.getString(R.string.UNIT),itemToAdd.getUnit());
                         item.put(context.getString(R.string.QUANTITY), itemToAdd.getQuantity());
                         item.put(context.getString(R.string.RESPONSIBLE_USER_EMAIL),itemToAdd.getResponsibleUserEmail());
@@ -85,7 +85,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         Log.d(TAG, "onSuccess: Adding new data for item with name: " + itemToAdd.getName());
                         //create hashmap with new item.
                         Map<String, Object>  item = new HashMap<>();
-                        item.put(context.getString(R.string.NAME),itemToAdd.getName());
+                        item.put(context.getString(R.string.DB_NAME),itemToAdd.getName());
                         item.put(context.getString(R.string.UNIT),itemToAdd.getUnit());
                         item.put(context.getString(R.string.QUANTITY), itemToAdd.getQuantity());
                         item.put(context.getString(R.string.RESPONSIBLE_USER_EMAIL),itemToAdd.getResponsibleUserEmail());
@@ -119,7 +119,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void removeItem(final CollectionReference destination, final String itemName)
     {
         //Check whether item exists on list or not.
-        destination.whereEqualTo(context.getString(R.string.NAME),itemName).get()
+        destination.whereEqualTo(context.getString(R.string.DB_NAME),itemName).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -151,7 +151,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     {
         //Create new hashmap with info.
         Map<String, Object> info = new HashMap<>();
-        info.put(context.getString(R.string.NAME), name);
+        info.put(context.getString(R.string.DB_NAME), name);
         info.put(context.getString(R.string.ID), ID);
         info.put(context.getString(R.string.RESPONSIBLE_USER_EMAIL),responsibleUserEmail);
 
@@ -445,7 +445,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
                         if(documentSnapshot.exists())
                         {
-                            String name = documentSnapshot.get(context.getString(R.string.NAME)).toString();
+                            String name = documentSnapshot.get(context.getString(R.string.DB_NAME)).toString();
                             String ID = documentSnapshot.get(context.getString(R.string.ID)).toString();
                             String responsibleUser = documentSnapshot.get(context.getString(R.string.RESPONSIBLE_USER_EMAIL)).toString();
 
@@ -548,7 +548,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         if(documentSnapshot.exists())
                         {
                             //Get info from document
-                            String name = documentSnapshot.get(context.getString(R.string.NAME)).toString();
+                            String name = documentSnapshot.get(context.getString(R.string.DB_NAME)).toString();
                             String ID = documentSnapshot.get(context.getString(R.string.ID)).toString();
 
                             Log.d(TAG, "onSuccess: Name="+name + ", ID="+ID);
@@ -642,7 +642,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 if(task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
                         if (document != null){
-                            String name = document.getString(context.getString(R.string.NAME));
+                            String name = document.getString(context.getString(R.string.DB_NAME));
                             Log.d(TAG, "The name of fridgeID: " + fridgeID + " is: " + name);
                             //notify through callback interface.
                             callbackInterface.onFridgeName(fridgeID,name);
@@ -993,7 +993,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                             //Add ID and Name of fridge.
                             Map<String, Object> info = new HashMap<>();
                             info.put(context.getString(R.string.ID), ID);
-                            info.put(context.getString(R.string.NAME),Name);
+                            info.put(context.getString(R.string.DB_NAME),Name);
                             fridgesRef.set(info)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
@@ -1027,7 +1027,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     public void createNewUserInDatabase(String Name, String email)
     {
         Map<String, Object>  UserInfo = new HashMap<>();
-        UserInfo.put(context.getString(R.string.NAME),Name);
+        UserInfo.put(context.getString(R.string.DB_NAME),Name);
         UserInfo.put(context.getString(R.string.EMAIL),email);
 
         db.collection(context.getString(R.string.USERS)).document(email).set(UserInfo);
