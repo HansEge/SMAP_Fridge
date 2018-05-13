@@ -80,4 +80,23 @@
     <string name="ADD_ITEM">Add item</string>
     <string name="ADD_TO_SHOPPINGLIST">Add to shoppinglist</string>
     <string name="NEW_ITEM">NEW ITEM...</string>
+    <string name="name">Name</string>
+    <string name="quantity">Quantity</string>
+    <string name="unit">Unit</string>
+    <string name="NEW_SHOPPING_LIST">New Shopping List</string>
+    <string name="CURRENT_FRIDGE_ID">CurrentFridgeID</string>
+    <string name="POSITION_OF_SHOPPING_LIST">PositionOfShoppingList</string>
+    <string name="WANT_TO_CLAIM_RESPONSIBILITY">Do you want to claim responsibility for this shopping list?</string>
+    <string name="YES">Yes</string>
+    <string name="DELETE_LIST">Delete List</string>
+    <string name="ADD_NEW_LIST">Add new List</string>
+    <string name="responsebility">responsebility</string>
+    <string name="add_item">Add item</string>
+    <string name="APPLY">Apply</string>
+    <string name="newItem">New Item</string>
+    <string name="NEEDED">Needed</string>
+    <string name="areYouSureYouWantToDeleteThisItem">Are you sure you wanna delete this item?</string>
+    <string name="moveToFridge">Move to fridge</string>
+    <string name="dataUpdated">DataUpdated</string>
+
 </resources>
