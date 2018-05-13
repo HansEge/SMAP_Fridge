@@ -44,5 +44,15 @@
     <string name="SUCCESSFULLY_LOGGED_OUT">Successfully logged out.</string>
     <string name="LOG_IN">Log in</string>
     <string name="LOG_OUT">Log out</string>
+    <string name="currentFridgeID">CurrentFridgeID</string>
+    <string name="PositionOfIngredientsList">PositionOfIngredientsList</string>
+    <string name="DIALOG_addNewItem">Add new Item</string>
+    <string name="DIALOG_HINT_name">Name:</string>
+    <string name="DIALOG_HINT_quantity">Quantity:</string>
+    <string name="DIALOG_HINT_unit">Unit:</string>
+    <string name="DIALOG_add_button">Add</string>
+    <string name="DIALOG_cancel_button">Cancel</string>
+    <string name="DIALOG_apply_button">Apply</string>
+    <string name="DIALOG_yes_button">Yes</string>
 
 </resources>
