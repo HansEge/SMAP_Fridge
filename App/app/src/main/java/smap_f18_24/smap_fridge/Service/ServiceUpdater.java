@@ -702,7 +702,7 @@ public class ServiceUpdater extends Service {
         emptyIL.setID(list_ID);
         emptyIL.setName(list_name);
         dbComm.addIngredientList(fridgeRef,emptyIL,list_name,list_ID);
-        CollectionReference IDs_ref=fridgeRef.document("ShoppingList_IDs").collection("IDs");
+        CollectionReference IDs_ref=fridgeRef.document("IngredientList_IDs").collection("IDs");
         dbComm.addListInfo(IDs_ref,list_name,list_ID,"None");
         dbComm.addID2listofIngredientListIDs(fridgeRef,list_ID);
 
@@ -905,23 +905,21 @@ public class ServiceUpdater extends Service {
 
     public void UpdateShoppingListFromIngredientList(ShoppingList shoppingList ,IngredientList ingredientList, InventoryList inventoryList)
     {
-        for (Item i: ingredientList.getItems())
-        {
-            for (Item k: inventoryList.getItems())
-            {
-                if(i.getName().equals(k.getName()))
-                {
-                    if(i.getQuantity() > k.getQuantity())
-                    {
-                        float tmp = i.getQuantity()-k.getQuantity();
-                        tmp += k.getQuantity();
-                        shoppingList.EditItemQuantity(i.getName(),tmp);
+
+        if(shoppingList != null && ingredientList != null && inventoryList != null) {
+
+            for (Item i : ingredientList.getItems()) {
+                for (Item k : inventoryList.getItems()) {
+                    if (i.getName().equals(k.getName())) {
+                        if (i.getQuantity() > k.getQuantity()) {
+                            float tmp = i.getQuantity() - k.getQuantity();
+                            tmp += k.getQuantity();
+                            shoppingList.EditItemQuantity(i.getName(), tmp);
+                        }
+                    } else {
+                        shoppingList.AddItem(i);
+                        shoppingList.EditItemQuantity(i.getName(), i.getQuantity());
                     }
-                }
-                else
-                {
-                    shoppingList.AddItem(i);
-                    shoppingList.EditItemQuantity(i.getName(),i.getQuantity());
                 }
             }
         }
