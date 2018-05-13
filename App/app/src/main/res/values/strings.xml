@@ -52,5 +52,10 @@
     <string name="CANCEL">Cancel</string>
     <string name="ENTER_UNIQUE_ID">Enter unique ID of fridge you want to subscribe to</string>
     <string name="CLICKED_FRIDGE_ID">clickedFridgeID</string>
+    <string name="SHARE_OR_DELETE_FRIDGE">Do you want to Share or Delete the fridge?</string>
+    <string name="SHARE">Share</string>
+    <string name="FRIDGE_ID">Fridge ID</string>
+    <string name="DELETE">Delete</string>
+    <string name="CANCEL">Cancel</string>
 
 </resources>
