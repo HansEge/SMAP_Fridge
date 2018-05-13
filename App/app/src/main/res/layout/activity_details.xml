@@ -36,25 +36,25 @@
                 android:id="@+id/tabItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Inventory" />
+                android:text="@string/PAGE_TITLE_INVENTORY" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabItem2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Essentials" />
+                android:text="@string/PAGE_TITLE_ESSENTIALS" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabItem3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Shopping lists" />
+                android:text="@string/PAGE_TITLE_SHOPPING_LISTS" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabItem4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ingredients" />
+                android:text="@string/PAGE_TITLE_INGREDIENTS" />
 
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>

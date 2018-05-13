@@ -56,6 +56,11 @@
     <string name="CANCEL">Cancel</string>
     <string name="ENTER_UNIQUE_ID">Enter unique ID of fridge you want to subscribe to</string>
     <string name="CLICKED_FRIDGE_ID">clickedFridgeID</string>
+    <string name="PAGE_TITLE_INVENTORY">Inventory</string>
+    <string name="PAGE_TITLE_ESSENTIALS">Essentials</string>
+    <string name="PAGE_TITLE_SHOPPING_LISTS">Shopping lists</string>
+    <string name="PAGE_TITLE_INGREDIENTS">Ingredients</string>
+
 
 
 </resources>
