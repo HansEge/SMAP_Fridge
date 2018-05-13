@@ -120,7 +120,6 @@ public class OverviewActivity extends AppCompatActivity {
 
                         //Reset adaptor
                         lv_fridgesListView.setAdapter(adaptor1);
-
                     }
                 });
 
@@ -163,10 +162,11 @@ public class OverviewActivity extends AppCompatActivity {
                         //Trying to find the database fridge and put it into the adaptor which presents it to the user
                         String existingFridgeID = et_uniqueCodeUserInput.getText().toString();
 
+                        //Create fridge, subscribe to it, and add it's ID to list of subscribtions for user.
                         mService.addFridgeIDtoListOfSubscribedFridges(mService.getCurrentUserEmail(),existingFridgeID);
-
                         mService.SubscribeToFridge(existingFridgeID);
-                        
+
+                        //Reset adaptor
                         lv_fridgesListView.setAdapter(adaptor1);
 
 
@@ -212,9 +212,6 @@ public class OverviewActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Show user the fridgeID in order so the user can share it to his/hers friend/family
 
-
-                        //Current way of displaying the user the fridgeID - should we do this in another way?
-                            //User should properly be aple to copy that ID - to make it easy to send
                         Toast toast = Toast.makeText(OverviewActivity.this,getString(R.string.FRIDGE_ID)+":" + tmpFridgeID, Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER,0,0);
                         toast.show();
@@ -231,6 +228,7 @@ public class OverviewActivity extends AppCompatActivity {
                         //Deleting the fridge from eventlisteners, locally and userID from database to the correspondant fridge
                         mService.UnsubscribeFromFridge(tmpFridgeID,tmpUserEmail);
 
+                        //Reset adaptor
                         lv_fridgesListView.setAdapter(adaptor1);
 
 
@@ -270,7 +268,9 @@ public class OverviewActivity extends AppCompatActivity {
             mService = binder.getService();
             mBound = true;
 
+            //Set Context for service.
             mService.setContext(getApplicationContext());
+            //Get local list of fridges from service.
             localList=mService.getAllFridges();
             UpdateUI();
 
@@ -299,6 +299,7 @@ public class OverviewActivity extends AppCompatActivity {
     }
 
 
+    //BroadcastReceiver that updates UI when it receives a subscribed broadcast (currently, we're only subscribing to one broadcast, so we don't really check for the result other than null check)
     private BroadcastReceiver serviceUpdaterReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
