@@ -309,11 +309,11 @@ public class ShoppingListActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-               // mService.removeItemFromShoppingList(_itemName,currentFridge.getID(),currentList.getID());
-                //shoppingList.MoveFromShoppingListToFridge(shoppingList, currentFridge.getInventory());
+
                 for (Item k: currentList.getItems()) {
                     mService.removeItemFromShoppingList(k.getName(),currentFridge.getID(),currentList.getID());
                     mService.addItemToInventory(k,fridgeID);
+
                 }
                 Log.d("Broadcast Receiver", "Error in broadcast receiver");
 
