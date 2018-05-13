@@ -47,6 +47,7 @@ public class SignInActivity extends AppCompatActivity {
         btn_logout = findViewById(R.id.signin_btn_logout);
         btn_login = findViewById(R.id.signin_btn_login);
 
+
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,5 +112,12 @@ public class SignInActivity extends AppCompatActivity {
                         .setLogo(R.drawable.stinus_face)      // Set logo drawable
                         .build(),
                 RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        btn_login.setVisibility(View.GONE);
+        btn_logout.setVisibility(View.VISIBLE);
     }
 }
