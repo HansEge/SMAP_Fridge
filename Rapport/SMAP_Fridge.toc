@@ -1,0 +1,11 @@
+\select@language {danish}
+\contentsline {section}{\numberline {1}App vision}{3}{section.1}
+\contentsline {section}{\numberline {2}Personal visions}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}Mathias Friss}{3}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Stinus Skovgaard}{3}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Philip Schmidt}{3}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Daniel T\IeC {\o }ttrup}{3}{subsection.2.4}
+\contentsline {section}{\numberline {3}Rich picture}{3}{section.3}
+\contentsline {section}{\numberline {4}User stories}{4}{section.4}
+\contentsline {section}{\numberline {5}Early design}{6}{section.5}
+\contentsline {section}{\numberline {6}Risks}{6}{section.6}
