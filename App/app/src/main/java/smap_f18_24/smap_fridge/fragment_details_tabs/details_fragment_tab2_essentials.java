@@ -66,13 +66,6 @@ public class details_fragment_tab2_essentials extends Fragment {
 
     ServiceUpdater mService;
 
-    /*
-    Item kartoffel = new Item("katoffel", "kg", 1000, "hejmeddig123@dibidut.au", "Status");
-    Item Tomat = new Item("Tomat", "kg", 100, "hejmeddig123@dibidut.au", "Status");
-    Item Æg = new Item("Æg", "stk", 10, "hejmeddig123@dibidut.au", "Status");
-    Item juice = new Item("Juice", "L", 2, "hejmeddig123@dibidut.au", "Status");
-    */
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){

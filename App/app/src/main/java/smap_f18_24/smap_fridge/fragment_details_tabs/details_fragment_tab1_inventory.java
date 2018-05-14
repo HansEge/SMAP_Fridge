@@ -70,7 +70,7 @@ public class details_fragment_tab1_inventory extends Fragment {
 
         //Gets clickedFridgeID through shared pref.
         final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
-        clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
+        clickedFridgeID = sharedData.getString(getString(R.string.CLICKED_FRIDGE_ID),"errorNoValue");
 
         //Button to add Item to inventory
         btn_addItem.setOnClickListener(new View.OnClickListener() {
@@ -125,30 +125,30 @@ public class details_fragment_tab1_inventory extends Fragment {
     private void addItemDialog(){
         //Creates a addItem dialogbox.
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Add new Item");
+        builder.setTitle(R.string.add_item);
 
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
 
         final EditText et_newItemName = new EditText(getContext());
-        et_newItemName.setHint("Name:");
+        et_newItemName.setHint(R.string.DIALOG_HINT_name);
         et_newItemName.setInputType(InputType.TYPE_CLASS_TEXT);
         layout.addView(et_newItemName);
 
         final EditText et_newItemQuantity = new EditText(getContext());
-        et_newItemQuantity.setHint("Quantity:");
+        et_newItemQuantity.setHint(R.string.DIALOG_HINT_quantity);
         et_newItemQuantity.setInputType(InputType.TYPE_CLASS_NUMBER);
         layout.addView(et_newItemQuantity);
 
         final EditText et_newItemUnit = new EditText(getContext());
-        et_newItemUnit.setHint("Unit:");
+        et_newItemUnit.setHint(R.string.DIALOG_HINT_unit);
         et_newItemUnit.setInputType(InputType.TYPE_CLASS_TEXT);
         layout.addView(et_newItemUnit);
 
         builder.setView(layout);
 
 
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.DIALOG_add_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String inputName = et_newItemName.getText().toString();
@@ -160,7 +160,7 @@ public class details_fragment_tab1_inventory extends Fragment {
 
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.DIALOG_cancel_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
@@ -176,14 +176,14 @@ public class details_fragment_tab1_inventory extends Fragment {
         final String _itemName = itemName;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Are you sure you wanna delete this item?");
+        builder.setTitle(R.string.areYouSureYouWantToDeleteThisItem);
 
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
 
         builder.setView(layout);
 
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.DIALOG_yes_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 ((DetailsActivity)getActivity()).mService.removeItemFromInventory(_itemName,currentFridge.getID());
@@ -191,7 +191,7 @@ public class details_fragment_tab1_inventory extends Fragment {
 
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.DIALOG_cancel_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
@@ -211,21 +211,21 @@ public class details_fragment_tab1_inventory extends Fragment {
 
         //Quantity
         final EditText et_qty = new EditText(getActivity());
-        et_qty.setHint("Quantity");
+        et_qty.setHint(R.string.DIALOG_HINT_quantity);
         et_qty.setInputType(InputType.TYPE_CLASS_NUMBER);
         et_qty.setText(String.valueOf((i.getQuantity())));
         layout.addView(et_qty);
 
         ItemClickedDialog.setView(layout);
 
-        ItemClickedDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        ItemClickedDialog.setNegativeButton(R.string.DIALOG_cancel_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
 
-        ItemClickedDialog.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+        ItemClickedDialog.setPositiveButton(R.string.DIALOG_apply_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 float quantity = Float.parseFloat(et_qty.getText().toString());
@@ -262,7 +262,7 @@ public class details_fragment_tab1_inventory extends Fragment {
     //Updates date when the broadcast is received
     public void updateData(String updateString)
     {
-        if(updateString.equals("DataUpdated"))
+        if(updateString.equals(R.string.DATA_UPDATED))
         {
             ((DetailsActivity)getActivity()).currentFridge = ((DetailsActivity)getActivity()).mService.getFridge(currentFridge.getID());
             inventoryList = ((DetailsActivity)getActivity()).currentFridge.getInventory();
