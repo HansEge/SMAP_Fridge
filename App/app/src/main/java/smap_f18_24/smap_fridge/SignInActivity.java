@@ -25,6 +25,7 @@ import smap_f18_24.smap_fridge.DAL.fireStoreCommunicator;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 
 //Sign in implemented with FirebaseUI
+//Based on their toturial on: https://firebase.google.com/docs/auth/android/firebaseui
 
 public class SignInActivity extends AppCompatActivity {
 
