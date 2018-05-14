@@ -1,0 +1,3 @@
+Hvis man prøver at lave et nyt fridge med et allerede eksisterende ID, bliver der bare subscribet til et gammelt fridge, og man får ingen fejl.
+
+Når man har mindre i inventory end i essentials addes det rigtige amount til shopping list, men quntity i EssentialsList overwrites.

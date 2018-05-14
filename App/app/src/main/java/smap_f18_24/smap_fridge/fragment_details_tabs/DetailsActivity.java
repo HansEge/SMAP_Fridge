@@ -66,13 +66,12 @@ public class DetailsActivity extends AppCompatActivity {
 
         // Bind to LocalService
         Intent intent = new Intent(this, ServiceUpdater.class);
+        startService(intent);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
-        String bob = getIntent().getStringExtra("clickedFridgeID");
+        //Get the intent passed along from OverviewActivity
+        String bob = getIntent().getStringExtra(getString(R.string.CLICKED_FRIDGE_ID));
         Toast.makeText(this, bob, Toast.LENGTH_SHORT).show();
-
-        //clickedFridgeID is the ID of the correspondant clicked fridge in OverviewActivity
-        String clickedFridgeID = fetchFridgeID();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -95,7 +94,7 @@ public class DetailsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_details, menu);
-        return false;
+        return false; //To remove bar and 3 dots
     }
 
     @Override
@@ -156,13 +155,13 @@ public class DetailsActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position){
             switch (position){
                 case 0:
-                    return "Inventory";
+                    return getString(R.string.PAGE_TITLE_INVENTORY);
                 case 1:
-                    return "Essentials";
+                    return getString(R.string.PAGE_TITLE_ESSENTIALS);
                 case 2:
-                    return "Shopping lists";
+                    return getString(R.string.PAGE_TITLE_SHOPPING_LISTS);
                 case 3:
-                    return "Ingredients";
+                    return getString(R.string.PAGE_TITLE_INGREDIENTS);
             }
 
             return null;
@@ -184,7 +183,7 @@ public class DetailsActivity extends AppCompatActivity {
             mService = binder.getService();
             mBound = true;
 
-            clickedFridgeID=fetchFridgeID();
+            clickedFridgeID=getIntent().getStringExtra(getString(R.string.CLICKED_FRIDGE_ID));
             currentFridge = mService.getFridge(clickedFridgeID); //TODO Get the correct ID from overviewActivity
 
         }
@@ -203,18 +202,8 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //Log.d("SYSTEM","Shutting down - onStop() in MainActivity");
-        //unbindService(mConnection);
-    }
-
-    public String fetchFridgeID(){
-        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String tmptmpID = sharedData.getString("clickedFridgeID","errorNoValue");
-
-        //String clickedFridgeID = getIntent().getStringExtra("clickedFridgeID");
-
-
-        return tmptmpID;
+        Log.d("SYSTEM","Shutting down - onStop() in MainActivity");
+        unbindService(mConnection);
     }
 
 

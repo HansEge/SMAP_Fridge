@@ -49,7 +49,6 @@ public class details_fragment_tab1_inventory extends Fragment {
     Button btn_addItem;
 
     InventoryList inventoryList = new InventoryList();
-
     InventoryListAdaptor inventoryListAdaptor;
 
     public String clickedFridgeID;
@@ -60,19 +59,20 @@ public class details_fragment_tab1_inventory extends Fragment {
                              Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_details_tab1_inventory, container, false);
 
+        //bind to broadcastManager
         IntentFilter filter = new IntentFilter();
         filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
-
         LocalBroadcastManager.getInstance(getActivity().getBaseContext()).registerReceiver(serviceUpdaterReceiver,filter);
 
         // INITIALIZING
         lv_inventoryList = v.findViewById(R.id.lv_inventoryList_tap1);
-
-
-        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
-        clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
-
         btn_addItem = v.findViewById(R.id.details_tap1_inventory_btn_addItem);
+
+        //Gets clickedFridgeID through shared pref.
+        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+        clickedFridgeID = sharedData.getString(getString(R.string.CLICKED_FRIDGE_ID),"errorNoValue");
+
+        //Button to add Item to inventory
         btn_addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +80,7 @@ public class details_fragment_tab1_inventory extends Fragment {
             }
         });
 
+        // Edit quantity dialogbox when a item is clicked
         lv_inventoryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -88,23 +89,16 @@ public class details_fragment_tab1_inventory extends Fragment {
             }
         });
 
+        //Delete Item when a item is long clicked
         lv_inventoryList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-
                 String itemName = inventoryList.getItems().get(i).getName();
-
                 openDeleteItemDialogBox(itemName);
 
                 return true;
             }
         });
-
-        //fridge = ((DetailsActivity)getActivity()).mService.getFridge(((DetailsActivity)getActivity()).clickedFridgeID); //TODO fix ID
-        //fridge = new Fridge("Tester", "testID", connectedUserEmailss, inventoryList, essentialList, myShoppingLists, myIngredientsLists);
-
-
-
 
         return v;
     }
@@ -112,6 +106,8 @@ public class details_fragment_tab1_inventory extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //On create. If no inventorylist is created in this fridge, it automatically creates one.
+        //Otherwise it uses the already created one.
         currentFridge = ((DetailsActivity)getActivity()).currentFridge;
         if(currentFridge==null)
         {
@@ -127,35 +123,36 @@ public class details_fragment_tab1_inventory extends Fragment {
     }
 
     private void addItemDialog(){
-
+        //Creates a addItem dialogbox.
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Add new Item");
+        builder.setTitle(R.string.add_item);
 
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
 
         final EditText et_newItemName = new EditText(getContext());
-        et_newItemName.setHint("Name:");
+        et_newItemName.setHint(R.string.DIALOG_HINT_name);
         et_newItemName.setInputType(InputType.TYPE_CLASS_TEXT);
         layout.addView(et_newItemName);
 
         final EditText et_newItemQuantity = new EditText(getContext());
-        et_newItemQuantity.setHint("Quantity:");
-        et_newItemQuantity.setInputType(InputType.TYPE_CLASS_NUMBER);
+        et_newItemQuantity.setHint(R.string.DIALOG_HINT_quantity);
+        //Set input type as positive decimal.
+        //https://stackoverflow.com/questions/6919360/how-do-i-restrict-my-edittext-input-to-numerical-possibly-decimal-and-signed-i?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+        et_newItemQuantity.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
         layout.addView(et_newItemQuantity);
 
         final EditText et_newItemUnit = new EditText(getContext());
-        et_newItemUnit.setHint("Unit:");
+        et_newItemUnit.setHint(R.string.DIALOG_HINT_unit);
         et_newItemUnit.setInputType(InputType.TYPE_CLASS_TEXT);
         layout.addView(et_newItemUnit);
 
         builder.setView(layout);
 
 
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.DIALOG_add_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
                 String inputName = et_newItemName.getText().toString();
                 float inputQuantity = Float.parseFloat(et_newItemQuantity.getText().toString());
                 String inputUnit = et_newItemUnit.getText().toString();
@@ -165,7 +162,7 @@ public class details_fragment_tab1_inventory extends Fragment {
 
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.DIALOG_cancel_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
@@ -176,17 +173,19 @@ public class details_fragment_tab1_inventory extends Fragment {
     }
 
     private void openDeleteItemDialogBox(String itemName){
+
+        //A function that creates a "are you sure you wanna delete item" dialogbox
         final String _itemName = itemName;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Are you sure you wanna delete this item?");
+        builder.setTitle(R.string.areYouSureYouWantToDeleteThisItem);
 
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
 
         builder.setView(layout);
 
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.DIALOG_yes_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 ((DetailsActivity)getActivity()).mService.removeItemFromInventory(_itemName,currentFridge.getID());
@@ -194,7 +193,7 @@ public class details_fragment_tab1_inventory extends Fragment {
 
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.DIALOG_cancel_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
@@ -205,6 +204,7 @@ public class details_fragment_tab1_inventory extends Fragment {
 
     private void openEditItemDialogBox(final Item i)
     {
+        //A dialogbox to change the quantity of an already existing item.
         AlertDialog.Builder ItemClickedDialog = new AlertDialog.Builder(getActivity());
         ItemClickedDialog.setTitle(i.getName());
 
@@ -213,21 +213,23 @@ public class details_fragment_tab1_inventory extends Fragment {
 
         //Quantity
         final EditText et_qty = new EditText(getActivity());
-        et_qty.setHint("Quantity");
-        et_qty.setInputType(InputType.TYPE_CLASS_NUMBER);
+        et_qty.setHint(R.string.DIALOG_HINT_quantity);
+        //Set input type as positive decimal.
+        //https://stackoverflow.com/questions/6919360/how-do-i-restrict-my-edittext-input-to-numerical-possibly-decimal-and-signed-i?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+        et_qty.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
         et_qty.setText(String.valueOf((i.getQuantity())));
         layout.addView(et_qty);
 
         ItemClickedDialog.setView(layout);
 
-        ItemClickedDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        ItemClickedDialog.setNegativeButton(R.string.DIALOG_cancel_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
 
-        ItemClickedDialog.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+        ItemClickedDialog.setPositiveButton(R.string.DIALOG_apply_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 float quantity = Float.parseFloat(et_qty.getText().toString());
@@ -240,7 +242,7 @@ public class details_fragment_tab1_inventory extends Fragment {
         ItemClickedDialog.show();
     }
 
-
+    // creates a new broadcastreceiver, to notify about changes.
     private BroadcastReceiver serviceUpdaterReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -261,9 +263,10 @@ public class details_fragment_tab1_inventory extends Fragment {
         }
     };
 
+    //Updates date when the broadcast is received
     public void updateData(String updateString)
     {
-        if(updateString.equals("DataUpdated"))
+        if(updateString.equals(R.string.DATA_UPDATED))
         {
             ((DetailsActivity)getActivity()).currentFridge = ((DetailsActivity)getActivity()).mService.getFridge(currentFridge.getID());
             inventoryList = ((DetailsActivity)getActivity()).currentFridge.getInventory();

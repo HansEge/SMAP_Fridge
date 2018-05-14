@@ -58,13 +58,13 @@ public class InventoryListAdaptor extends BaseAdapter {
         }
         item = inventoryList.getItems().get(position);
         if(item != null){
-            //set name of the fridge
+            //set name of item
             TextView tv_inventoryListItemName = (TextView) convertView.findViewById(R.id.InventoryList_adaptor_itemName);
             tv_inventoryListItemName.setText(String.valueOf(item.getName()));
-
+            //set quantity of item
             TextView tv_inventoryListItemQuantity = (TextView) convertView.findViewById(R.id.InventoryList_adaptor_qty);
             tv_inventoryListItemQuantity.setText(String.valueOf(item.getQuantity()));
-
+            //set unit of item
             TextView tv_inventoryListItemUnit = (TextView) convertView.findViewById(R.id.InventoryList_adaptor_unit);
             tv_inventoryListItemUnit.setText(String.valueOf(item.getUnit()));
         }

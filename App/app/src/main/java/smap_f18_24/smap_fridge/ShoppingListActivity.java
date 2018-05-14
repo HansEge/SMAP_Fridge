@@ -36,6 +36,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     private Fridge currentFridge;
     private ShoppingList currentList;
     private Button btn_newItem;
+    private Button btn_allBought;
 
     String fridgeID;
     int position;
@@ -53,11 +54,12 @@ public class ShoppingListActivity extends AppCompatActivity {
 
         Intent i = getIntent();
 
-        fridgeID = i.getStringExtra("CurrentFridgeID");
-        position = i.getIntExtra("PositionOfShoppingList",0);
+        fridgeID = i.getStringExtra(getString(R.string.CURRENT_FRIDGE_ID));
+        position = i.getIntExtra(getString(R.string.POSITION_OF_SHOPPING_LIST),0);
 
         lv_shoppingList = findViewById(R.id.shoppingList_lv_list);
         btn_newItem=findViewById(R.id.shoppingList_btn_newItem);
+        btn_allBought=findViewById(R.id.shoppinglist_btn_allBought);
 
         //register to broadcasts.
         IntentFilter filter = new IntentFilter();
@@ -70,6 +72,15 @@ public class ShoppingListActivity extends AppCompatActivity {
                 openNewItemDialogBox();
             }
         });
+
+        btn_allBought.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                moveAllItemsToInventoryDialogBox(currentList);
+            }
+        });
+
+
 
     }
 
@@ -137,21 +148,23 @@ public class ShoppingListActivity extends AppCompatActivity {
 
         //Quantity
         final EditText et_qty = new EditText(this);
-        et_qty.setHint("Quantity");
-        et_qty.setInputType(InputType.TYPE_CLASS_NUMBER);
+        et_qty.setHint(getString(R.string.quantity));
+        //Set input type as positive decimal.
+        //https://stackoverflow.com/questions/6919360/how-do-i-restrict-my-edittext-input-to-numerical-possibly-decimal-and-signed-i?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+        et_qty.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
         et_qty.setText(String.valueOf((i.getQuantity())));
         layout.addView(et_qty);
 
         ItemClickedDialog.setView(layout);
 
-        ItemClickedDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        ItemClickedDialog.setNegativeButton(getString(R.string.CANCEL), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
 
-        ItemClickedDialog.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+        ItemClickedDialog.setPositiveButton(getString(R.string.APPLY), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 float quantity = Float.parseFloat(et_qty.getText().toString());
@@ -167,32 +180,34 @@ public class ShoppingListActivity extends AppCompatActivity {
     private void openNewItemDialogBox()
     {
         AlertDialog.Builder newItemDialog = new AlertDialog.Builder(this);
-        newItemDialog.setTitle("New Item");
+        newItemDialog.setTitle(getString(R.string.newItem));
 
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
 
         //item name
         final EditText et_ItemName = new EditText(this);
-        et_ItemName.setHint("Name");
+        et_ItemName.setHint(getString(R.string.name));
         et_ItemName.setInputType(InputType.TYPE_CLASS_TEXT);
         layout.addView(et_ItemName);
 
         //Quantity
         final EditText et_qty = new EditText(this);
-        et_qty.setHint("Quantity");
-        et_qty.setInputType(InputType.TYPE_CLASS_NUMBER);
+        et_qty.setHint(getString(R.string.quantity));
+        //Set input type as positive decimal.
+        //https://stackoverflow.com/questions/6919360/how-do-i-restrict-my-edittext-input-to-numerical-possibly-decimal-and-signed-i?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+        et_qty.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
         layout.addView(et_qty);
 
         //Unit
         final EditText et_Unit = new EditText(this);
-        et_Unit.setHint("Unit");
+        et_Unit.setHint(getString(R.string.unit));
         et_Unit.setInputType(InputType.TYPE_CLASS_TEXT);
         layout.addView(et_Unit);
 
         newItemDialog.setView(layout);
 
-        newItemDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        newItemDialog.setPositiveButton(getString(R.string.ADD), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 //Get info from editTexts
@@ -200,12 +215,12 @@ public class ShoppingListActivity extends AppCompatActivity {
                 float Quantity = Float.parseFloat(et_qty.getText().toString());
                 String unit = et_Unit.getText().toString();
 
-                Item i = new Item(itemName,unit,Quantity,"None","Needed");
+                Item i = new Item(itemName,unit,Quantity,getString(R.string.NONE),getString(R.string.NEEDED));
                 mService.addItemToShoppingList(i,currentFridge.getID(),currentList.getName(),currentList.getID());
             }
         });
 
-        newItemDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        newItemDialog.setNegativeButton(getString(R.string.CANCEL), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
             }
@@ -218,14 +233,14 @@ public class ShoppingListActivity extends AppCompatActivity {
         final String _itemName = item.getName();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Are you sure you wanna delete this item?");
+        builder.setTitle(R.string.areYouSureYouWantToDeleteThisItem);
 
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
 
         builder.setView(layout);
 
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.YES), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mService.removeItemFromShoppingList(_itemName,currentFridge.getID(),currentList.getID());
@@ -234,7 +249,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNeutralButton("Move to fridge", new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(R.string.moveToFridge, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //remove from shoppingList and add to inventory.
@@ -243,7 +258,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.CANCEL), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
@@ -275,7 +290,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     //Updates UI by fetching new data from service, and resetting the adaptor.
     public void updateData(String updateString)
     {
-        if(updateString.equals("DataUpdated"))
+        if(updateString.equals(getString(R.string.dataUpdated)))
         {
             currentFridge = mService.getFridge(currentFridge.getID());
             currentList = currentFridge.getShoppingLists().get(position);
@@ -283,4 +298,39 @@ public class ShoppingListActivity extends AppCompatActivity {
             lv_shoppingList.setAdapter(adaptor);
         }
     }
+
+    private void moveAllItemsToInventoryDialogBox(final ShoppingList shoppingList){
+        //final String _shoppinglistName = shoppingList.getName();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.areYouSureYouWantToMoveAllItemsToInventory);
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton(getString(R.string.YES), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                for (Item k: currentList.getItems()) {
+                    mService.removeItemFromShoppingList(k.getName(),currentFridge.getID(),currentList.getID());
+                    mService.addItemToInventory(k,fridgeID);
+
+                }
+                Log.d("Broadcast Receiver", "Error in broadcast receiver");
+
+            }
+        });
+
+        builder.setNegativeButton(getString(R.string.CANCEL), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.show();
+    };
+
 }

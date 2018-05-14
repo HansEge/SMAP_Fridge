@@ -25,10 +25,11 @@ import smap_f18_24.smap_fridge.DAL.fireStoreCommunicator;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 
 //Sign in implemented with FirebaseUI
+//Based on their toturial on: https://firebase.google.com/docs/auth/android/firebaseui
 
 public class SignInActivity extends AppCompatActivity {
 
-    Button btn_logout, btn_debug, btn_debugTwo, btn_service, btn_toOverViewActivity, btn_shoppingList, btn_debugUser;
+    Button btn_logout, btn_login;
     fireStoreCommunicator dbComm = new fireStoreCommunicator(this,null);
 
     private static final int RC_SIGN_IN = 123;
@@ -44,9 +45,9 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        btn_toOverViewActivity = findViewById(R.id.signin_btn_toOverviewActivity);
-
         btn_logout = findViewById(R.id.signin_btn_logout);
+        btn_login = findViewById(R.id.signin_btn_login);
+
 
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,24 +56,14 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-        // Create and launch sign-in intent
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .setLogo(R.drawable.stinus_face)      // Set logo drawable
-                        .build(),
-                RC_SIGN_IN);
-
-
-
-        btn_toOverViewActivity.setOnClickListener(new View.OnClickListener(){
+        btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
-                Intent i = new Intent(SignInActivity.this,OverviewActivity.class);
-                startActivity(i);
+            public void onClick(View v) {
+                launchLogin();
             }
         });
+
+        launchLogin();
 
     }
     @Override
@@ -86,12 +77,14 @@ public class SignInActivity extends AppCompatActivity {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                Toast.makeText(this, "Successfully signed in as " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.SUCCSSFULLY_SIGNED_IN_AS) +" " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onActivityResult: Successfully signed in as " + user.getDisplayName());
                 dbComm.addUserToDatabaseIfNotThereAlready(user);
+                Intent i = new Intent(SignInActivity.this,OverviewActivity.class);
+                startActivity(i);
                 // ...
             } else {
-                Toast.makeText(this, "Sign in failed.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.SIGN_IN_FAILED, Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onActivityResult: Could not sign in.");
             }
         }
@@ -103,8 +96,29 @@ public class SignInActivity extends AppCompatActivity {
                 .signOut(this)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(SignInActivity.this, "Successfully logget out.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignInActivity.this, R.string.SUCCESSFULLY_LOGGED_OUT, Toast.LENGTH_SHORT).show();
+                        btn_logout.setVisibility(View.GONE);
+                        btn_login.setVisibility(View.VISIBLE);
                     }
                 });
+    }
+
+    // Create and launch sign-in intent
+    private void launchLogin()
+    {
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .setLogo(R.drawable.stinus_face)      // Set logo drawable
+                        .build(),
+                RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        btn_login.setVisibility(View.GONE);
+        btn_logout.setVisibility(View.VISIBLE);
     }
 }

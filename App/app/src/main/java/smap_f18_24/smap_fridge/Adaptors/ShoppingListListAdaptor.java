@@ -58,10 +58,10 @@ public class ShoppingListListAdaptor extends BaseAdapter {
         }
         shoppingList = shoppingLists.get(position);
         if(shoppingList != null){
-            //set name of the fridge
+            //set name of shoppinglist
             TextView tv_ShoppingListListName = (TextView) convertView.findViewById(R.id.tv_adaptor_shoppingListList_name);
             tv_ShoppingListListName.setText(String.valueOf(shoppingList.getName()));
-
+            //set responsibility name of shoppinglist
             TextView tv_ShoppingListListResponsibility = (TextView) convertView.findViewById(R.id.tv_adaptor_shoppingListList_responsibility);
             tv_ShoppingListListResponsibility.setText(String.valueOf(shoppingList.getResponsibility()));
 

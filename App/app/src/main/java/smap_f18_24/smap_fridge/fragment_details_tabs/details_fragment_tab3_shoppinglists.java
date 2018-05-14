@@ -41,7 +41,6 @@ import smap_f18_24.smap_fridge.ShoppingListActivity;
 
 public class details_fragment_tab3_shoppinglists extends Fragment {
 
-    private String clickedFridgeID;
     ServiceUpdater mService;
     private Fridge currentFridge;
     private ShoppingListListAdaptor adaptor;
@@ -52,6 +51,7 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //Get copy of currrent fridge from DetailsActivity.
         currentFridge = ((DetailsActivity)getActivity()).currentFridge;
     }
 
@@ -65,9 +65,10 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
         filter.addAction(ServiceUpdater.BROADCAST_UPDATER_RESULT);
         LocalBroadcastManager.getInstance(getActivity().getBaseContext()).registerReceiver(serviceUpdaterReceiver,filter);
 
+        //Get copy of mService from detailsActivity.
         mService = ((DetailsActivity)getActivity()).mService;
         lv_shoppingListList = v.findViewById(R.id.lv_shoppingListList_tab3);
-        btn_newList = (Button) v.findViewById(R.id.details_tab3_shoppinglists_btn_newList);
+        btn_newList = v.findViewById(R.id.details_tab3_shoppinglists_btn_newList);
 
 
         btn_newList.setOnClickListener(new View.OnClickListener() {
@@ -77,20 +78,16 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
             }
         });
 
-        final SharedPreferences sharedData = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
-        clickedFridgeID = sharedData.getString("clickedFridgeID","errorNoValue");
-
-
         lv_shoppingListList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                //Start new ShoppingListActivity with the clicked shopping list passed on.
                 Intent intent = new Intent(getActivity().getBaseContext(), ShoppingListActivity.class);
-
                 String tmpID = ((DetailsActivity)getActivity()).currentFridge.getID();
 
-                intent.putExtra("CurrentFridgeID",tmpID);
-                intent.putExtra("PositionOfShoppingList",i);
+                intent.putExtra(getString(R.string.CURRENT_FRIDGE_ID),tmpID);
+                intent.putExtra(getString(R.string.POSITION_OF_SHOPPING_LIST),i);
 
                 startActivity(intent);
 
@@ -113,32 +110,85 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
         return v;
     }
 
+    //Dialog boxes inspired by https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
     private void openClaimResponsibilityDialogBox(final ShoppingList shoppingList){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Do you want to claim responsibility for this shopping list?");
+        builder.setTitle(R.string.WANT_TO_CLAIM_RESPONSIBILITY);
 
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
 
         builder.setView(layout);
 
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.YES, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mService.setResponsibilityForShoppingList(currentFridge.getID(),shoppingList.getID(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.CANCEL, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setNeutralButton(R.string.DELETE_LIST, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //remove list locally
+                ((DetailsActivity)getActivity()).currentFridge.getShoppingLists().remove(shoppingList);
+
+                //remove in database.
+                mService.deleteShoppingList(currentFridge.getID(),shoppingList.getID());
+
+                updateData(getString(R.string.DATA_UPDATED));
+            }
+        });
+
+        builder.show();
+    };
+
+    //Dialog boxes inspired by https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
+    private void OpenNewListDialogBox()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.ADD_NEW_LIST);
+
+        LinearLayout layout = new LinearLayout(getContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        final EditText et_newItemName = new EditText(getContext());
+        et_newItemName.setHint(getString(R.string.NAME)+":");
+        et_newItemName.setInputType(InputType.TYPE_CLASS_TEXT);
+        layout.addView(et_newItemName);
+
+
+        builder.setView(layout);
+
+
+        builder.setPositiveButton(getString(R.string.ADD), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                String listName = et_newItemName.getText().toString();
+
+                //create new list in Database and Subscribe to it.
+                mService.createNewShoppingList(currentFridge.getID(),listName);
+
+            }
+        });
+        builder.setNegativeButton(getString(R.string.CANCEL), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
             }
         });
         builder.show();
-    };
-
+    }
+    //BroadcastReceiver that updates UI when it receives a subscribed broadcast (currently, we're only subscribing to one broadcast, so we don't really check for the result other than null check)
     private BroadcastReceiver serviceUpdaterReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -160,50 +210,12 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
     };
 
     public void updateData(String updateString) {
-        if (updateString.equals("DataUpdated")) {
+        if (updateString.equals(getString(R.string.DATA_UPDATED))) {
             //get new data
             ((DetailsActivity) getActivity()).currentFridge = ((DetailsActivity) getActivity()).mService.getFridge(currentFridge.getID());
             //reset adaptor
             adaptor = new ShoppingListListAdaptor(getActivity().getBaseContext(), (ArrayList<ShoppingList>) ((DetailsActivity) getActivity()).currentFridge.getShoppingLists());
             lv_shoppingListList.setAdapter(adaptor);
         }
-    }
-
-    private void OpenNewListDialogBox()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Add new List");
-
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-
-        final EditText et_newItemName = new EditText(getContext());
-        et_newItemName.setHint("Name:");
-        et_newItemName.setInputType(InputType.TYPE_CLASS_TEXT);
-        layout.addView(et_newItemName);
-
-
-        builder.setView(layout);
-
-
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                String listName = et_newItemName.getText().toString();
-                String listID = currentFridge.getID()+"_"+listName;
-
-                //create new list in Database and Subscribe to it.
-                mService.createNewShoppingList(currentFridge.getID(),listName);
-
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-        builder.show();
     }
 }
