@@ -114,7 +114,7 @@ public class ServiceUpdater extends Service {
         Notification updateNotification =
                 new Notification.Builder(this,"CHANNEL_1")
                 .setContentTitle("Stuff was updated!")
-                .setContentText("Mathias lugtede kl " + time2.format(DateTimeFormatter.ISO_LOCAL_TIME))
+                .setContentText("Notification at:" + time2.format(DateTimeFormatter.ISO_LOCAL_TIME))
                 .setSmallIcon(R.drawable.stinus_face)
                 .build();
         startForeground(123,updateNotification);
@@ -130,7 +130,7 @@ public class ServiceUpdater extends Service {
         Notification updateNotification =
                 new NotificationCompat.Builder(this,"Channel_X")
                 .setContentTitle("Stuff was Updated")
-                .setContentText("Mathias lugtede kl " + sdf.format(time.getTime()))
+                .setContentText("Notification at:" + sdf.format(time.getTime()))
                 .setSmallIcon(R.drawable.stinus_face)
                 .build();
         startForeground(123,updateNotification);
@@ -955,7 +955,7 @@ public class ServiceUpdater extends Service {
                     }
                     if (itemInEssShoppingList != null) {
                         totalQuantity += itemInEssShoppingList.getQuantity();
-                    }   
+                    }
                     //If total quantity is less than desired quantity.
                     if (totalQuantity < i.getQuantity()) {
                         //Make matching item, whose quantity is the difference of desired quantity and total quantity.
