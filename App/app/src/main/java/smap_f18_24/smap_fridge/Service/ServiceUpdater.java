@@ -290,7 +290,6 @@ public class ServiceUpdater extends Service {
                                     int index=shoppingLists.indexOf(s);
                                     shoppingLists.remove(s);
                                     shoppingLists.add(index,list);
-                                    //TODO: Broadcast that new data is available.
                                     broadcastResult(getString(R.string.DATA_UPDATED));
                                     return;
                                 }
@@ -390,7 +389,6 @@ public class ServiceUpdater extends Service {
                 placeholderFridge.setIngredientLists(ingredientLists);
                 placeholderFridge.setID(fridge_ID);
 
-                //TODO: Broadcast that new data is available.
                 broadcastResult(getString(R.string.DATA_UPDATED));
             }
 
@@ -957,11 +955,11 @@ public class ServiceUpdater extends Service {
                     }
                     if (itemInEssShoppingList != null) {
                         totalQuantity += itemInEssShoppingList.getQuantity();
-                    }
+                    }   
                     //If total quantity is less than desired quantity.
                     if (totalQuantity < i.getQuantity()) {
                         //Make matching item, whose quantity is the difference of desired quantity and total quantity.
-                        Item itemToAdd = i;
+                        Item itemToAdd = new Item(i.getName(),i.getUnit(),i.getQuantity(),i.getResponsibleUserEmail(),i.getItemStatus());
                         itemToAdd.setQuantity(i.getQuantity() - totalQuantity);
                         addItemToShoppingList(itemToAdd, fridgeID, getString(R.string.ESSENTIALS_SHOPPING_LIST_NAME), getString(R.string.ESSENTIALS_SHOPPING_LIST));
                     }
@@ -983,7 +981,6 @@ public class ServiceUpdater extends Service {
         removeFridgeIDfromListOfSubscribedFridges(userEmail, fridge_ID);
     }
 
-    //TODO: NOT TESTED!
     //Checks if items in given Ingredient List are in inventory or on given ShoppingList.
     //If not, or if quantity is too low, add items to Shopping List.
     public void UpdateShoppingListFromIngredientList(String fridgeID, IngredientList ingredientList, ShoppingList targetShoppingList)
