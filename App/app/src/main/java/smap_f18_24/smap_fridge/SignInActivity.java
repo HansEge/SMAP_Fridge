@@ -77,7 +77,7 @@ public class SignInActivity extends AppCompatActivity {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                Toast.makeText(this, getString(R.string.SUCCSSFULLY_SIGNED_IN_AS) + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.SUCCSSFULLY_SIGNED_IN_AS) +" " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onActivityResult: Successfully signed in as " + user.getDisplayName());
                 dbComm.addUserToDatabaseIfNotThereAlready(user);
                 Intent i = new Intent(SignInActivity.this,OverviewActivity.class);

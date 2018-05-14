@@ -181,7 +181,9 @@ public class IngredientsListActivity extends AppCompatActivity {
 
         final EditText et_newItemQuantity = new EditText(this);
         et_newItemQuantity.setHint(getString(R.string.DIALOG_HINT_quantity));
-        et_newItemQuantity.setInputType(InputType.TYPE_CLASS_NUMBER);
+        //Set input type as positive decimal.
+        //https://stackoverflow.com/questions/6919360/how-do-i-restrict-my-edittext-input-to-numerical-possibly-decimal-and-signed-i?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+        et_newItemQuantity.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
         layout.addView(et_newItemQuantity);
 
         final EditText et_newItemUnit = new EditText(this);
@@ -226,7 +228,9 @@ public class IngredientsListActivity extends AppCompatActivity {
         //Quantity
         final EditText et_qty = new EditText(this);
         et_qty.setHint(getString(R.string.DIALOG_HINT_quantity));
-        et_qty.setInputType(InputType.TYPE_CLASS_NUMBER);
+        //Set input type as positive decimal.
+        //https://stackoverflow.com/questions/6919360/how-do-i-restrict-my-edittext-input-to-numerical-possibly-decimal-and-signed-i?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+        et_qty.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
         et_qty.setText(String.valueOf((i.getQuantity())));
         layout.addView(et_qty);
 
