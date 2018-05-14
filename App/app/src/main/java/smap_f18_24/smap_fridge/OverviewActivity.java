@@ -45,7 +45,7 @@ import smap_f18_24.smap_fridge.fragment_details_tabs.DetailsActivity;
 
 public class OverviewActivity extends AppCompatActivity {
 
-    Button btn_addNewFridge, btn_addExistingFridge;
+    Button btn_addNewFridge, btn_addExistingFridge, btn_updateUI;
     ListView lv_fridgesListView;
     TextView tv_welcomeUser;
 
@@ -75,13 +75,12 @@ public class OverviewActivity extends AppCompatActivity {
 
         btn_addNewFridge = findViewById(R.id.overview_btn_addNewFridge);
         btn_addExistingFridge = findViewById(R.id.overview_btn_addExistingFridge);
+        btn_updateUI = findViewById(R.id.overview_btn_updateUI);
 
         lv_fridgesListView = findViewById(R.id.overview_lv_fridgesListView);
 
         tv_welcomeUser = findViewById(R.id.overview_tv_welcomeUser);
         tv_welcomeUser.setText("Welcome, " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-
-        //localList.add(testFridge);
 
         lv_fridgesListView.setAdapter(adaptor1);
 
@@ -122,9 +121,9 @@ public class OverviewActivity extends AppCompatActivity {
 
                         mService.addFridgeIDtoListOfSubscribedFridges(mService.getCurrentUserEmail(),tmp_id);
 
-                        Fridge tmpFridge = mService.getFridge(tmp_id);
+                        //lv_fridgesListView.setAdapter(adaptor1);
 
-                        lv_fridgesListView.setAdapter(adaptor1);
+                        UpdateUI();
 
                     }
                 });
@@ -136,6 +135,8 @@ public class OverviewActivity extends AppCompatActivity {
                 });
 
                 addNewFridgeDialogBox.show();
+
+
 
             }
         });
@@ -172,15 +173,14 @@ public class OverviewActivity extends AppCompatActivity {
                         mService.addFridgeIDtoListOfSubscribedFridges(mService.getCurrentUserEmail(),existingFridgeID);
 
                         mService.SubscribeToFridge(existingFridgeID);
-                        
-                        lv_fridgesListView.setAdapter(adaptor1);
 
-
+                        UpdateUI();
 
                     }
                 });
 
                 addExistingFridgeDialogBox.show();
+
 
             }
         });
@@ -266,6 +266,16 @@ public class OverviewActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+
+        btn_updateUI.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                UpdateUI();
+            }
+        });
+
+
     }
 
     @Override
@@ -274,6 +284,7 @@ public class OverviewActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, ServiceUpdater.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
     };
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -284,13 +295,7 @@ public class OverviewActivity extends AppCompatActivity {
             mBound = true;
 
             mService.setContext(getApplicationContext());
-            localList=mService.getAllFridges();
             UpdateUI();
-
-            //mService.SubscribeToFridge("TestFridgeID");
-
-
-            //mService.SubscribeToFridge("TestFridge");
         }
 
 
@@ -303,6 +308,9 @@ public class OverviewActivity extends AppCompatActivity {
     private void UpdateUI()
     {
         //reset adaptor to update UI.
+
+        localList=mService.getAllFridges();
+
         adaptor1 = new FridgeListAdaptor(this, localList);
         lv_fridgesListView.setAdapter(adaptor1);
 
