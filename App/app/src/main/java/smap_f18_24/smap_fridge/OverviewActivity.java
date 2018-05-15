@@ -77,14 +77,11 @@ public class OverviewActivity extends AppCompatActivity {
         lv_fridgesListView = findViewById(R.id.overview_lv_fridgesListView);
 
         tv_welcomeUser = findViewById(R.id.overview_tv_welcomeUser);
-<<<<<<< HEAD
-        tv_welcomeUser.setText("Welcome, " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-=======
+
         tv_welcomeUser.setText(getString(R.string.WELCOME)+", " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
->>>>>>> c2eaa2c3b1396456132b30e2408e74f33802f7a9
+
 
         lv_fridgesListView.setAdapter(adaptor1);
-        UpdateUI();
 
 
         //Dialog boxes inspired by https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
@@ -123,15 +120,14 @@ public class OverviewActivity extends AppCompatActivity {
                         mService.SubscribeToFridge(tmp_id);
                         mService.addFridgeIDtoListOfSubscribedFridges(mService.getCurrentUserEmail(),tmp_id);
 
-<<<<<<< HEAD
                         //lv_fridgesListView.setAdapter(adaptor1);
 
                         UpdateUI();
 
-=======
+
                         //Reset adaptor
                         lv_fridgesListView.setAdapter(adaptor1);
->>>>>>> c2eaa2c3b1396456132b30e2408e74f33802f7a9
+
                     }
                 });
 
@@ -179,13 +175,12 @@ public class OverviewActivity extends AppCompatActivity {
                         //Create fridge, subscribe to it, and add it's ID to list of subscribtions for user.
                         mService.addFridgeIDtoListOfSubscribedFridges(mService.getCurrentUserEmail(),existingFridgeID);
                         mService.SubscribeToFridge(existingFridgeID);
-<<<<<<< HEAD
-=======
+
 
                         //Reset adaptor
                         lv_fridgesListView.setAdapter(adaptor1);
 
->>>>>>> c2eaa2c3b1396456132b30e2408e74f33802f7a9
+
 
                         UpdateUI();
 
@@ -270,17 +265,7 @@ public class OverviewActivity extends AppCompatActivity {
         });
 
 
-<<<<<<< HEAD
-        btn_updateUI.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                UpdateUI();
-            }
-        });
 
-
-=======
->>>>>>> c2eaa2c3b1396456132b30e2408e74f33802f7a9
     }
 
     @Override
@@ -301,14 +286,10 @@ public class OverviewActivity extends AppCompatActivity {
 
             //Set Context for service.
             mService.setContext(getApplicationContext());
-<<<<<<< HEAD
-            UpdateUI();
-=======
+
             //Get local list of fridges from service.
             localList=mService.getAllFridges();
             UpdateUI();
-
->>>>>>> c2eaa2c3b1396456132b30e2408e74f33802f7a9
         }
 
 
