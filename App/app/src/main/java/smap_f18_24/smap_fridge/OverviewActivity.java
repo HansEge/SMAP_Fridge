@@ -45,7 +45,7 @@ import smap_f18_24.smap_fridge.fragment_details_tabs.DetailsActivity;
 
 public class OverviewActivity extends AppCompatActivity {
 
-    Button btn_addNewFridge, btn_addExistingFridge, btn_updateUI;
+    Button btn_addNewFridge, btn_addExistingFridge;
     ListView lv_fridgesListView;
     TextView tv_welcomeUser;
 
@@ -72,7 +72,6 @@ public class OverviewActivity extends AppCompatActivity {
 
         btn_addNewFridge = findViewById(R.id.overview_btn_addNewFridge);
         btn_addExistingFridge = findViewById(R.id.overview_btn_addExistingFridge);
-        btn_updateUI = findViewById(R.id.overview_btn_updateUI);
 
         lv_fridgesListView = findViewById(R.id.overview_lv_fridgesListView);
 
