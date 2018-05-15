@@ -99,6 +99,10 @@ public class SignInActivity extends AppCompatActivity {
                         Toast.makeText(SignInActivity.this, R.string.SUCCESSFULLY_LOGGED_OUT, Toast.LENGTH_SHORT).show();
                         btn_logout.setVisibility(View.GONE);
                         btn_login.setVisibility(View.VISIBLE);
+
+                        //Destroy service.
+                        Intent lintent = new Intent(getApplicationContext(), ServiceUpdater.class);
+                        stopService(lintent);
                     }
                 });
     }
