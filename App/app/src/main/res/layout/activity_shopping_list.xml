@@ -9,7 +9,7 @@
     <ListView
         android:id="@+id/shoppingList_lv_list"
         android:layout_width="0dp"
-        android:layout_height="319dp"
+        android:layout_height="392dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,13 +23,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
-        android:layout_marginLeft="52dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="72dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="16dp"
         android:text="@string/add_item"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shoppingList_lv_list" />
+        app:layout_constraintTop_toBottomOf="@+id/shoppingList_lv_list"
+        app:layout_constraintVertical_bias="0.478" />
 
     <View
         android:id="@+id/divider"
@@ -133,6 +134,7 @@
         android:text="@string/shoppinglist_btn_allBought"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.166"
         app:layout_constraintStart_toEndOf="@+id/shoppingList_btn_newItem"
         app:layout_constraintTop_toTopOf="@+id/shoppingList_btn_newItem"
         app:layout_constraintVertical_bias="0.0" />
