@@ -45,7 +45,7 @@ import smap_f18_24.smap_fridge.fragment_details_tabs.DetailsActivity;
 
 public class OverviewActivity extends AppCompatActivity {
 
-    Button btn_addNewFridge, btn_addExistingFridge;
+    Button btn_addNewFridge, btn_addExistingFridge, btn_updateUI;
     ListView lv_fridgesListView;
     TextView tv_welcomeUser;
 
@@ -72,11 +72,16 @@ public class OverviewActivity extends AppCompatActivity {
 
         btn_addNewFridge = findViewById(R.id.overview_btn_addNewFridge);
         btn_addExistingFridge = findViewById(R.id.overview_btn_addExistingFridge);
+        btn_updateUI = findViewById(R.id.overview_btn_updateUI);
 
         lv_fridgesListView = findViewById(R.id.overview_lv_fridgesListView);
 
         tv_welcomeUser = findViewById(R.id.overview_tv_welcomeUser);
+<<<<<<< HEAD
+        tv_welcomeUser.setText("Welcome, " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+=======
         tv_welcomeUser.setText(getString(R.string.WELCOME)+", " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+>>>>>>> c2eaa2c3b1396456132b30e2408e74f33802f7a9
 
         lv_fridgesListView.setAdapter(adaptor1);
         UpdateUI();
@@ -118,8 +123,15 @@ public class OverviewActivity extends AppCompatActivity {
                         mService.SubscribeToFridge(tmp_id);
                         mService.addFridgeIDtoListOfSubscribedFridges(mService.getCurrentUserEmail(),tmp_id);
 
+<<<<<<< HEAD
+                        //lv_fridgesListView.setAdapter(adaptor1);
+
+                        UpdateUI();
+
+=======
                         //Reset adaptor
                         lv_fridgesListView.setAdapter(adaptor1);
+>>>>>>> c2eaa2c3b1396456132b30e2408e74f33802f7a9
                     }
                 });
 
@@ -130,6 +142,8 @@ public class OverviewActivity extends AppCompatActivity {
                 });
 
                 addNewFridgeDialogBox.show();
+
+
 
             }
         });
@@ -165,16 +179,21 @@ public class OverviewActivity extends AppCompatActivity {
                         //Create fridge, subscribe to it, and add it's ID to list of subscribtions for user.
                         mService.addFridgeIDtoListOfSubscribedFridges(mService.getCurrentUserEmail(),existingFridgeID);
                         mService.SubscribeToFridge(existingFridgeID);
+<<<<<<< HEAD
+=======
 
                         //Reset adaptor
                         lv_fridgesListView.setAdapter(adaptor1);
 
+>>>>>>> c2eaa2c3b1396456132b30e2408e74f33802f7a9
 
+                        UpdateUI();
 
                     }
                 });
 
                 addExistingFridgeDialogBox.show();
+
 
             }
         });
@@ -251,6 +270,17 @@ public class OverviewActivity extends AppCompatActivity {
         });
 
 
+<<<<<<< HEAD
+        btn_updateUI.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                UpdateUI();
+            }
+        });
+
+
+=======
+>>>>>>> c2eaa2c3b1396456132b30e2408e74f33802f7a9
     }
 
     @Override
@@ -259,6 +289,7 @@ public class OverviewActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, ServiceUpdater.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
     };
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -270,10 +301,14 @@ public class OverviewActivity extends AppCompatActivity {
 
             //Set Context for service.
             mService.setContext(getApplicationContext());
+<<<<<<< HEAD
+            UpdateUI();
+=======
             //Get local list of fridges from service.
             localList=mService.getAllFridges();
             UpdateUI();
 
+>>>>>>> c2eaa2c3b1396456132b30e2408e74f33802f7a9
         }
 
 
@@ -286,6 +321,9 @@ public class OverviewActivity extends AppCompatActivity {
     private void UpdateUI()
     {
         //reset adaptor to update UI.
+
+        localList=mService.getAllFridges();
+
         adaptor1 = new FridgeListAdaptor(this, localList);
         lv_fridgesListView.setAdapter(adaptor1);
 
