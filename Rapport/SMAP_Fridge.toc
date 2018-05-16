@@ -1,4 +1,4 @@
-\select@language {danish}
+\babel@toc {danish}{}
 \contentsline {section}{\numberline {1}App vision}{3}{section.1}
 \contentsline {section}{\numberline {2}Personal visions}{3}{section.2}
 \contentsline {subsection}{\numberline {2.1}Mathias Friss}{3}{subsection.2.1}
