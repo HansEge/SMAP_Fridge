@@ -1,7 +1,7 @@
 \BOOKMARK [1][-]{section.1}{Work plan}{}% 1
 \BOOKMARK [1][-]{section.2}{App vision}{}% 2
 \BOOKMARK [1][-]{section.3}{Personal visions}{}% 3
-\BOOKMARK [2][-]{subsection.3.1}{Mathias Friss}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.1}{Mathias Friis}{section.3}% 4
 \BOOKMARK [2][-]{subsection.3.2}{Stinus Skovgaard}{section.3}% 5
 \BOOKMARK [2][-]{subsection.3.3}{Philip Schmidt}{section.3}% 6
 \BOOKMARK [2][-]{subsection.3.4}{Daniel T\370ttrup}{section.3}% 7
@@ -14,6 +14,11 @@
 \BOOKMARK [2][-]{subsection.8.1}{GUI}{section.8}% 14
 \BOOKMARK [2][-]{subsection.8.2}{Fragments}{section.8}% 15
 \BOOKMARK [2][-]{subsection.8.3}{Data Access Layer}{section.8}% 16
-\BOOKMARK [2][-]{subsection.8.4}{Adaptors}{section.8}% 17
-\BOOKMARK [1][-]{section.9}{Conclusion}{}% 18
-\BOOKMARK [1][-]{section.10}{Bugs and known problems}{}% 19
+\BOOKMARK [3][-]{subsubsection.8.3.1}{Data flow}{subsection.8.3}% 17
+\BOOKMARK [2][-]{subsection.8.4}{Adaptors}{section.8}% 18
+\BOOKMARK [1][-]{section.9}{Future work}{}% 19
+\BOOKMARK [1][-]{section.10}{Conclusion}{}% 20
+\BOOKMARK [1][-]{section.11}{Bugs and known problems}{}% 21
+\BOOKMARK [1][-]{section.12}{Appendix}{}% 22
+\BOOKMARK [2][-]{subsection.12.1}{Appendix A: Sequence diagram - Add item}{section.12}% 23
+\BOOKMARK [2][-]{subsection.12.2}{Appendix B: Sequence diagram - Update UI on new data for subscribed list}{section.12}% 24

@@ -141,13 +141,14 @@ The entire group\\
 Fridge-i-nator is an app that works together with you and your fridge. It will make it easier for you to make a shopping
 list and keep track of the items in your fridge especially if your share fridge with others. You can create an essential
 item list, which is items you never want to run out of. That way if the item comes under a minimum quantity Fridge-i-nator
-will automatically add that item to your shopping list. 
-Fridge-i-nator will minimize the risk of you forgetting to buy items you need, and make sure you never have to check your
-fridge before going to the supermarket.
+will automatically add that item to your shopping list. Furthermore it is possible to add entire ingredient lists to your shopping list. The app will check your inventory for missing ingredients and add them to a shopping list. Shopping for your favourite dish has never been easier.
+Fridge-i-nator will minimize the risk of you forgetting to buy items you need, and make sure you never have to check your fridge before going to the supermarket.
+\\
+\\
 
 \section{Personal visions}
 
-\subsection{Mathias Friss}
+\subsection{Mathias Friis}
 While building the app, i wish to become better at designing system architecture, with well defined segregation of layers. I wish to create an app with clear seperation between UI and back-end.
 Furthermore i wish to learn more about using fragments in android.
 
@@ -276,24 +277,50 @@ The outline and outcome of this decision have maked the development of the fragt
 As database for this project, we are using firestore by firebase. This was chosen because it offers an easy-to-use database solution which is highly integrable with Android. It provides the capability to add “EventListeners” to documents and collections in the database, which will trigger events in the code. This provides us with a sort of observer pattern, where the individual devices subscribed to the database can receive new data, when it is changed in the database.
 \\
 \\
-The Data Access Layer is split into 2 parts: \textbf{fireStoreCommunicator}: handles the lowest level of communication with the database. This includes adding new lists, adding items to list, adding users to database, subscribing to fridges, receiving data, making lists from this data, etc…
+The Data Access Layer is split into 2 parts:\\ \textbf{fireStoreCommunicator}: handles the lowest level of communication with the database. This includes adding new lists, adding items to list, adding users to database, subscribing to fridges, receiving data, making lists from this data, etc…
 \\
 \\
 \textbf{ServiceUpdater}: this serves as the Programming Interface throughout the app. The service also holds a local copy of all fridges the user has subscribed to. All actions done in the activities/fragments goes through the service. For instance, when adding an item to a list in an activity, the service checks if an item with matching name is already on the list. If so, it increments the quantity of that item in the database, instead of adding a duplicate item.
 From the service, we send out a broadcast whenever the service has retrieved new data from the database. This way, the activities/fragments can retrieve the newest data from the service, and thus stay in sync with the database.
 The reason for choosing the approach where the service holds a local list of the data in the database is because we had experience with this approach from the Assignment 2.
 
-
 One could argue that it is bad programming practice to have such a huge amount of logic in these 2 classes, and that we instead should have divided the functionality into several lesser classes. Had we had more time, a rework of the architecture would be a topic of high priority.
+
+\subsubsection{Data flow}
+Figure \ref{fig:dataflow_diagram} shows a conceptual diagram of the data flow. It should be noted that when a user for instance adds an item to a list, the change does not take effect locally, before it has been added to the database. This ensures that the database and the app stays in sync. The drawback of this is that items cannot be added if the database cannot be accessed at the time of use.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=180mm]{Img/SMAP_DAL}
+	\caption{Conceptual diagram of data flow of Fridge-i-nator}
+	% \floatfoot{Source: (Citation command)}
+	\label{fig:dataflow_diagram}
+\end{figure}
+
+\textbf{Sequence Diagrams}
+Appendices A and B show 2 sequence diagrams. One shows the process of adding an item to a list through the service, and in turn the firestoreCommunicator.
+The other diagram shows the process of updating the UI, when data on one of the subscribed lists are updated.
+As example, we are showing the inventory list, but managing the other lists are basically the same.\\
+
+
+\textbf{Authentication}
 \\
-\\
-Authentication
 For user authentication we used firebaseUI, which provides an easy to use solution for authentification with a variety of different social media integration as well. We chose to keep it simple and use authentification via email and password.
+\\
+\\
+\textbf{Authorization}
+\\
+As of now, proper user authorization has not been implemented yet. This means that the database is open for reading and writing for anyone. This is of course not optimal, but given the scope of the assignment, this was not prioritized.
 
 \subsection{Adaptors}
 The UI in fridge-i-nator manly consist of listviews and all these listviews use separate listview adaptors. We found inspiration from lection 4 to make these adaptors. The reason why we wanted to use separate listview adaptors for every fragment and activity, were to make the best possible user experience. By making a separate adaptor to ever listview I our app, we made it easy customize every listview as we want them. We thought It would be a nice touch if the user just could click on an item to adjust the quantity of that item, or to make a long click on an item to get the option to delete an item.
 
-
+\section{Future work}
+Had the group had more time the following would be points of improvement and further work.
+\begin{itemize}
+	\item \textbf{Authorization} - As of now, the database is open for everyone. This is of course sub-optimal. Only users connected to the fridge should be able to read and write data.
+	\item \textbf{Notifications} - A useful feature would be that users responsible for a given shopping list would receive notification, if there were changes to the shopping list.
+	\item \textbf{Stability} - As of now, sometimes the app will not update the UI immediately upon changes in the database. This would of course be a major focus, as it is a core part of the user experience and general fluency of the app.
+\end{itemize}
 
 \section{Conclusion}
 
@@ -316,6 +343,25 @@ The UI in fridge-i-nator manly consist of listviews and all these listviews use 
 	& Cant delete last item in inventoryList
 \end{easylist}
 
+\section{Appendix}
+All images in Appendix can be found along with the report as well.
+\subsection{Appendix A: Sequence diagram - Add item}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=180mm]{Img/APPENDIX A - SD-ADD-ITEM.pdf}
+	\caption{Sequence diagram of adding a new item to inventory}
+	% \floatfoot{Source: (Citation command)}
+	\label{fig:SD_addItem}
+\end{figure}
 
+\subsection{Appendix B: Sequence diagram - Update UI on new data for subscribed list}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=120mm]{Img/APPENDIX B - SD-onNewData.pdf}
+	\caption{Sequence diagram of updating UI upon receiving new data in the database.}
+	% \floatfoot{Source: (Citation command)}
+	\label{fig:SD_onNewData}
+\end{figure}
 
 \end{document}
+

@@ -1,8 +1,8 @@
-\babel@toc {danish}{}
+\select@language {danish}
 \contentsline {section}{\numberline {1}Work plan}{3}{section.1}
 \contentsline {section}{\numberline {2}App vision}{3}{section.2}
-\contentsline {section}{\numberline {3}Personal visions}{3}{section.3}
-\contentsline {subsection}{\numberline {3.1}Mathias Friss}{3}{subsection.3.1}
+\contentsline {section}{\numberline {3}Personal visions}{4}{section.3}
+\contentsline {subsection}{\numberline {3.1}Mathias Friis}{4}{subsection.3.1}
 \contentsline {subsection}{\numberline {3.2}Stinus Skovgaard}{4}{subsection.3.2}
 \contentsline {subsection}{\numberline {3.3}Philip Schmidt}{4}{subsection.3.3}
 \contentsline {subsection}{\numberline {3.4}Daniel T\IeC {\o }ttrup}{4}{subsection.3.4}
@@ -15,6 +15,11 @@
 \contentsline {subsection}{\numberline {8.1}GUI}{8}{subsection.8.1}
 \contentsline {subsection}{\numberline {8.2}Fragments}{9}{subsection.8.2}
 \contentsline {subsection}{\numberline {8.3}Data Access Layer}{10}{subsection.8.3}
-\contentsline {subsection}{\numberline {8.4}Adaptors}{10}{subsection.8.4}
-\contentsline {section}{\numberline {9}Conclusion}{11}{section.9}
-\contentsline {section}{\numberline {10}Bugs and known problems}{11}{section.10}
+\contentsline {subsubsection}{\numberline {8.3.1}Data flow}{10}{subsubsection.8.3.1}
+\contentsline {subsection}{\numberline {8.4}Adaptors}{11}{subsection.8.4}
+\contentsline {section}{\numberline {9}Future work}{11}{section.9}
+\contentsline {section}{\numberline {10}Conclusion}{12}{section.10}
+\contentsline {section}{\numberline {11}Bugs and known problems}{12}{section.11}
+\contentsline {section}{\numberline {12}Appendix}{12}{section.12}
+\contentsline {subsection}{\numberline {12.1}Appendix A: Sequence diagram - Add item}{14}{subsection.12.1}
+\contentsline {subsection}{\numberline {12.2}Appendix B: Sequence diagram - Update UI on new data for subscribed list}{15}{subsection.12.2}

@@ -1,3 +1,6 @@
-\babel@toc {danish}{}
+\select@language {danish}
 \contentsline {figure}{\numberline {1}{\ignorespaces Rich picture of Fridge-i-nator}}{5}{figure.1}
 \contentsline {figure}{\numberline {2}{\ignorespaces Early design diagram of Fridge-i-nator}}{6}{figure.2}
+\contentsline {figure}{\numberline {3}{\ignorespaces Conceptual diagram of data flow of Fridge-i-nator}}{11}{figure.3}
+\contentsline {figure}{\numberline {4}{\ignorespaces Sequence diagram of adding a new item to inventory}}{14}{figure.4}
+\contentsline {figure}{\numberline {5}{\ignorespaces Sequence diagram of updating UI upon receiving new data in the database.}}{15}{figure.5}
