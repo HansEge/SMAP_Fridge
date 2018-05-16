@@ -113,7 +113,7 @@ public class details_fragment_tab4_ingredients extends Fragment {
     };
 
     public void updateData(String updateString) {
-        if (updateString.equals("DataUpdated")) {
+        if (updateString.equals(getString(R.string.DATA_UPDATED)) && ((DetailsActivity) getActivity()).currentFridge != null) {
             //get new data
             ((DetailsActivity) getActivity()).currentFridge = ((DetailsActivity) getActivity()).mService.getFridge(currentFridge.getID());
             //reset adaptor
