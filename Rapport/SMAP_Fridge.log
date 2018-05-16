@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.26)  16 MAY 2018 11:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.26)  16 MAY 2018 13:10
 entering extended mode
 **./SMAP_Fridge.tex
 (SMAP_Fridge.tex
@@ -1135,7 +1135,7 @@ Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 ("C:\Users\stinu\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ucs\uni-0.def"
 File: uni-0.def 2013/05/13 UCS: Unicode data U+0000..U+00FF
 )
-<Img/logo.jpg, id=46, 454.69875pt x 116.68594pt>
+<Img/logo.jpg, id=58, 454.69875pt x 116.68594pt>
 File: Img/logo.jpg Graphic file (type jpg)
 <use Img/logo.jpg>
 Package pdftex.def Info: Img/logo.jpg  used on input line 86.
@@ -1214,7 +1214,7 @@ Package babel Info: Redefining danish shorthand "~
 
 pdfTeX warning: pdflatex.exe (file ./Img/Fridge_rich_picture.pdf): PDF inclusio
 n: found PDF version <1.7>, but at most version <1.5> allowed
-<Img/Fridge_rich_picture.pdf, id=79, 794.97pt x 614.295pt>
+<Img/Fridge_rich_picture.pdf, id=94, 794.97pt x 614.295pt>
 File: Img/Fridge_rich_picture.pdf Graphic file (type pdf)
 <use Img/Fridge_rich_picture.pdf>
 Package pdftex.def Info: Img/Fridge_rich_picture.pdf  used on input line 138.
@@ -1238,103 +1238,222 @@ Package babel Info: Redefining danish shorthand "|
 Package babel Info: Redefining danish shorthand "~
 (babel)             in language  on input line 144.
 
-Underfull \hbox (badness 10000) in paragraph at lines 153--158
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 159--164
-
- []
-
-Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 164.
-Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 164.
-Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 164.
-Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 164.
-[4 <./Img/Fridge_rich_picture.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 165--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 171--180
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 171--180
-
- []
-
-Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 184.
-Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 184.
-
 
 pdfTeX warning: pdflatex.exe (file ./Img/Fridge_some_diagram.pdf): PDF inclusio
 n: found PDF version <1.7>, but at most version <1.5> allowed
-<Img/Fridge_some_diagram.pdf, id=103, 794.97pt x 614.295pt>
+<Img/Fridge_some_diagram.pdf, id=99, 794.97pt x 614.295pt>
 File: Img/Fridge_some_diagram.pdf Graphic file (type pdf)
 <use Img/Fridge_some_diagram.pdf>
-Package pdftex.def Info: Img/Fridge_some_diagram.pdf  used on input line 188.
+Package pdftex.def Info: Img/Fridge_some_diagram.pdf  used on input line 148.
 (pdftex.def)             Requested size: 512.1496pt x 395.76262pt.
 
-Overfull \hbox (42.39458pt too wide) in paragraph at lines 188--189
+Overfull \hbox (42.39458pt too wide) in paragraph at lines 148--149
  [][] 
  []
 
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 193.
+(babel)             in language  on input line 153.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 193.
+(babel)             in language  on input line 153.
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 193.
+(babel)             in language  on input line 153.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 193.
-[5]
+(babel)             in language  on input line 153.
+[4 <./Img/Fridge_rich_picture.pdf>]
+Package babel Info: Redefining danish shorthand "|
+(babel)             in language  on input line 154.
+Package babel Info: Redefining danish shorthand "~
+(babel)             in language  on input line 154.
+
+Underfull \hbox (badness 10000) in paragraph at lines 164--169
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 170--175
+
+ []
+
+Package babel Info: Redefining danish shorthand "|
+(babel)             in language  on input line 175.
+Package babel Info: Redefining danish shorthand "~
+(babel)             in language  on input line 175.
+Package babel Info: Redefining danish shorthand "|
+(babel)             in language  on input line 175.
+Package babel Info: Redefining danish shorthand "~
+(babel)             in language  on input line 175.
+[5 <./Img/Fridge_some_diagram.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 176--181
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 182--191
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 182--191
+
+ []
+
 Package babel Info: Redefining danish shorthand "|
 (babel)             in language  on input line 194.
 Package babel Info: Redefining danish shorthand "~
 (babel)             in language  on input line 194.
+("C:\Users\stinu\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ucs\uni-32.def"
+File: uni-32.def 2013/05/13 UCS: Unicode data U+2000..U+20FF
+)
+Underfull \hbox (badness 10000) in paragraph at lines 195--200
+
+ []
+
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 200.
+(babel)             in language  on input line 202.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 200.
+(babel)             in language  on input line 202.
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 200.
+(babel)             in language  on input line 202.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 200.
- [6 <./Img/Fridge_some_diagram.pdf>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 200.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 200.
+(babel)             in language  on input line 202.
+[6]
+Package babel Info: Redefining danish shorthand "|
+(babel)             in language  on input line 202.
+Package babel Info: Redefining danish shorthand "~
+(babel)             in language  on input line 202.
+
+Underfull \hbox (badness 10000) in paragraph at lines 203--208
+
+ []
+
+Package babel Info: Redefining danish shorthand "|
+(babel)             in language  on input line 208.
+Package babel Info: Redefining danish shorthand "~
+(babel)             in language  on input line 208.
+
+Underfull \hbox (badness 10000) in paragraph at lines 211--229
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 211--229
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 211--229
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 211--229
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 211--229
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 211--229
+
+ []
+
+Package babel Info: Redefining danish shorthand "|
+(babel)             in language  on input line 229.
+Package babel Info: Redefining danish shorthand "~
+(babel)             in language  on input line 229.
+Package babel Info: Redefining danish shorthand "|
+(babel)             in language  on input line 229.
+Package babel Info: Redefining danish shorthand "~
+(babel)             in language  on input line 229.
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 231--232
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 233--246
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 233--246
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 233--246
+
+ []
+
+Package babel Info: Redefining danish shorthand "|
+(babel)             in language  on input line 247.
+Package babel Info: Redefining danish shorthand "~
+(babel)             in language  on input line 247.
+Package babel Info: Redefining danish shorthand "|
+(babel)             in language  on input line 247.
+Package babel Info: Redefining danish shorthand "~
+(babel)             in language  on input line 247.
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 247--264
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 247--264
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 247--264
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 247--264
+
+ []
+
+Package babel Info: Redefining danish shorthand "|
+(babel)             in language  on input line 266.
+Package babel Info: Redefining danish shorthand "~
+(babel)             in language  on input line 266.
+Package babel Info: Redefining danish shorthand "|
+(babel)             in language  on input line 272.
+Package babel Info: Redefining danish shorthand "~
+(babel)             in language  on input line 272.
+Package babel Info: Redefining danish shorthand "|
+(babel)             in language  on input line 272.
+Package babel Info: Redefining danish shorthand "~
+(babel)             in language  on input line 272.
+[9]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 272.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 272.
  (SMAP_Fridge.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 200.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 200.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 272.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 272.
 Package rerunfilecheck Info: File `SMAP_Fridge.out' has not changed.
-(rerunfilecheck)             Checksum: C37F52EF3E60B02E3D5DC13E06E8B088;544.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 200.
+(rerunfilecheck)             Checksum: 76D6DCE2F37E6E7B4326CCD05A9E34B1;782.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 272.
  ) 
 Here is how much of TeX's memory you used:
- 23272 strings out of 493303
- 424861 string characters out of 3129784
- 590072 words of memory out of 3000000
- 26388 multiletter control sequences out of 15000+200000
+ 23527 strings out of 493303
+ 427775 string characters out of 3129784
+ 595075 words of memory out of 3000000
+ 26634 multiletter control sequences out of 15000+200000
  13187 words of font info for 46 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,6n,92p,469b,681s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 62i,7n,92p,993b,681s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/stinu/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts
 /cm/cmbx12.pfb><C:/Users/stinu/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
 blic/amsfonts/cm/cmcsc10.pfb><C:/Users/stinu/AppData/Local/Programs/MiKTeX 2.9/
 fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/stinu/AppData/Local/Programs
 /MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on SMAP_Fridge.pdf (7 pages, 456537 bytes).
+Output written on SMAP_Fridge.pdf (10 pages, 472679 bytes).
 PDF statistics:
- 149 PDF objects out of 1000 (max. 8388607)
- 21 named destinations out of 1000 (max. 500000)
- 108 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 177 PDF objects out of 1000 (max. 8388607)
+ 27 named destinations out of 1000 (max. 500000)
+ 132 words of extra memory for PDF output out of 10000 (max. 10000000)
 

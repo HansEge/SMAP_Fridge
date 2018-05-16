@@ -6,6 +6,9 @@
 \contentsline {subsection}{\numberline {2.3}Philip Schmidt}{3}{subsection.2.3}
 \contentsline {subsection}{\numberline {2.4}Daniel T\IeC {\o }ttrup}{3}{subsection.2.4}
 \contentsline {section}{\numberline {3}Rich picture}{3}{section.3}
-\contentsline {section}{\numberline {4}User stories}{4}{section.4}
-\contentsline {section}{\numberline {5}Early design}{6}{section.5}
-\contentsline {section}{\numberline {6}Risks}{6}{section.6}
+\contentsline {section}{\numberline {4}Early design}{5}{section.4}
+\contentsline {section}{\numberline {5}User stories}{5}{section.5}
+\contentsline {subsection}{\numberline {5.1}Reflection on the user stories}{6}{subsection.5.1}
+\contentsline {section}{\numberline {6}Requirements}{7}{section.6}
+\contentsline {section}{\numberline {7}Assumptions for and explanations to the chosen design}{7}{section.7}
+\contentsline {section}{\numberline {8}Bugs and known problems}{9}{section.8}
