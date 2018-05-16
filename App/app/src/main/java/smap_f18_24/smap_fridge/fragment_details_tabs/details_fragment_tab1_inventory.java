@@ -267,7 +267,7 @@ public class details_fragment_tab1_inventory extends Fragment {
     public void updateData(String updateString)
     {
         Log.d("Inventory","Inventory updated");
-        if(updateString.equals(getString(R.string.DATA_UPDATED)) && ((DetailsActivity)getActivity()).currentFridge != null)
+        if(updateString.equals(getString(R.string.DATA_UPDATED)) && currentFridge != null)
         {
             Log.d("Inventory","Inventory updated after if");
             ((DetailsActivity)getActivity()).currentFridge = ((DetailsActivity)getActivity()).mService.getFridge(currentFridge.getID());

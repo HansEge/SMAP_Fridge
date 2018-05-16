@@ -1,13 +1,19 @@
-\BOOKMARK [1][-]{section.1}{App vision}{}% 1
-\BOOKMARK [1][-]{section.2}{Personal visions}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{Mathias Friss}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{Stinus Skovgaard}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.3}{Philip Schmidt}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.4}{Daniel T\370ttrup}{section.2}% 6
-\BOOKMARK [1][-]{section.3}{Rich picture}{}% 7
-\BOOKMARK [1][-]{section.4}{Early design}{}% 8
-\BOOKMARK [1][-]{section.5}{User stories}{}% 9
-\BOOKMARK [2][-]{subsection.5.1}{Reflection on the user stories}{section.5}% 10
-\BOOKMARK [1][-]{section.6}{Requirements}{}% 11
-\BOOKMARK [1][-]{section.7}{Assumptions for and explanations to the chosen design}{}% 12
-\BOOKMARK [1][-]{section.8}{Bugs and known problems}{}% 13
+\BOOKMARK [1][-]{section.1}{Work plan}{}% 1
+\BOOKMARK [1][-]{section.2}{App vision}{}% 2
+\BOOKMARK [1][-]{section.3}{Personal visions}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Mathias Friss}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Stinus Skovgaard}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Philip Schmidt}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.4}{Daniel T\370ttrup}{section.3}% 7
+\BOOKMARK [1][-]{section.4}{Rich picture}{}% 8
+\BOOKMARK [1][-]{section.5}{Early design}{}% 9
+\BOOKMARK [1][-]{section.6}{User stories}{}% 10
+\BOOKMARK [2][-]{subsection.6.1}{Updates to the user stories}{section.6}% 11
+\BOOKMARK [1][-]{section.7}{Requirements}{}% 12
+\BOOKMARK [1][-]{section.8}{Assumptions for and explanations to the chosen design}{}% 13
+\BOOKMARK [2][-]{subsection.8.1}{GUI}{section.8}% 14
+\BOOKMARK [2][-]{subsection.8.2}{Fragments}{section.8}% 15
+\BOOKMARK [2][-]{subsection.8.3}{Data Access Layer}{section.8}% 16
+\BOOKMARK [2][-]{subsection.8.4}{Adaptors}{section.8}% 17
+\BOOKMARK [1][-]{section.9}{Conclusion}{}% 18
+\BOOKMARK [1][-]{section.10}{Bugs and known problems}{}% 19
