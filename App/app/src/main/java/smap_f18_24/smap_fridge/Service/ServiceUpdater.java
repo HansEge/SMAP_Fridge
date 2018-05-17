@@ -67,6 +67,7 @@ public class ServiceUpdater extends Service {
     //Object to communicate with database
     fireStoreCommunicator dbComm;
 
+    //Local list of fridges. This is the list that the activities/fragments can fetch information from.
     ArrayList<Fridge> fridges = new ArrayList<Fridge>();
 
     @Override
@@ -74,7 +75,10 @@ public class ServiceUpdater extends Service {
         super.onCreate();
         Log.d(TAG, "onCreate: Service created");
 
+        //Create new instance of the database communicator
         dbComm=new fireStoreCommunicator(getApplicationContext(),callbackInterface);
+
+        //Receive updates when fridges that the user has subscribed to change.
         currentUser = getCurrentUserInformation();
         dbComm.SubscribeToSavedFridges(getCurrentUserEmail(),callbackInterface);
     }
@@ -90,54 +94,6 @@ public class ServiceUpdater extends Service {
     }
 
 
-/*
-    //Make notification displaying the time when updating.
-    @TargetApi(26)
-    void notificationBuilder()
-    {
-        //For API version < 26
-        if (Build.VERSION.SDK_INT < 26) {
-            //Log.d("API<26","bobby olsen");
-            notificationBuilder_PRE26();
-            return;
-        }
-
-        LocalDateTime time2 = LocalDateTime.now();
-
-        NotificationChannel channel_1 = new NotificationChannel("CHANNEL_1","Fridge Stuff", NotificationManager.IMPORTANCE_HIGH);
-        channel_1.setDescription("Notification for alerting user of changes");
-
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        mNotificationManager.createNotificationChannel(channel_1);
-
-        Notification updateNotification =
-                new Notification.Builder(this,"CHANNEL_1")
-                .setContentTitle("Stuff was updated!")
-                .setContentText("Notification at:" + time2.format(DateTimeFormatter.ISO_LOCAL_TIME))
-                .setSmallIcon(R.drawable.stinus_face)
-                .build();
-        startForeground(123,updateNotification);
-    }
-*/
-/*
-    //For API < 26
-    void notificationBuilder_PRE26()
-    {
-        Calendar time = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-
-        Notification updateNotification =
-                new NotificationCompat.Builder(this,"Channel_X")
-                .setContentTitle("Stuff was Updated")
-                .setContentText("Notification at:" + sdf.format(time.getTime()))
-                .setSmallIcon(R.drawable.stinus_face)
-                .build();
-        startForeground(123,updateNotification);
-    }
-
-    */
-
     //Sends a broadcast that new data is availabe.
     public void broadcastResult(String result)
     {
@@ -150,7 +106,7 @@ public class ServiceUpdater extends Service {
 
         if(BCManager.sendBroadcast(broadcastIntent))
         {
-            Log.d("BROADCAST_SEND","Succes on sending broadcast");
+            Log.d("BROADCAST_SEND","Success on sending broadcast");
         }
     }
 
@@ -192,6 +148,8 @@ public class ServiceUpdater extends Service {
 
     //Used for communicating back results from database queries.
     FridgeCallbackInterface callbackInterface = new FridgeCallbackInterface() {
+
+        //gets called when there are changes to an inventory list of a subscribed fridge.
         @Override
         public void onInventoryChange(String fridge_ID, InventoryList list) {
             Log.d(TAG, "Inventory of fridge " + fridge_ID + " updated.");
@@ -203,7 +161,7 @@ public class ServiceUpdater extends Service {
                     ) {
                 if(f.getID().equals(fridge_ID))
                 {
-                    //if ID matches, update inventory and broadcast that new data is availabe
+                    //if ID matches, update inventory and broadcast that new data is available
                     f.setInventory(list);
                     broadcastResult(getString(R.string.DATA_UPDATED));
 
@@ -224,6 +182,7 @@ public class ServiceUpdater extends Service {
             updateShoppingListToMatchEssentials(fridge_ID);
         }
 
+        //gets called when there are changes to an essentials list of a subscribed fridge.
         @Override
         public void onEssentialsChange(String fridge_ID, EssentialsList list) {
             Log.d(TAG, "Essential of fridge " + fridge_ID + " updated.");
@@ -259,6 +218,7 @@ public class ServiceUpdater extends Service {
 
         }
 
+        //gets called when there are changes to an shopping list of a subscribed fridge.
         @Override
         public void onShoppingListsChange(String fridge_ID, ShoppingList list) {
             Log.d(TAG, "Shopping list " + list.getID() + " of fridge " + fridge_ID + " updated.");
@@ -327,14 +287,10 @@ public class ServiceUpdater extends Service {
         //Not used in current implementation
         @Override
         public void onShoppingListDelete(String fridge_ID, ShoppingList list) {
-/*
-            List<ShoppingList> shoppingLists =  getFridge(fridge_ID).getShoppingLists();
-            ShoppingList list2remove = getShoppingList(list.getID(),shoppingLists);
-            shoppingLists.remove(list2remove);
-            */
 
         }
 
+        //gets called when there are changes to an ingredient list of a subscribed fridge.
         @Override
         public void onIngredientListsChange(String fridge_ID, IngredientList list) {
             Log.d(TAG, "Ingredient list " + list.getID() + " of fridge " + fridge_ID + " updated.");
@@ -397,12 +353,7 @@ public class ServiceUpdater extends Service {
         //Not used in current implementaion
         @Override
         public void onIngredientListDelete(String fridge_ID, IngredientList list) {
-            /*
-            Toast.makeText(context, "Gotta delete the list " + list.getID(), Toast.LENGTH_SHORT).show();
-            List<IngredientList> ingredientLists =  getFridge(fridge_ID).getIngredientLists();
-            IngredientList list2remove = getIngredientList(list.getID(),ingredientLists);
-            ingredientLists.remove(list2remove);
-            */
+
 
         }
 
@@ -493,7 +444,7 @@ public class ServiceUpdater extends Service {
         return null;
     }
 
-    //Return Shopping List with ID matching parameter from passed list of IngredientLists
+    //Return Ingredient List with ID matching parameter from passed list of IngredientLists
     private IngredientList getIngredientList(String ID, List<IngredientList> lists)
     {
         //For each fridge, check if ID matches. If no match, null is returned.
@@ -573,11 +524,10 @@ public class ServiceUpdater extends Service {
     //Add item to essentials - increments quantity, if item with matching name exists.
     public void addItemToEssentials(Item item, String fridge_ID)
     {
-        //CollectionReference InventoryRef=db.collection(fridge_ID).document("Inventory").collection("Items");
         CollectionReference EssentialsRef=db.collection(getString(R.string.FRIDGES)).document(fridge_ID).collection(getString(R.string.CONTENT)).document(getString(R.string.ESSENTIALS)).collection(getString(R.string.ITEMS));
         EssentialsList essentials=getFridge(fridge_ID).getEssentials();
 
-        //Check current inventory to see if item already exists.
+        //Check current essentials to see if item already exists.
         //If it does, add to quantity. (NOTE: OVERWRITES ALL OTHER DATA FOR THAT ITEM, EG: RESPONSIBLE USER, UNIT, STATUS, ETC)
         if(essentials!=null)
         {
@@ -599,7 +549,7 @@ public class ServiceUpdater extends Service {
         Log.d(TAG, "addItemToEssentials: Item was not in inventory yet, and has thus been added.");
     }
 
-    //removes item from inventory
+    //removes item from essentials
     public void removeItemFromEssentials(String itemName, String fridge_ID)
     {
         CollectionReference EssentialsRef=db.collection(getString(R.string.FRIDGES)).document(fridge_ID).collection(getString(R.string.CONTENT)).document(getString(R.string.ESSENTIALS)).collection(getString(R.string.ITEMS));
@@ -627,7 +577,7 @@ public class ServiceUpdater extends Service {
         Log.d(TAG, "removeItemFromEssentials: Item: " + itemName + " was not on list, and thus cannot be removed");
     }
 
-    //adds item to inventory and overwrites old data if any exists.
+    //adds item to essentials and overwrites old data if any exists.
     public void overwriteItemInEssentials(Item item, String fridge_ID)
     {
         Log.d(TAG, "overwriteItemInEssentials: Overwriting old data(if any) for item: " + item.getName());
@@ -647,7 +597,7 @@ public class ServiceUpdater extends Service {
         emptySL.setID(list_ID);
         emptySL.setName(list_name);
 
-        //Add shoppinng list in database.
+        //Add shopping list in database.
         dbComm.addShoppingList(fridgeRef,emptySL,list_name,list_ID);
         CollectionReference IDs_ref=fridgeRef.document(getString(R.string.SHOPPING_LIST_IDS)).collection(getString(R.string.IDS));
 
@@ -682,7 +632,7 @@ public class ServiceUpdater extends Service {
                             ) {
                         if(i.getName().equals(item.getName()))
                         {
-                            //If item with same name exists, increae quantity.
+                            //If item with same name exists, increase quantity.
                             float oldQty = i.getQuantity();
                             i.setQuantity(oldQty+item.getQuantity());
                             dbComm.addItem(listRef, i);
@@ -690,7 +640,7 @@ public class ServiceUpdater extends Service {
                             return;
                         }
                     }
-                    //If item was not in inventory yet, just add it to list.
+                    //If item was not in shopping list yet, just add it to list.
                     dbComm.addItem(listRef,item);
                     return;
                 }
@@ -760,7 +710,7 @@ public class ServiceUpdater extends Service {
         }
     }
 
-    //Create a new shopping list with the given attributes, but with no items on it.
+    //Create a new ingredient list with the given attributes, but with no items on it.
     public void createNewIngredientList(String fridge_ID, String list_name)
     {
         String list_ID=fridge_ID+"_"+list_name;
@@ -786,7 +736,7 @@ public class ServiceUpdater extends Service {
     }
 
     //add Item to Ingredient List. Increments quantity, if item with matching name exists.
-    // Shopping list must exist.
+    // Ingredient list must exist.
     public void addItemToIngredientList(Item item, String fridge_ID, String list_name, String list_ID)
     {
         CollectionReference listRef = db.collection(getString(R.string.FRIDGES)).document(fridge_ID).collection(getString(R.string.CONTENT)).document(getString(R.string.INGREDIENT_LISTS)).collection(list_ID);
@@ -904,12 +854,6 @@ public class ServiceUpdater extends Service {
         dbComm.setResponsibilityForListShoppingList(Fridge_ID,List_ID, User_ID);
     }
 
-    /*
-    public void addShoppingList(CollectionReference fridge, final ShoppingList listToAdd, String listName, String listID)
-    {
-        dbComm.addShoppingList(fridge, listToAdd, listName, listID);
-    }
-    */
 
     //Creates a new fridge with the given ID and Name
     public void createNewFridge(String ID, String Name)
@@ -1017,7 +961,7 @@ public class ServiceUpdater extends Service {
             for (Item i : currentIngredientListItems
                     ) {
 
-                //Check if quantity in Inventory + quantity in Shopping Lists is greater than desired quantity in essentials.
+                //Check if quantity in Inventory + quantity in Shopping List is greater than desired quantity in the ingredient list.
                 float totalQuantity = 0;
 
                 //Get item with matching name from inventory.

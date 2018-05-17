@@ -171,18 +171,6 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
-    /*
-    public void addInventoryList(CollectionReference fridge, final InventoryList listToAdd)
-    {
-        Map<String, Object>  InventoryList = new HashMap<>();
-        CollectionReference listRef = fridge.document("Inventory").collection("Items");
-        for (Item i:listToAdd.getItems()
-             ) {
-            addItem(listRef,i);
-        }
-    }
-    */
-
     //Adds a new shopping list based on the passed ShoppingList to the fridge destination referenced in the parameters.
     public void addShoppingList(CollectionReference fridge, final ShoppingList listToAdd, String listName, String listID)
     {
@@ -271,16 +259,6 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
-    /*
-    public void addEssentialsList(CollectionReference fridge, final EssentialsList listToAdd)
-    {
-        Map<String, Object>  EssentialsList = new HashMap<>();
-        CollectionReference listRef = fridge.document(context.getString(R.string.ESSENTIALS)).collection("Items");
-        for (Item i:listToAdd.getItems()
-                ) {
-            addItem(listRef,i);
-        }
-    }*/
 
     //Gets information from database and creates InventoryList object from this, which is passed back through callback interface.
     public void getInventoryList(final CollectionReference fridge)
@@ -402,7 +380,6 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                     if(i.getUnit().equals("THIS_IS_NOT_AN_ITEM"))
                                     {
                                         Log.d(TAG, "getShoppingList: Item " + i.getName() + " is not an item.");
-                                        //shoppingList.setName(i.getName());
                                     }
                                     else
                                     {
@@ -503,7 +480,6 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                                     if(i.getUnit().equals("THIS_IS_NOT_AN_ITEM"))
                                     {
                                         Log.d(TAG, "getIngredientList: Item " + i.getName() + " is not an item.");
-                                        //ingredientList.setName(i.getName());
                                     }
                                     else
                                     {
@@ -866,7 +842,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
     private void UnSubscribeToInventory(final DocumentReference fridge, final String fridgeID)
     {
         final CollectionReference fridgeListRef=fridge.collection(context.getString(R.string.CONTENT));
-        //Subscribe to receive notifications every time there's a change in the Essentials list.
+        //Subscribe to receive notifications every time there's a change in the Inventory list.
         fridgeListRef.document(context.getString(R.string.INVENTORY)).collection(context.getString(R.string.ITEMS)).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
@@ -875,7 +851,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
         });
     }
 
-    //Unsubscribe from inventory to stop receiving new data on change in database for the given fridge.
+    //Unsubscribe from essentials to stop receiving new data on change in database for the given fridge.
     private void UnSubscribeToEssentials(final DocumentReference fridge, final String fridgeID)
     {
         final CollectionReference fridgeListRef=fridge.collection(context.getString(R.string.CONTENT));
@@ -906,7 +882,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                             //Convert dataSnapshot to list of List_IDs(yes these only contain a string, but a model class is necessary for Firebase to create objects from datasnapshots).
                             ArrayList<List_ID> IDs = (ArrayList<List_ID>) queryDocumentSnapshots.toObjects(List_ID.class);
 
-                            //Subscribe to each shopping list.
+                            //Unsubscribe from each shopping list.
                             for (final List_ID id: IDs
                                     ) {
                                 UnSubscribeToShoppingList(fridgeListRef, id.getID(), fridgeID);
@@ -948,7 +924,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                             //Convert dataSnapshot to list of List_IDs(yes these only contain a string, but a model class is necessary for Firebase to create objects from datasnapshots).
                             ArrayList<List_ID> IDs = (ArrayList<List_ID>) queryDocumentSnapshots.toObjects(List_ID.class);
 
-                            //Subscribe to each shopping list.
+                            //Unsubscribe from each shopping list.
                             for (final List_ID id: IDs
                                     ) {
                                 UnSubscribeToIngredientList(fridgeListRef, id.getID(), fridgeID);
@@ -959,12 +935,12 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
 
     }
 
-    //Unsubscribe from ingredient lsit to stop receiving new data on change in database for the given fridge.
+    //Unsubscribe from ingredient list to stop receiving new data on change in database for the given fridge.
     public void UnSubscribeToIngredientList(final CollectionReference fridgeListRef, final String listID, final String fridgeID)
     {
         Log.d(TAG, "getIngredientListIDs: Subscribing to ingredient list: " + listID);
 
-        //Subscribe to receive notifications every time there's a change in the Shopping list.
+        //Subscribe to receive notifications every time there's a change in the Ingredient list.
         fridgeListRef.document(context.getString(R.string.INGREDIENT_LISTS)).collection(listID).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
@@ -1083,10 +1059,10 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                 });
     }
 
-    //Adds a user to the database, if a user with the given email adress does not exist yet.
+    //Adds a user to the database, if a user with the given email address does not exist yet.
     public void addUserToDatabaseIfNotThereAlready(final FirebaseUser user)
     {
-        //Query for user with matching email-adress.
+        //Query for user with matching email-address.
         db.collection(context.getString(R.string.DB_USERS)).document(user.getEmail()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
