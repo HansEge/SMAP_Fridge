@@ -269,7 +269,7 @@ In each class it extends Fragment and a onCreateView class, which inflates the c
 The outline and outcome of this decision have maked the development of the fragtment activities easier than normal, without compromising the users user interface experience.
 
 \subsection{Data Access Layer}
-As database for this project, we are using firestore and firebase. This was chosen because it offers an easy-to-use database solution which is highly integrable with Android. It provides the capability to add “EventListeners” to documents and collections in the database, which will trigger events in the code. This provides us with a sort of observer pattern, where the individual devices subscribed to the database can receive new data, when it is changed in the database.
+As database for this project, we are using firestore by firebase. This was chosen because it offers an easy-to-use database solution which is highly integrable with Android. It provides the capability to add “EventListeners” to documents and collections in the database, which will trigger events in the code. This provides us with a sort of observer pattern, where the individual devices subscribed to the database can receive new data, when it is changed in the database.
 \\
 \\
 The Data Access Layer is split into 2 parts:\\ \textbf{fireStoreCommunicator}: handles the lowest level of communication with the database. This includes adding new lists, adding items to list, adding users to database, subscribing to fridges, receiving data, making lists from this data, etc…
