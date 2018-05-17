@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SMAP_Fridge</string>
     <string name="NAME">Navn</string>
     <string name="UNIT">Enhed</string>
     <string name="QUANTITY">Mængde</string>
