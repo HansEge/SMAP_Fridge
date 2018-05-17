@@ -9,16 +9,16 @@
 \BOOKMARK [1][-]{section.5}{Early design}{}% 9
 \BOOKMARK [1][-]{section.6}{User stories}{}% 10
 \BOOKMARK [2][-]{subsection.6.1}{Updates to the user stories}{section.6}% 11
-\BOOKMARK [1][-]{section.7}{Requirements}{}% 12
-\BOOKMARK [1][-]{section.8}{Assumptions for and explanations to the chosen design}{}% 13
-\BOOKMARK [2][-]{subsection.8.1}{GUI}{section.8}% 14
-\BOOKMARK [2][-]{subsection.8.2}{Fragments}{section.8}% 15
-\BOOKMARK [2][-]{subsection.8.3}{Data Access Layer}{section.8}% 16
-\BOOKMARK [3][-]{subsubsection.8.3.1}{Data flow}{subsection.8.3}% 17
-\BOOKMARK [2][-]{subsection.8.4}{Adaptors}{section.8}% 18
-\BOOKMARK [1][-]{section.9}{Future work}{}% 19
-\BOOKMARK [1][-]{section.10}{Conclusion}{}% 20
-\BOOKMARK [1][-]{section.11}{Bugs and known problems}{}% 21
-\BOOKMARK [1][-]{section.12}{Appendix}{}% 22
-\BOOKMARK [2][-]{subsection.12.1}{Appendix A: Sequence diagram - Add item}{section.12}% 23
-\BOOKMARK [2][-]{subsection.12.2}{Appendix B: Sequence diagram - Update UI on new data for subscribed list}{section.12}% 24
+\BOOKMARK [1][-]{section.7}{Assumptions for and explanations to the chosen design}{}% 12
+\BOOKMARK [2][-]{subsection.7.1}{GUI}{section.7}% 13
+\BOOKMARK [2][-]{subsection.7.2}{Fragments}{section.7}% 14
+\BOOKMARK [2][-]{subsection.7.3}{Data Access Layer}{section.7}% 15
+\BOOKMARK [3][-]{subsubsection.7.3.1}{Data flow}{subsection.7.3}% 16
+\BOOKMARK [2][-]{subsection.7.4}{Adaptors}{section.7}% 17
+\BOOKMARK [1][-]{section.8}{Future work}{}% 18
+\BOOKMARK [1][-]{section.9}{Conclusion}{}% 19
+\BOOKMARK [1][-]{section.10}{Bugs and known problems}{}% 20
+\BOOKMARK [1][-]{section.11}{Appendix}{}% 21
+\BOOKMARK [2][-]{subsection.11.1}{Appendix A: Sequence diagram - Add item}{section.11}% 22
+\BOOKMARK [2][-]{subsection.11.2}{Appendix B: Sequence diagram - Update UI on new data for subscribed list}{section.11}% 23
+\BOOKMARK [2][-]{subsection.11.3}{Appendix C: GUI mockup}{section.11}% 24

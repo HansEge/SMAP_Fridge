@@ -549,6 +549,12 @@ public class ServiceUpdater extends Service {
             {
                 //If name matches, remove item.
                 dbComm.removeItem(InventoryRef,itemName);
+                if(inventory.getItems().size()==1)
+                {
+                    //Manually remove item from services local list, if las item. This is not optimal, since it may break syncronization with database. If no internet connection was available at the time of removing the item, the item will be removed locally, but not in database.
+                    inventory.getItems().remove(i);
+                    callbackInterface.onInventoryChange(fridge_ID,inventory);
+                }
                 return;
             }
         }
@@ -607,7 +613,14 @@ public class ServiceUpdater extends Service {
             {
                 //if name matches
                 dbComm.removeItem(EssentialsRef,itemName);
+                if(essentials.getItems().size()==1)
+                {
+                    //Manually remove item from services local list, if las item. This is not optimal, since it may break syncronization with database. If no internet connection was available at the time of removing the item, the item will be removed locally, but not in database.
+                    essentials.getItems().remove(i);
+                    callbackInterface.onEssentialsChange(fridge_ID,essentials);
+                }
                 return;
+
             }
         }
         //If no item on list with name <itemName>

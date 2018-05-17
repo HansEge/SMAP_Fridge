@@ -175,7 +175,7 @@ Below is a rich picture which shows how the Fridge-i-nator app works.
 \end{figure}
 
 \section{Early design}
-
+Figure \ref{Design diagram} shows an early design of the system. The resulting app uses a similar structure. A notable difference however is that the service updates in real time upon changes in the database, and not periodically. This ensures that the user always has the latest data. A user profile picture was not implemented, seeing that it was not one of the first priorities. Furthermore, fridges no longer hold lists of connected users. Instead, users now have a list of fridges, that they have subscribed to. Apart from those minor changes, the overall design is the same.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=180mm]{Img/Fridge_some_diagram.pdf}
@@ -240,7 +240,7 @@ Throughout the start of the designing process of the app, there were several opi
 \\
 \\
 That concluded in us knowing that in order to achieve a great user experience, we needed to make the app as simple as possible in terms of a GUI.
-In conclusion to the decision on focusing on a user friendly app experience, the group decided to make a GUI mockup, in order to agree on the most efficient way to build the app in order for it to make sense for the end-users. The GUI-mockup can be seen in appendix (REFERER TIL BILAG HER).
+In conclusion to the decision on focusing on a user friendly app experience, the group decided to make a GUI mockup, in order to agree on the most efficient way to build the app in order for it to make sense for the end-users. The GUI-mockup can be seen in appendix C.
 \\
 \\
 At first time opening the app, the user will be presented with a login screen. Here the user will be asked to enter the email address. Afterwards the app will check in the Firestore database, whether the email address has been used before or this is the first time. If the email address is used for the first time, the app asks the user to select a password, which will be used in the future to log into the users account. If used before, the app simply asks for the password, unless you have setup Google Play to remember password – then it automatically log-in for you.
@@ -327,25 +327,23 @@ In conclusion of all the thoughts that went into the design and architecture of 
 	& If quantity of an item is given a very(very) large value, it changes value to "infinity". If you change quantity for the same item again, you can input a number + the word "infinity", which crashes the app.
 	\\
 	\\	
-	& General issues with stability. Most likely because of missing null checks.
+	& General stability problems.
 	\\
 	\\
 	& Layout not matching all screen sizes.
 	\\
 	\\
-	& When creating a new fridge name is displayed as null. But is displayed correctly when the app is restarted.
-	\\
-	\\
-	& Cant delete last item in inventoryList
+	& When creating a new fridge name is displayed as null. It is however displayed correctly when the app is restarted.
 \end{easylist}
 
+\pagebreak
 \section{Appendix}
-All images in Appendix can be found along with the report as well.
+PLEASE NOTE: All images in Appendix can be found along with the report as well.
 \subsection{Appendix A: Sequence diagram - Add item}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=180mm]{Img/APPENDIX A - SD-ADD-ITEM.pdf}
-	\caption{Sequence diagram of adding a new item to inventory}
+	\caption{Sequence diagram of adding a new item to inventory - PLEASE NOTE: All images in Appendix can be found along with the report as well.}
 	% \floatfoot{Source: (Citation command)}
 	\label{fig:SD_addItem}
 \end{figure}
@@ -354,9 +352,18 @@ All images in Appendix can be found along with the report as well.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=120mm]{Img/APPENDIX B - SD-onNewData.pdf}
-	\caption{Sequence diagram of updating UI upon receiving new data in the database.}
+	\caption{Sequence diagram of updating UI upon receiving new data in the database. - PLEASE NOTE: All images in Appendix can be found along with the report as well.}
 	% \floatfoot{Source: (Citation command)}
 	\label{fig:SD_onNewData}
+\end{figure}
+
+\subsection{Appendix C: GUI mockup}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=180mm]{Img/APPENDIX C - GUI-mockup.png}
+	\caption{Early draft of the UI - PLEASE NOTE: All images in Appendix can be found along with the report as well.}
+	% \floatfoot{Source: (Citation command)}
+	\label{fig:GUI_mockup}
 \end{figure}
 
 \end{document}
