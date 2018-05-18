@@ -10,9 +10,7 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.LocalBroadcastManager;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -37,6 +35,8 @@ import smap_f18_24.smap_fridge.ModelClasses.Fridge;
 import smap_f18_24.smap_fridge.R;
 import smap_f18_24.smap_fridge.Service.ServiceUpdater;
 
+
+//Fragment dividing inspired by https://www.youtube.com/watch?v=00LLd7qr9sA
 public class DetailsActivity extends AppCompatActivity {
 
     /**
@@ -184,7 +184,7 @@ public class DetailsActivity extends AppCompatActivity {
             mBound = true;
 
             clickedFridgeID=getIntent().getStringExtra(getString(R.string.CLICKED_FRIDGE_ID));
-            currentFridge = mService.getFridge(clickedFridgeID); //TODO Get the correct ID from overviewActivity
+            currentFridge = mService.getFridge(clickedFridgeID);
 
         }
 
