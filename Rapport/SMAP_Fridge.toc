@@ -15,7 +15,7 @@
 \contentsline {subsection}{\numberline {7.2}Fragments}{9}{subsection.7.2}
 \contentsline {subsection}{\numberline {7.3}Data Access Layer}{9}{subsection.7.3}
 \contentsline {subsubsection}{\numberline {7.3.1}Data flow}{10}{subsubsection.7.3.1}
-\contentsline {subsection}{\numberline {7.4}Adaptors}{10}{subsection.7.4}
+\contentsline {subsection}{\numberline {7.4}Adaptors}{11}{subsection.7.4}
 \contentsline {section}{\numberline {8}Future work}{11}{section.8}
 \contentsline {section}{\numberline {9}Conclusion}{11}{section.9}
 \contentsline {section}{\numberline {10}Bugs and known problems}{12}{section.10}

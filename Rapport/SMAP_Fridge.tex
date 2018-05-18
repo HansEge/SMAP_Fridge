@@ -76,11 +76,11 @@ Style2*=$\bullet$ ,Style3*=$\circ$ ,Style4*=\tiny$\blacksquare$ )
 		~
 		\begin{minipage}{0.4\textwidth}
 			\begin{flushright} \large
-				\emph{Studienr:} \\
-				201509520\\
-				201401682\\
-				201505665 \\
-				201506381 \\
+				\emph{AUID:} \\
+				au544366\\
+				au520659\\
+				au547006 \\
+				au547068 \\
 			\end{flushright}
 		\end{minipage}\\[5cm]
 		
@@ -139,7 +139,7 @@ The entire group\\
 
 \section{App vision}
 Fridge-i-nator is an app that works together with you and your fridge. It will make it easier for you to make a shopping
-list and keep track of the items in your fridge especially if your share fridge with others. You can create an essential
+list and keep track of the items in your fridge especially if you share fridge with others. You can create an essential
 item list, which contains items you never want to run out of. That way if the item comes under a minimum quantity Fridge-i-nator
 will automatically add that item to your shopping list. Furthermore it is possible to add entire ingredient lists to your shopping list. The app will check your inventory for missing ingredients and add them to a shopping list. Shopping for your favourite dish has never been easier.
 Fridge-i-nator will minimize the risk of you forgetting to buy items you need, and make sure you never have to check your fridge before going to the supermarket.
@@ -175,7 +175,7 @@ Below is a rich picture which shows how the Fridge-i-nator app works.
 \end{figure}
 
 \section{Early design}
-Figure \ref{Design diagram} shows an early design of the system. The resulting app uses a similar structure. A notable difference however is that the service updates in real time upon changes in the database, and not periodically. This ensures that the user always has the latest data. A user profile picture was not implemented, seeing that it was not one of the first priorities. Furthermore, fridges no longer hold lists of connected users. Instead, users now have a list of fridges, that they have subscribed to. Apart from those minor changes, the overall design is the same.
+\autoref{fig:Design diagram} shows an early design of the system. The resulting app uses a similar structure. A notable difference however is that the service updates in real time upon changes in the database, and not periodically. This ensures that the user always has the latest data. A user profile picture was not implemented, seeing that it was not one of the first priorities. Furthermore, fridges no longer hold lists of connected users. Instead, users now have a list of fridges, that they have subscribed to. Apart from those minor changes, the overall design is the same.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=180mm]{Img/Fridge_some_diagram.pdf}
@@ -188,6 +188,7 @@ Figure \ref{Design diagram} shows an early design of the system. The resulting a
 The below user stories 
 
 \textbf{CONNECTION}\\
+
 As a user, I can connect to a create a new fridge, so that i can acces connect to it.
 
 As a user, I can connect to a fridge, so that I can access information about it.
@@ -198,28 +199,33 @@ As a user, I can leave a fridge, so that I cannot acces information about it any
 \newline
 \newline
 \textbf{INVENTORY}
+
 As a user, I can acces an inventory list of items which the fridges contain, so all users connected to the fridge can keep track of what is in the fridge.
 
 As a user, I can add items to the inventory list, so that all connected users may know that the item is in the fridge.
 \newline
 \newline
 \textbf{SHOPPING LIST}
+
 As a user, I can acces a shopping list of items, so all users connected to the fridge can keep track of what needs to be bought for the fridge.
 
 As a user, I can add items to the shopping list, so that all connected users may know that the item needs to be bought.
 \newline
 \newline
 \textbf{ESSENTIALS LIST}
+
 As a user, I can acces a list of essential items with a minimum quantity of each item, so when the quantity of at specific item comes below the minimum quantity fridge-i-nator automatically adds the item to the shopping list.
 
 As a user, I can add items to the lsit of essential items, so that all the system automatically will add the item to the shopping list, if the quantity of the item falls below a specifiec quantity.
 \newline
 \newline
 \textbf{INGREDIENT LIST}
+
 As a user, I can add an ingredient list of items, so that the system will add missing items to the shopping list.
 \newline
 \newline
 \textbf{USING THE SHOPPIN/INVENTORY LIST}
+
 As a user, I can claim responsibility of an item on the shopping list, so that other useres will be notified about who has taken responsibility of the given item to avoid double shopping.
 
 As a user, I can move an item from the shopping list to the inventory list, so that all users connected to the fridge will know that the item has been bought.
@@ -230,6 +236,9 @@ Another feature we have implemented to improve the user experience, is if the us
 \\
 \\
 Another thing we didn’t think about before we started to implement the app, was whether we wanted the app to be able to rotate. But after we had implemented the landscape mode and tried it out, it just felt like a really bad user experience. Because it gave nothing extra to the user on the contrary it just made the experience worse. It’s because our UI mainly consist of listviews and when you  turn your phone to landscape mode, its only possible to see three items in the listview at a time. Therefore the group decided to lock rotation to improve the user experience.
+\\
+\\
+The last thing from the user stories we didn’t implement in our app was the: “As a user, I can add other people to a fridge I am connected to, so that they can access information about it.” This wasn’t implemented due to time pressure, but it would be one of the first things we would implement in future work. 
 
 
 \section{Assumptions for and explanations to the chosen design}
@@ -307,7 +316,7 @@ For user authentication we used firebaseUI, which provides an easy to use soluti
 As of now, proper user authorization has not been implemented yet. This means that the database is open for reading and writing for anyone. This is of course not optimal, but given the scope of the assignment, this was not prioritized.
 
 \subsection{Adaptors}
-The UI manly consist of listviews and all these listviews use separate listview adaptors. We found inspiration from lection 4 to make these adaptors. The reason why we use separate listview adaptors for every fragment and activity, is to make it easy to customize the listviews, and that way improve the user experience. Eg. the shoppinglist shows the name of the shopping list and who's responsible, and the inventory list shows the name, quantity and unit of the items. This works well with the on click options the user has eg. click on an item to adjust the quantity of that item, or to make a long click on an item to get the option to delete an item.
+The UI mainly consist of listviews and all these listviews use separate listview adaptors. We found inspiration from lection 4 to make these adaptors. The reason why we use separate listview adaptors for every fragment and activity, is to make it easy to customize the listviews, and that way improve the user experience. Eg. the shoppinglist shows the name of the shopping list and who's responsible, and the inventory list shows the name, quantity and unit of the items. This works well with the on click options the user has eg. click on an item to adjust the quantity of that item, or to make a long click on an item to get the option to delete an item.
 
 \section{Future work}
 Had the group had more time the following would be points of improvement and further work.
@@ -336,7 +345,8 @@ In conclusion of all the thoughts that went into the design and architecture of 
 	& When creating a new fridge name is displayed as null. It is however displayed correctly when the app is restarted.
 \end{easylist}
 
-\pagebreak
+\newpage
+
 \section{Appendix}
 PLEASE NOTE: All images in Appendix can be found along with the report as well.
 \subsection{Appendix A: Sequence diagram - Add item}
