@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.26)  18 MAY 2018 14:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.26)  18 MAY 2018 14:31
 entering extended mode
 **./SMAP_Fridge.tex
 (SMAP_Fridge.tex
@@ -1589,17 +1589,17 @@ Package babel Info: Redefining danish shorthand "~
 (babel)             in language  on input line 348.
 [12]
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 349.
+(babel)             in language  on input line 350.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 349.
+(babel)             in language  on input line 350.
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 351.
+(babel)             in language  on input line 352.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 351.
+(babel)             in language  on input line 352.
 
 
 LaTeX Warning: File `Img/APPENDIX A - SD-ADD-ITEM.pdf' not found on input line 
-354.
+355.
 
 
 
@@ -1609,51 +1609,51 @@ lusion: found PDF version <1.7>, but at most version <1.5> allowed
 File: Img/APPENDIX A - SD-ADD-ITEM.pdf Graphic file (type pdf)
 <use Img/APPENDIX A - SD-ADD-ITEM.pdf>
 Package pdftex.def Info: Img/APPENDIX A - SD-ADD-ITEM.pdf  used on input line 3
-54.
+55.
 (pdftex.def)             Requested size: 512.1496pt x 601.19081pt.
 
-Overfull \hbox (42.39458pt too wide) in paragraph at lines 354--355
+Overfull \hbox (42.39458pt too wide) in paragraph at lines 355--356
  [] 
  []
 
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 359.
+(babel)             in language  on input line 360.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 359.
+(babel)             in language  on input line 360.
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 359.
+(babel)             in language  on input line 360.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 359.
+(babel)             in language  on input line 360.
 [13]
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 359.
+(babel)             in language  on input line 360.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 359.
+(babel)             in language  on input line 360.
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 359.
+(babel)             in language  on input line 360.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 359.
+(babel)             in language  on input line 360.
  [14]
 Overfull \vbox (31.14404pt too high) has occurred while \output is active []
 
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 359.
+(babel)             in language  on input line 360.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 359.
+(babel)             in language  on input line 360.
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 359.
+(babel)             in language  on input line 360.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 359.
+(babel)             in language  on input line 360.
 
 [15 <./Img/APPENDIX A - SD-ADD-ITEM.pdf>]
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 360.
+(babel)             in language  on input line 361.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 360.
+(babel)             in language  on input line 361.
 
 
 LaTeX Warning: File `Img/APPENDIX B - SD-onNewData.pdf' not found on input line
- 363.
+ 364.
 
 
 
@@ -1663,57 +1663,57 @@ clusion: found PDF version <1.7>, but at most version <1.5> allowed
 File: Img/APPENDIX B - SD-onNewData.pdf Graphic file (type pdf)
 <use Img/APPENDIX B - SD-onNewData.pdf>
 Package pdftex.def Info: Img/APPENDIX B - SD-onNewData.pdf  used on input line 
-363.
+364.
 (pdftex.def)             Requested size: 341.43306pt x 503.66757pt.
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 369.
+(babel)             in language  on input line 370.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 369.
+(babel)             in language  on input line 370.
 
 LaTeX Warning: File `Img/APPENDIX C - GUI-mockup.png' not found on input line 3
-72.
+73.
 
 <Img/APPENDIX C - GUI-mockup.png, id=260, 3514.88156pt x 3734.70282pt>
 File: Img/APPENDIX C - GUI-mockup.png Graphic file (type png)
 <use Img/APPENDIX C - GUI-mockup.png>
 Package pdftex.def Info: Img/APPENDIX C - GUI-mockup.png  used on input line 37
-2.
+3.
 (pdftex.def)             Requested size: 512.1496pt x 544.16794pt.
 
-Overfull \hbox (42.39458pt too wide) in paragraph at lines 372--373
+Overfull \hbox (42.39458pt too wide) in paragraph at lines 373--374
  [] 
  []
 
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 377.
+(babel)             in language  on input line 378.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 377.
+(babel)             in language  on input line 378.
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 377.
+(babel)             in language  on input line 378.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 377.
+(babel)             in language  on input line 378.
 [16 <./Img/APPENDIX B - SD-onNewData.pdf>]
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 378.
+(babel)             in language  on input line 379.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 378.
+(babel)             in language  on input line 379.
 Package babel Info: Redefining danish shorthand "|
-(babel)             in language  on input line 378.
+(babel)             in language  on input line 379.
 Package babel Info: Redefining danish shorthand "~
-(babel)             in language  on input line 378.
+(babel)             in language  on input line 379.
  [17 <./Img/APPENDIX C - GUI-mockup.png
 
 pdfTeX warning: pdflatex.exe (file ./Img/APPENDIX C - GUI-mockup.png): large in
 terlaced PNG might cause out of memory (use non-interlaced PNG to fix this)
 >]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 378.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 378.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 379.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 379.
  (SMAP_Fridge.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 378.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 378.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 379.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 379.
 Package rerunfilecheck Info: File `SMAP_Fridge.out' has not changed.
 (rerunfilecheck)             Checksum: B023C7865B40A89F65A5D5DD9CC75360;1521.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 378.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 379.
  ) 
 Here is how much of TeX's memory you used:
  24250 strings out of 493303
@@ -1729,7 +1729,7 @@ c/amsfonts/cm/cmbx12.pfb><C:/Users/stinu/AppData/Local/Programs/MiKTeX 2.9/font
 s/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Users/stinu/AppData/Local/Programs/M
 iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/stinu/AppData/Loca
 l/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on SMAP_Fridge.pdf (18 pages, 1301354 bytes).
+Output written on SMAP_Fridge.pdf (18 pages, 1301450 bytes).
 PDF statistics:
  306 PDF objects out of 1000 (max. 8388607)
  50 named destinations out of 1000 (max. 500000)
