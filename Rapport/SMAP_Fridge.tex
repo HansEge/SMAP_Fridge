@@ -4,7 +4,7 @@
 \documentclass[12pt]{article}
 \usepackage{amssymb}
 \usepackage[ampersand]{easylist}
-\usepackage[danish]{babel}
+%\usepackage[danish]{babel}
 \usepackage{mathtools}
 \usepackage[euler]{textgreek}
 \usepackage[numbered,final]{mcode}
@@ -66,7 +66,7 @@ Style2*=$\bullet$ ,Style3*=$\circ$ ,Style4*=\tiny$\blacksquare$ )
 		
 		\begin{minipage}{0.4\textwidth}
 			\begin{flushleft} \large
-				\emph{Gruppemedlemmer:}\\
+				\emph{Group members:}\\
 				Daniel Tøttrup (Elektro) \\
 				Stinus Skovgaard (Elektro) \\
 				Mathias Friis (Elektro) \\
@@ -115,7 +115,7 @@ Style2*=$\bullet$ ,Style3*=$\circ$ ,Style4*=\tiny$\blacksquare$ )
 \\
 Stinus, Daniel\\
 \textbf{Data Access Layer}\\
-Mathias, Philip (Some functions added by Philip)\\
+Mathias, Philip (Secondary)\\
 \textbf{Fragments}\\
 Philip, Daniel, Stinus\\
 \textbf{ModelClasses}\\
@@ -185,8 +185,6 @@ Below is a rich picture which shows how the Fridge-i-nator app works.
 \end{figure}
 
 \section{User stories}
-The below user stories 
-
 \textbf{CONNECTION}\\
 
 As a user, I can connect to a create a new fridge, so that i can acces connect to it.
@@ -260,8 +258,7 @@ Then the user lands on the OverviewActivity, where the user will be presented a 
 \\
 The fragment view concludes 4 different tabs, where each of the holds separate information presented in a listview. There is an inventory list, which concludes the things that the user currently has on shelves/in fridge. The essentials-list, where the user can define which items they never want to go below a given threshold. If that threshold is reached, it will automatically be added to the shoppinglist. The user can access each different shoppinglist and see what items and quantity they hold. Ingredientlists is the last tab, and it holds a list of known recipes, which the user can press and see what is needed to make the specific recipe. The possibility to add further items to the recipe and add the total list of items needed for the recipe to the shoppinglist.
 As stated, the above, has been the outline of the GUI designed and thereafter been carried out within the development-process of the app.
-\\
-\\
+
 \subsection{Fragments}
 Due to the group wanting a great user experience troughout the app, there was a need for us to display the relevant data to the user, in the best possible way.
 We concluded that one of the best solutions would be in a fragmented view, which listed 4 tabs: Inventory, Essentials, Shoppinglists and IngredientsList.
@@ -332,27 +329,22 @@ In conclusion of all the thoughts that went into the design and architecture of 
 
 \section{Bugs and known problems}
 
-\begin{easylist}
-	& If quantity of an item is given a very(very) large value, it changes value to "infinity". If you change quantity for the same item again, you can input a number + the word "infinity", which crashes the app.
-	\\
-	\\	
-	& General stability problems.
-	\\
-	\\
-	& Layout not matching all screen sizes.
-	\\
-	\\
-	& When creating a new fridge name is displayed as null. It is however displayed correctly when the app is restarted.
-\end{easylist}
+\begin{itemize}
+	\item If quantity of an item is given a very(very) large value, it changes value to "infinity". If you change quantity for the same item again, you can input a number + the word "infinity", which crashes the app.
+	\item General stability problems.
+	\item Layout not matching all screen sizes.
+	\item When creating a new fridge name is displayed as null. It is however displayed correctly when the app is restarted.
+\end{itemize}
 
 \newpage
 
 \section{Appendix}
 PLEASE NOTE: All images in Appendix can be found along with the report as well.
+
 \subsection{Appendix A: Sequence diagram - Add item}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=180mm]{Img/APPENDIX A - SD-ADD-ITEM.pdf}
+	\includegraphics[width=150mm]{Img/APPENDIX A - SD-ADD-ITEM.pdf}
 	\caption{Sequence diagram of adding a new item to inventory - PLEASE NOTE: All images in Appendix can be found along with the report as well.}
 	% \floatfoot{Source: (Citation command)}
 	\label{fig:SD_addItem}
