@@ -106,4 +106,5 @@
     <string name="DB_QUANTITY" translatable="false">Quantity</string>
     <string name="DB_RESPONSIBLE_USER_EMAIL" translatable="false">ResponsibleUserEmail</string>
     <string name="DB_ITEM_STATUS" translatable="false">itemStatus</string>
+    <string name="DIALOG_delete_list">Are you sure you want to delete this list?</string>
 </resources>

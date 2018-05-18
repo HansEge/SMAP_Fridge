@@ -1002,6 +1002,20 @@ public class ServiceUpdater extends Service {
 
         //Delete from database
         dbComm.deleteShoppingListFromDatabase(fridge_ID,list_ID);
+        broadcastResult(getString(R.string.DATA_UPDATED));
+    }
+
+    public void deleteIngredientsList(String fridge_ID, String list_ID)
+    {
+        //Delete local copy
+        Fridge currentFridge = getFridge(fridge_ID);
+        IngredientList listToDelete = getIngredientList(list_ID,currentFridge.getIngredientLists());
+        currentFridge.getIngredientLists().remove(listToDelete);
+
+        //Delete from database
+        dbComm.deleteIngredientListFromDatabase(fridge_ID,list_ID);
+        broadcastResult(getString(R.string.DATA_UPDATED));
+
     }
 
     @Override

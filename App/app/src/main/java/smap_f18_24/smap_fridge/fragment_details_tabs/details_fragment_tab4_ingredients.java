@@ -78,6 +78,17 @@ public class details_fragment_tab4_ingredients extends Fragment {
             }
         });
 
+        lv_ingredientsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String ingredientsListID = currentFridge.getIngredientLists().get(i).getID();
+                openDeleteListDialogBox(ingredientsListID);
+
+                return true;
+            }
+        });
+
         return v;
     }
 
@@ -91,6 +102,34 @@ public class details_fragment_tab4_ingredients extends Fragment {
         lv_ingredientsList.setAdapter(adaptor);
 
     }
+    private void openDeleteListDialogBox(String ListID){
+
+        //A function that creates a "are you sure you wanna delete item" dialogbox
+        final String _listID = ListID;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(getString(R.string.DIALOG_delete_list));
+
+        LinearLayout layout = new LinearLayout(getContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton(R.string.DIALOG_yes_button, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ((DetailsActivity)getActivity()).mService.deleteIngredientsList(currentFridge.getID(),_listID);
+                Log.d("Broadcast Receiver", "Error in broadcast receiver");
+            }
+        });
+        builder.setNegativeButton(R.string.DIALOG_cancel_button, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.show();
+    };
     //BroadcastReceiver that updates UI when it receives a subscribed broadcast (currently, we're only subscribing to one broadcast, so we don't really check for the result other than null check)
     private BroadcastReceiver serviceUpdaterReceiver = new BroadcastReceiver() {
         @Override
@@ -108,7 +147,6 @@ public class details_fragment_tab4_ingredients extends Fragment {
             if(result != null) {
                 updateData(result);
             }
-
         }
     };
 

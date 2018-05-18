@@ -276,6 +276,4 @@ public class details_fragment_tab1_inventory extends Fragment {
             lv_inventoryList.setAdapter(inventoryListAdaptor);
         }
     }
-
-
 }
