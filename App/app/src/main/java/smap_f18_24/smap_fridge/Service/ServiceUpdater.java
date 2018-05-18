@@ -1004,6 +1004,18 @@ public class ServiceUpdater extends Service {
         dbComm.deleteShoppingListFromDatabase(fridge_ID,list_ID);
     }
 
+    public void deleteIngredientsList(String fridge_ID, String list_ID)
+    {
+        //Delete local copy
+        Fridge currentFridge = getFridge(fridge_ID);
+        IngredientList listToDelete = getIngredientList(list_ID,currentFridge.getIngredientLists());
+        currentFridge.getIngredientLists().remove(listToDelete);
+
+        //Delete from database
+        dbComm.deleteIngredientListFromDatabase(fridge_ID,list_ID);
+
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
