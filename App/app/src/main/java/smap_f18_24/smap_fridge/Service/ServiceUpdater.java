@@ -1002,6 +1002,7 @@ public class ServiceUpdater extends Service {
 
         //Delete from database
         dbComm.deleteShoppingListFromDatabase(fridge_ID,list_ID);
+        broadcastResult(getString(R.string.DATA_UPDATED));
     }
 
     public void deleteIngredientsList(String fridge_ID, String list_ID)
@@ -1013,6 +1014,7 @@ public class ServiceUpdater extends Service {
 
         //Delete from database
         dbComm.deleteIngredientListFromDatabase(fridge_ID,list_ID);
+        broadcastResult(getString(R.string.DATA_UPDATED));
 
     }
 

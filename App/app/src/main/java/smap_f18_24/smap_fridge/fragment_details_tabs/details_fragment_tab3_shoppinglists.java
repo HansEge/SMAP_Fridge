@@ -144,7 +144,6 @@ public class details_fragment_tab3_shoppinglists extends Fragment {
                 //remove in database.
                 mService.deleteShoppingList(currentFridge.getID(),shoppingList.getID());
 
-                updateData(getString(R.string.DATA_UPDATED));
             }
         });
 
