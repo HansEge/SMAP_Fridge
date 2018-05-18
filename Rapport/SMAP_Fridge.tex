@@ -175,7 +175,7 @@ Below is a rich picture which shows how the Fridge-i-nator app works.
 \end{figure}
 
 \section{Early design}
-Figure \ref{Design diagram} shows an early design of the system. The resulting app uses a similar structure. A notable difference however is that the service updates in real time upon changes in the database, and not periodically. This ensures that the user always has the latest data. A user profile picture was not implemented, seeing that it was not one of the first priorities. Furthermore, fridges no longer hold lists of connected users. Instead, users now have a list of fridges, that they have subscribed to. Apart from those minor changes, the overall design is the same.
+\autoref{fig:Design diagram} shows an early design of the system. The resulting app uses a similar structure. A notable difference however is that the service updates in real time upon changes in the database, and not periodically. This ensures that the user always has the latest data. A user profile picture was not implemented, seeing that it was not one of the first priorities. Furthermore, fridges no longer hold lists of connected users. Instead, users now have a list of fridges, that they have subscribed to. Apart from those minor changes, the overall design is the same.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=180mm]{Img/Fridge_some_diagram.pdf}
@@ -316,7 +316,7 @@ For user authentication we used firebaseUI, which provides an easy to use soluti
 As of now, proper user authorization has not been implemented yet. This means that the database is open for reading and writing for anyone. This is of course not optimal, but given the scope of the assignment, this was not prioritized.
 
 \subsection{Adaptors}
-The UI manly consist of listviews and all these listviews use separate listview adaptors. We found inspiration from lection 4 to make these adaptors. The reason why we use separate listview adaptors for every fragment and activity, is to make it easy to customize the listviews, and that way improve the user experience. Eg. the shoppinglist shows the name of the shopping list and who's responsible, and the inventory list shows the name, quantity and unit of the items. This works well with the on click options the user has eg. click on an item to adjust the quantity of that item, or to make a long click on an item to get the option to delete an item.
+The UI mainly consist of listviews and all these listviews use separate listview adaptors. We found inspiration from lection 4 to make these adaptors. The reason why we use separate listview adaptors for every fragment and activity, is to make it easy to customize the listviews, and that way improve the user experience. Eg. the shoppinglist shows the name of the shopping list and who's responsible, and the inventory list shows the name, quantity and unit of the items. This works well with the on click options the user has eg. click on an item to adjust the quantity of that item, or to make a long click on an item to get the option to delete an item.
 
 \section{Future work}
 Had the group had more time the following would be points of improvement and further work.
@@ -346,6 +346,7 @@ In conclusion of all the thoughts that went into the design and architecture of 
 \end{easylist}
 
 \newpage
+
 \section{Appendix}
 PLEASE NOTE: All images in Appendix can be found along with the report as well.
 \subsection{Appendix A: Sequence diagram - Add item}
