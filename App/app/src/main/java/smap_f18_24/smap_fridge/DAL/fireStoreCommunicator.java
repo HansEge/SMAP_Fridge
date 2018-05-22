@@ -70,7 +70,7 @@ public void addItem(final CollectionReference destination, final Item itemToAdd)
                         Map<String, Object>  item = new HashMap<>();
                         item.put(context.getString(R.string.DB_NAME),itemToAdd.getName());
                         item.put(context.getString(R.string.UNIT),itemToAdd.getUnit());
-                        item.put(context.getString(R.string.QUANTITY), itemToAdd.getQuantity());
+                        item.put(context.getString(R.string.DB_QUANTITY), itemToAdd.getQuantity());
                         item.put(context.getString(R.string.RESPONSIBLE_USER_EMAIL),itemToAdd.getResponsibleUserEmail());
                         item.put(context.getString(R.string.ITEM_STATUS),itemToAdd.getItemStatus());
 
