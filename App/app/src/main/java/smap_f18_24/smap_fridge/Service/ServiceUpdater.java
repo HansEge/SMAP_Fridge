@@ -56,6 +56,7 @@ public class ServiceUpdater extends Service {
     
     //Used for binding service to activity
     private final IBinder mBinder = new ServiceBinder();
+    boolean displayNotification = false;
 
     public static final String BROADCAST_UPDATER_RESULT = "smap_f18_24.smap_fridge.Service.BROADCAST_BACKGROUND_SERVICE_RESULT";
     public static final String EXTRA_TASK_RESULT = "task_result";
@@ -81,6 +82,73 @@ public class ServiceUpdater extends Service {
         //Receive updates when fridges that the user has subscribed to change.
         currentUser = getCurrentUserInformation();
         dbComm.SubscribeToSavedFridges(getCurrentUserEmail(),callbackInterface);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    if(displayNotification == true)
+                    {
+                        notificationBuilder();
+                        displayNotification = false;
+                    }
+
+                    try {
+                        Thread.sleep(2000); //Update stuff every xx ms
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+
+    //Make notification displaying the time when updating.
+    @TargetApi(26)
+    void notificationBuilder()
+    {
+        //For API version < 26
+        if (Build.VERSION.SDK_INT < 26) {
+            Log.d("API<26","bobby olsen");
+            notificationBuilder_PRE26();
+            return;
+        }
+
+        LocalDateTime time2 = LocalDateTime.now();
+
+        NotificationChannel channel_1 = new NotificationChannel("CHANNEL_1","Fridge Stuff", NotificationManager.IMPORTANCE_LOW);
+        channel_1.setDescription("Notification for alerting user of changes");
+
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        mNotificationManager.createNotificationChannel(channel_1);
+
+        Notification updateNotification =
+                new Notification.Builder(this,"CHANNEL_1")
+                        .setContentTitle("One of your subscribed fridges was updated")
+                        .setContentText("Kl " + time2.format(DateTimeFormatter.ISO_LOCAL_TIME))
+                        .setSmallIcon(R.drawable.stinus_face)
+                        .build();
+        //startForeground(123,updateNotification);
+
+        mNotificationManager.notify("tag", 123, updateNotification);
+
+    }
+
+
+    //For API < 26
+    void notificationBuilder_PRE26()
+    {
+        Calendar time = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+
+        Notification updateNotification =
+                new NotificationCompat.Builder(this,"Channel_X")
+                        .setContentTitle("One of your subscribed fridges was updated")
+                        .setContentText("Kl " + sdf.format(time.getTime()))
+                        .setSmallIcon(R.drawable.stinus_face)
+                        .build();
+        startForeground(123,updateNotification);
     }
 
     public void setContext(Context c)
@@ -108,6 +176,7 @@ public class ServiceUpdater extends Service {
         {
             Log.d("BROADCAST_SEND","Success on sending broadcast");
         }
+        displayNotification=true;
     }
 
 
@@ -347,7 +416,6 @@ public class ServiceUpdater extends Service {
 
                 broadcastResult(getString(R.string.DATA_UPDATED));
             }
-
         }
 
         //Not used in current implementaion
